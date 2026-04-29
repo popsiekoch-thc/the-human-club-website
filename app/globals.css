@@ -1,0 +1,206 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink:        #1b1918;
+  --charcoal:   #2d2726;
+  --cream:      #e8dfcf;
+  --burgundy:   #7a1f24;
+  --sky:        #2f5d7a;
+  --chartreuse: #c4bc55;
+  --orange:     #e67545;
+  --tobacco:    #6b4d36;
+  --stone:      #cfccc5;
+  --border:     rgba(27, 25, 24, 0.12);
+  --border-light: rgba(232, 223, 207, 0.2);
+
+  --font-display: "commuters-sans", "Inter", sans-serif;
+  --font-ui: "Mytupi", system-ui, sans-serif;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+/* ---- Section wrapper ---- */
+.wrap {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* ---- Section head ---- */
+.section-head {
+  display: grid;
+  grid-template-columns: 260px 1fr auto;
+  gap: 40px;
+  align-items: end;
+  padding: 56px 0 28px;
+  border-top: 1px solid currentColor;
+}
+.section-head .num {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+.section-head h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(48px, 7vw, 96px);
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+  margin: 0;
+}
+.section-head h2 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--burgundy);
+}
+.on-dark .section-head h2 em { color: var(--chartreuse); }
+.section-head .aside {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 1.55;
+  max-width: 240px;
+  opacity: 0.65;
+}
+
+/* ---- Letter-swap button ---- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--ink);
+  color: var(--cream);
+  border: 0;
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background 360ms, color 360ms;
+}
+.btn .label {
+  position: relative;
+  display: inline-flex;
+  height: 1em;
+  overflow: hidden;
+}
+.btn .label span {
+  display: inline-block;
+  transition: transform 520ms cubic-bezier(0.76, 0, 0.24, 1);
+}
+.btn .label .to {
+  position: absolute;
+  left: 0;
+  top: 100%;
+}
+.btn:hover .label .from,
+.btn:hover .label .to { transform: translateY(-100%); }
+.btn:hover { background: var(--chartreuse); color: var(--ink); }
+.btn .arrow { transition: transform 360ms; }
+.btn:hover .arrow { transform: translateX(4px); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+}
+.btn-ghost:hover { background: var(--ink); color: var(--cream); }
+
+.on-dark .btn-ghost { color: var(--cream); border-color: var(--cream); }
+.on-dark .btn-ghost:hover { background: var(--cream); color: var(--ink); }
+
+/* ---- Scroll cue sweep ---- */
+@keyframes sweep {
+  0%   { left: -40%; }
+  100% { left: 100%; }
+}
+
+/* ---- Nav link underline ---- */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 280ms;
+}
+.nav-link:hover::after { transform: scaleX(1); }
+
+/* ---- Podcast episode row ---- */
+.ep-row {
+  transition: padding-left 320ms, background 280ms;
+}
+.ep-row:hover {
+  padding-left: 16px !important;
+  background: rgba(232,223,207,0.05) !important;
+}
+.ep-row .ep-play-btn { transition: background 280ms, color 280ms; }
+.ep-row:hover .ep-play-btn { background: var(--cream) !important; color: var(--ink) !important; }
+
+/* ---- Radio mix item ---- */
+.mix-item { transition: background 280ms; }
+.mix-item:hover { background: rgba(232,223,207,0.05) !important; }
+
+/* ---- Artist card ---- */
+.artist-card { transition: transform 320ms; }
+.artist-card:hover { transform: translateY(-4px); }
+
+/* ---- Talent link buttons ---- */
+.talent-ig-link { transition: background 240ms, color 240ms, transform 240ms; }
+.talent-ig-link:hover { background: var(--burgundy) !important; transform: translateY(-2px); }
+.talent-alt-link { transition: background 240ms, border-color 240ms, transform 240ms; }
+.talent-alt-link:hover {
+  background: var(--tobacco) !important;
+  border-color: var(--tobacco) !important;
+  transform: translateY(-2px);
+}
+
+/* ---- Footer nav links ---- */
+.footer-link { position: relative; display: inline-block; }
+.footer-link::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 240ms;
+}
+.footer-link:hover::after { transform: scaleX(1); }
+
+@media (max-width: 900px) {
+  .section-head { grid-template-columns: 1fr; }
+  .wrap { padding: 0 20px; }
+  .roster-grid { grid-template-columns: 1fr !important; }
+  .talent-grid  { grid-template-columns: 1fr !important; }
+  .artists-grid { grid-template-columns: 1fr !important; }
+  .ep-row       { grid-template-columns: 60px 1fr auto !important; }
+  .ep-art, .ep-guest { display: none !important; }
+  .player-grid  { grid-template-columns: 1fr !important; }
+  .mix-list     { grid-template-columns: 1fr !important; }
+  .footer-cols  { grid-template-columns: 1fr 1fr !important; }
+}
