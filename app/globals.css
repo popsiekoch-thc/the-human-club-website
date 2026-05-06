@@ -190,22 +190,13 @@ img { display: block; max-width: 100%; }
   transform: scale(1.05);
 }
 
-/* Featured episode — full tobacco-brown row, shell type, flipped play button.
-   Overrides the per-row accent via .featured. */
+/* Featured episode — keep the chartreuse row, swap the tile + play button
+   to tobacco-brown so the featured episode reads as a single accented row
+   on the otherwise-uniform field. Type colour does not change. */
 .ep-row.featured {
   --row-bg: var(--tobacco);
   --row-fg: var(--shell);
-  background: var(--tobacco) !important;
-  color: var(--shell) !important;
 }
-.ep-row.featured .ep-num,
-.ep-row.featured .ep-title,
-.ep-row.featured .ep-guest,
-.ep-row.featured .ep-dur { color: var(--shell) !important; }
-.ep-row.featured .ep-art      { background: var(--shell) !important; color: var(--tobacco) !important; }
-.ep-row.featured .ep-play-btn { background: var(--shell) !important; color: var(--tobacco) !important; }
-.ep-row.featured:hover .ep-play-btn { background: var(--tobacco) !important; color: var(--shell) !important; transform: scale(1.05); }
-.ep-row.featured:hover { background: var(--tobacco) !important; padding-left: 16px; }
 
 /* ---- Radio mix item ---- */
 .mix-item { transition: background 280ms; }

@@ -1,10 +1,9 @@
 import { getLatestEpisodes } from '@/lib/podcast'
 import Button from './Button'
 
-/** Single accent for every row — tobacco on chartreuse keeps the section
- *  coherent. Featured rows invert via the .featured class (whole row turns
- *  tobacco; the tile + play button flip to shell). */
-const ROW_ACCENT = { bg: 'var(--tobacco)', fg: 'var(--shell)' }
+/** Default accent — ink play boxes on the chartreuse field. The featured
+ *  row swaps to tobacco via the .featured class (CSS vars override). */
+const ROW_ACCENT = { bg: 'var(--ink)', fg: 'var(--shell)' }
 
 export default async function Podcast() {
   const episodes = await getLatestEpisodes()
