@@ -160,19 +160,41 @@ img { display: block; max-width: 100%; }
 }
 .nav-link:hover::after { transform: scaleX(1); }
 
-/* ---- Podcast episode row (chartreuse ground, ink type) ---- */
+/* ---- Podcast episode row (chartreuse ground, ink type) ----
+   Each row carries its own accent via --row-bg / --row-fg, set inline on
+   the React side. Art tile and round play-button share the row colour so
+   each episode reads as a coherent unit; on hover the play-button inverts
+   (bg ↔ fg) for a clean, calm transition. */
 .ep-row {
+  --row-bg: var(--ink);
+  --row-fg: var(--shell);
   transition: padding-left 320ms, background 280ms;
 }
 .ep-row:hover {
-  padding-left: 16px !important;
-  background: rgba(27,25,24,0.05) !important;
+  padding-left: 16px;
+  background: rgba(27,25,24,0.05);
 }
-.ep-row .ep-play-btn { transition: background 280ms, color 280ms; }
-.ep-row:hover .ep-play-btn { background: var(--shell) !important; color: var(--ink) !important; }
+.ep-row .ep-art {
+  background: var(--row-bg);
+  color: var(--row-fg);
+  transition: background 280ms, color 280ms;
+}
+.ep-row .ep-play-btn {
+  background: var(--row-bg);
+  color: var(--row-fg);
+  transition: background 280ms, color 280ms, transform 320ms;
+}
+.ep-row:hover .ep-play-btn {
+  background: var(--row-fg);
+  color: var(--row-bg);
+  transform: scale(1.05);
+}
 
-/* Featured episode — full tobacco-brown row, shell-white text, flipped play button */
+/* Featured episode — full tobacco-brown row, shell type, flipped play button.
+   Overrides the per-row accent via .featured. */
 .ep-row.featured {
+  --row-bg: var(--tobacco);
+  --row-fg: var(--shell);
   background: var(--tobacco) !important;
   color: var(--shell) !important;
 }
@@ -180,10 +202,10 @@ img { display: block; max-width: 100%; }
 .ep-row.featured .ep-title,
 .ep-row.featured .ep-guest,
 .ep-row.featured .ep-dur { color: var(--shell) !important; }
-.ep-row.featured .ep-art { background: var(--shell) !important; color: var(--tobacco) !important; }
+.ep-row.featured .ep-art      { background: var(--shell) !important; color: var(--tobacco) !important; }
 .ep-row.featured .ep-play-btn { background: var(--shell) !important; color: var(--tobacco) !important; }
-.ep-row.featured:hover { background: var(--tobacco) !important; padding-left: 16px !important; }
-.ep-row.featured:hover .ep-play-btn { background: var(--tobacco) !important; color: var(--shell) !important; border: 1px solid var(--shell) !important; }
+.ep-row.featured:hover .ep-play-btn { background: var(--tobacco) !important; color: var(--shell) !important; transform: scale(1.05); }
+.ep-row.featured:hover { background: var(--tobacco) !important; padding-left: 16px; }
 
 /* ---- Radio mix item ---- */
 .mix-item { transition: background 280ms; }

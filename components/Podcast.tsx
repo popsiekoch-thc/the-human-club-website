@@ -1,11 +1,12 @@
 import { getLatestEpisodes } from '@/lib/podcast'
 import Button from './Button'
 
-const ART_COLORS = [
-  { bg: 'var(--ink)',        color: 'var(--shell)' },
-  { bg: 'var(--deepblue)',   color: 'var(--shell)' },
-  { bg: 'var(--shell)',      color: 'var(--ink)'   }, // overridden by .featured if applied
-  { bg: 'var(--orange)',     color: 'var(--ink)'   },
+/** Per-row accent colors. Featured rows override via .featured class. */
+const ROW_COLORS: Array<{ bg: string; fg: string }> = [
+  { bg: 'var(--ink)',      fg: 'var(--shell)' },   // Ep 01
+  { bg: 'var(--deepblue)', fg: 'var(--shell)' },   // Ep 02
+  { bg: 'var(--orange)',   fg: 'var(--ink)'   },   // Ep 03 (or featured)
+  { bg: 'var(--burgundy)', fg: 'var(--shell)' },   // Ep 04
 ]
 
 export default async function Podcast() {
@@ -35,61 +36,63 @@ export default async function Podcast() {
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', marginTop: 16 }}>
-        {episodes.map((ep, i) => (
-          <a
-            key={ep.guid}
-            href={ep.appleUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`ep-row${ep.featured ? ' featured' : ''}`}
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '80px 100px 1fr auto auto',
-              gap: 28,
-              alignItems: 'center',
-              padding: '20px 4px',
-              borderTop: '1px solid rgba(27,25,24,0.18)',
-              color: 'var(--ink)',
-              textDecoration: 'none',
-            }}
-          >
-            <div className="ep-num" style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 32, lineHeight: 1, letterSpacing: '-0.03em', color: 'var(--ink)' }}>
-              {ep.episodeNum}
-            </div>
-            <div
-              className="ep-art"
+        {episodes.map((ep, i) => {
+          const accent = ROW_COLORS[i % ROW_COLORS.length]
+          return (
+            <a
+              key={ep.guid}
+              href={ep.appleUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`ep-row${ep.featured ? ' featured' : ''}`}
               style={{
-                aspectRatio: '1',
-                background: ART_COLORS[i % ART_COLORS.length].bg,
-                color: ART_COLORS[i % ART_COLORS.length].color,
-                display: 'flex',
+                ['--row-bg' as string]: accent.bg,
+                ['--row-fg' as string]: accent.fg,
+                display: 'grid',
+                gridTemplateColumns: '80px 100px 1fr auto auto',
+                gap: 28,
                 alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              aria-hidden
-            >▶</div>
-            <div>
-              <div className="ep-title" style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 20, lineHeight: 1.15, letterSpacing: '-0.015em' }}>
-                {ep.title}
+                padding: '20px 4px',
+                borderTop: '1px solid rgba(27,25,24,0.18)',
+                color: 'var(--ink)',
+                textDecoration: 'none',
+              } as React.CSSProperties}
+            >
+              <div className="ep-num" style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 32, lineHeight: 1, letterSpacing: '-0.03em' }}>
+                {ep.episodeNum}
               </div>
-              <div className="ep-guest" style={{ fontFamily: 'var(--font-ui)', fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(27,25,24,0.65)', marginTop: 4 }}>
-                — Episode {ep.episodeNum}
+              <div
+                className="ep-art"
+                style={{
+                  aspectRatio: '1',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                aria-hidden
+              >▶</div>
+              <div>
+                <div className="ep-title" style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 20, lineHeight: 1.15, letterSpacing: '-0.015em' }}>
+                  {ep.title}
+                </div>
+                <div className="ep-guest" style={{ fontFamily: 'var(--font-ui)', fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(27,25,24,0.65)', marginTop: 4 }}>
+                  — Episode {ep.episodeNum}
+                </div>
               </div>
-            </div>
-            <div className="ep-dur" style={{ fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(27,25,24,0.6)' }}>
-              Apple ↗
-            </div>
-            <div
-              className="ep-play-btn"
-              style={{
-                width: 48, height: 48, borderRadius: '50%',
-                background: 'var(--ink)', color: 'var(--shell)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}
-              aria-hidden
-            >▶</div>
-          </a>
-        ))}
+              <div className="ep-dur" style={{ fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(27,25,24,0.6)' }}>
+                Apple ↗
+              </div>
+              <div
+                className="ep-play-btn"
+                style={{
+                  width: 48, height: 48, borderRadius: '50%',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}
+                aria-hidden
+              >▶</div>
+            </a>
+          )
+        })}
         <div style={{ borderTop: '1px solid rgba(27,25,24,0.18)' }} />
       </div>
 
