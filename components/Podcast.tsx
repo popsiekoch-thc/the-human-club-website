@@ -1,13 +1,10 @@
 import { getLatestEpisodes } from '@/lib/podcast'
 import Button from './Button'
 
-/** Per-row accent colors. Featured rows override via .featured class. */
-const ROW_COLORS: Array<{ bg: string; fg: string }> = [
-  { bg: 'var(--ink)',      fg: 'var(--shell)' },   // Ep 01
-  { bg: 'var(--deepblue)', fg: 'var(--shell)' },   // Ep 02
-  { bg: 'var(--orange)',   fg: 'var(--ink)'   },   // Ep 03 (or featured)
-  { bg: 'var(--burgundy)', fg: 'var(--shell)' },   // Ep 04
-]
+/** Single accent for every row — tobacco on chartreuse keeps the section
+ *  coherent. Featured rows invert via the .featured class (whole row turns
+ *  tobacco; the tile + play button flip to shell). */
+const ROW_ACCENT = { bg: 'var(--tobacco)', fg: 'var(--shell)' }
 
 export default async function Podcast() {
   const episodes = await getLatestEpisodes()
@@ -36,8 +33,7 @@ export default async function Podcast() {
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', marginTop: 16 }}>
-        {episodes.map((ep, i) => {
-          const accent = ROW_COLORS[i % ROW_COLORS.length]
+        {episodes.map((ep) => {
           return (
             <a
               key={ep.guid}
@@ -46,8 +42,8 @@ export default async function Podcast() {
               rel="noopener noreferrer"
               className={`ep-row${ep.featured ? ' featured' : ''}`}
               style={{
-                ['--row-bg' as string]: accent.bg,
-                ['--row-fg' as string]: accent.fg,
+                ['--row-bg' as string]: ROW_ACCENT.bg,
+                ['--row-fg' as string]: ROW_ACCENT.fg,
                 display: 'grid',
                 gridTemplateColumns: '80px 100px 1fr auto auto',
                 gap: 28,
