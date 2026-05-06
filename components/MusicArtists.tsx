@@ -8,7 +8,7 @@ export default function MusicArtists() {
   return (
     <section
       id="music"
-      style={{ background: 'var(--cream)', padding: '0 40px 100px', scrollMarginTop: 76 }}
+      style={{ background: 'var(--shell)', padding: '0 40px 100px', scrollMarginTop: 76 }}
     >
       <div className="section-head" style={{ borderTopColor: 'var(--border)' }}>
         <div className="num">— Page 02 / The Agency</div>

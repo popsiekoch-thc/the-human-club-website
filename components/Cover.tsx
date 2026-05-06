@@ -111,23 +111,23 @@ export default function Cover() {
       <div style={{
         position: 'absolute', left: 32, right: 32, bottom: 28, zIndex: 6,
         display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end',
-        color: 'var(--cream)', fontFamily: 'var(--font-ui)', fontSize: '12px', lineHeight: 1.55,
+        color: 'var(--shell)', fontFamily: 'var(--font-ui)', fontSize: '12px', lineHeight: 1.55,
       }}>
         <div style={{ maxWidth: 540, opacity: 0.92 }}>
-          <strong style={{ display: 'block', fontWeight: 700, fontSize: '11px', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--cream)', marginBottom: 10 }}>
-            Built for humans, run by humans, designed by humans.
+          <strong style={{ display: 'block', fontWeight: 700, fontSize: '11px', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--shell)', marginBottom: 14 }}>
+            Built for humans, run by humans.
           </strong>
-          We represent the talent behind your favourite feeds — UGC creators, influencers, podcasters and live-experience curators who know how to make people{' '}
-          <em style={{ color: 'var(--chartreuse)', fontStyle: 'italic' }}>stop scrolling.</em>
+          The Human Club is a 360-degree creative agency. We take the brief from start to finish, representing incredible talent within the scene —{' '}
+          <em style={{ color: 'var(--chartreuse)', fontStyle: 'italic', fontWeight: 400 }}>Humans of Influence, artists, musicians and event experience designers.</em>
+          <br /><br />
+          Welcoming you to our Podcast space and T.H.C Radio — allowing you to have a full creative experience when working with our team.
           <br />
-          Instagram · TikTok · YouTube · Podcasts · Events · THC Radio.
-          <br />
-          <strong style={{ display: 'block', fontWeight: 700, fontSize: '11px', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--cream)', marginTop: 12 }}>
-            Offering Social Media Consultancy to Humans of Influence and Brands.
+          <strong style={{ display: 'block', fontWeight: 700, fontSize: '11px', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--shell)', marginTop: 14 }}>
+            Private Social Media Consultancy.
           </strong>
         </div>
         <div style={{ textAlign: 'right', opacity: 0.72, maxWidth: 320 }}>
-          <strong style={{ display: 'block', color: 'var(--cream)', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', fontSize: '10px', marginBottom: 4 }}>
+          <strong style={{ display: 'block', color: 'var(--shell)', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', fontSize: '10px', marginBottom: 4 }}>
             — Working from
           </strong>
           Berlin · Cape Town<br />Partnering worldwide.
@@ -188,7 +188,7 @@ export default function Cover() {
         style={{
           position: 'absolute', zIndex: 7,
           width: 14, height: 14, borderRadius: '50%',
-          background: 'var(--cream)', pointerEvents: 'none',
+          background: 'var(--shell)', pointerEvents: 'none',
           transform: 'translate(-50%, -50%)',
           mixBlendMode: 'difference',
           transition: 'opacity 400ms',

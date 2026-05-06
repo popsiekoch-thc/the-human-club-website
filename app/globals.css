@@ -3,17 +3,28 @@
 @tailwind utilities;
 
 :root {
+  /* === PRIMARY PALETTE === */
+  --shell:      #e1e1d5;       /* primary surface — replaces cream */
+  --olive:      #565a10;       /* primary accent (replaces burgundy as main) */
+  --tobacco:    #6b4d36;       /* tertiary, used sparingly */
+
+  /* === TEXT === */
   --ink:        #1b1918;
   --charcoal:   #2d2726;
-  --cream:      #e8dfcf;
+
+  /* === SECONDARY ACCENTS === */
   --burgundy:   #7a1f24;
-  --sky:        #2f5d7a;
+  --deepblue:   #2f5d7a;
   --chartreuse: #c4bc55;
   --orange:     #e67545;
-  --tobacco:    #6b4d36;
+
+  /* === LEGACY (kept for back-compat in components still using them) === */
+  --cream:      #e8dfcf;
+  --sky:        #2f5d7a;
   --stone:      #cfccc5;
-  --border:     rgba(27, 25, 24, 0.12);
-  --border-light: rgba(232, 223, 207, 0.2);
+
+  --border:        rgba(27, 25, 24, 0.12);
+  --border-light:  rgba(232, 223, 207, 0.2);
 
   --font-display: "commuters-sans", "Inter", sans-serif;
   --font-ui: "Mytupi", system-ui, sans-serif;
@@ -22,7 +33,7 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: var(--cream);
+  background: var(--shell);
   color: var(--ink);
   font-family: var(--font-ui);
   -webkit-font-smoothing: antialiased;
@@ -67,7 +78,7 @@ img { display: block; max-width: 100%; }
 .section-head h2 em {
   font-style: italic;
   font-weight: 400;
-  color: var(--burgundy);
+  color: var(--chartreuse);
 }
 .on-dark .section-head h2 em { color: var(--chartreuse); }
 .section-head .aside {
@@ -84,7 +95,7 @@ img { display: block; max-width: 100%; }
   align-items: center;
   gap: 12px;
   background: var(--ink);
-  color: var(--cream);
+  color: var(--shell);
   border: 0;
   padding: 12px 20px;
   border-radius: 999px;
@@ -124,10 +135,10 @@ img { display: block; max-width: 100%; }
   color: var(--ink);
   border: 1px solid var(--ink);
 }
-.btn-ghost:hover { background: var(--ink); color: var(--cream); }
+.btn-ghost:hover { background: var(--ink); color: var(--shell); }
 
-.on-dark .btn-ghost { color: var(--cream); border-color: var(--cream); }
-.on-dark .btn-ghost:hover { background: var(--cream); color: var(--ink); }
+.on-dark .btn-ghost { color: var(--shell); border-color: var(--shell); }
+.on-dark .btn-ghost:hover { background: var(--shell); color: var(--ink); }
 
 /* ---- Scroll cue sweep ---- */
 @keyframes sweep {
@@ -149,28 +160,93 @@ img { display: block; max-width: 100%; }
 }
 .nav-link:hover::after { transform: scaleX(1); }
 
-/* ---- Podcast episode row ---- */
+/* ---- Podcast episode row (chartreuse ground, ink type) ---- */
 .ep-row {
   transition: padding-left 320ms, background 280ms;
 }
 .ep-row:hover {
   padding-left: 16px !important;
-  background: rgba(232,223,207,0.05) !important;
+  background: rgba(27,25,24,0.05) !important;
 }
 .ep-row .ep-play-btn { transition: background 280ms, color 280ms; }
-.ep-row:hover .ep-play-btn { background: var(--cream) !important; color: var(--ink) !important; }
+.ep-row:hover .ep-play-btn { background: var(--shell) !important; color: var(--ink) !important; }
+
+/* Featured episode — full tobacco-brown row, shell-white text, flipped play button */
+.ep-row.featured {
+  background: var(--tobacco) !important;
+  color: var(--shell) !important;
+}
+.ep-row.featured .ep-num,
+.ep-row.featured .ep-title,
+.ep-row.featured .ep-guest,
+.ep-row.featured .ep-dur { color: var(--shell) !important; }
+.ep-row.featured .ep-art { background: var(--shell) !important; color: var(--tobacco) !important; }
+.ep-row.featured .ep-play-btn { background: var(--shell) !important; color: var(--tobacco) !important; }
+.ep-row.featured:hover { background: var(--tobacco) !important; padding-left: 16px !important; }
+.ep-row.featured:hover .ep-play-btn { background: var(--tobacco) !important; color: var(--shell) !important; border: 1px solid var(--shell) !important; }
 
 /* ---- Radio mix item ---- */
 .mix-item { transition: background 280ms; }
-.mix-item:hover { background: rgba(232,223,207,0.05) !important; }
+.mix-item:hover { background: rgba(27,25,24,0.04) !important; }
 
 /* ---- Artist card ---- */
 .artist-card { transition: transform 320ms; }
 .artist-card:hover { transform: translateY(-4px); }
 
+/* ---- TALENT — responsive 2-column grid: video + info ----
+   Critical: align-items:stretch + min-height:100% so info column always
+   matches video height regardless of bio length or reel aspect ratio. */
+.talent {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.9fr) 1.1fr;
+  gap: 28px;
+  align-items: stretch;
+  padding: 18px 0;
+}
+.talent .frame {
+  aspect-ratio: var(--reel-ratio, 4 / 5);
+  width: 100%;
+  background: var(--ink);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.talent .frame > video,
+.talent .frame > img.reel-video,
+.talent .frame > mux-player,
+.talent .frame > [data-mux-player] {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.talent .info {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100%;
+  position: relative;
+  padding: 4px 0;
+}
+.talent .info .copy {
+  flex: 1 1 auto;
+  position: relative;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, #000 78%, transparent 100%);
+          mask-image: linear-gradient(180deg, #000 78%, transparent 100%);
+}
+.talent .info .links {
+  flex: 0 0 auto;
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 /* ---- Talent link buttons ---- */
 .talent-ig-link { transition: background 240ms, color 240ms, transform 240ms; }
-.talent-ig-link:hover { background: var(--burgundy) !important; transform: translateY(-2px); }
+.talent-ig-link:hover { background: var(--olive) !important; color: var(--shell) !important; transform: translateY(-2px); }
 .talent-alt-link { transition: background 240ms, border-color 240ms, transform 240ms; }
 .talent-alt-link:hover {
   background: var(--tobacco) !important;
@@ -196,7 +272,7 @@ img { display: block; max-width: 100%; }
   .section-head { grid-template-columns: 1fr; }
   .wrap { padding: 0 20px; }
   .roster-grid { grid-template-columns: 1fr !important; }
-  .talent-grid  { grid-template-columns: 1fr !important; }
+  .talent       { grid-template-columns: 1fr; }
   .artists-grid { grid-template-columns: 1fr !important; }
   .ep-row       { grid-template-columns: 60px 1fr auto !important; }
   .ep-art, .ep-guest { display: none !important; }

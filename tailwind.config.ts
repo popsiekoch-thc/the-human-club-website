@@ -9,14 +9,21 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // primary palette
+        shell:      '#e1e1d5',
+        olive:      '#565a10',
+        tobacco:    '#6b4d36',
+        // text
         ink:        '#1b1918',
         charcoal:   '#2d2726',
-        cream:      '#e8dfcf',
+        // secondary accents
         burgundy:   '#7a1f24',
-        sky:        '#2f5d7a',
+        deepblue:   '#2f5d7a',
         chartreuse: '#c4bc55',
         orange:     '#e67545',
-        tobacco:    '#6b4d36',
+        // legacy
+        cream:      '#e8dfcf',
+        sky:        '#2f5d7a',
         stone:      '#cfccc5',
       },
       fontFamily: {

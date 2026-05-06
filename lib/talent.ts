@@ -11,6 +11,8 @@ export type Talent = {
   link: string
   linkLabel: string
   muxPlaybackId?: string
+  /** override frame aspect ratio for landscape/square reels */
+  reelRatio?: string
 }
 
 const FALLBACK: Talent[] = [
@@ -66,7 +68,8 @@ const QUERY = `*[_type == "talent"] | order(order asc) {
   "ig": igUrl,
   "link": linkUrl,
   "linkLabel": linkLabel,
-  "muxPlaybackId": muxReel.playbackId
+  "muxPlaybackId": muxReel.playbackId,
+  reelRatio
 }`
 
 export async function getTalents(): Promise<Talent[]> {
@@ -91,6 +94,7 @@ export async function getTalents(): Promise<Talent[]> {
         link: d.link ?? '#',
         linkLabel: d.linkLabel ?? 'Link',
         muxPlaybackId: d.muxPlaybackId || undefined,
+        reelRatio:     d.reelRatio || undefined,
       }
     })
   } catch {

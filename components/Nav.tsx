@@ -22,9 +22,9 @@ export default function Nav() {
       id="nav"
       style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
-        background:   scrolled ? 'var(--cream)' : 'transparent',
+        background:   scrolled ? 'var(--shell)' : 'transparent',
         borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
-        color:        scrolled ? 'var(--ink)'   : 'var(--cream)',
+        color:        scrolled ? 'var(--ink)'   : 'var(--shell)',
         transition: 'background 320ms ease, border-color 320ms ease, color 320ms ease',
       }}
     >
@@ -77,8 +77,8 @@ function NavCTA({ scrolled }: { scrolled: boolean }) {
         fontFamily: 'var(--font-ui)', fontWeight: 700,
         fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase',
         transition: 'background 240ms, color 240ms',
-        background: hovered ? (scrolled ? 'var(--ink)' : 'var(--cream)') : 'transparent',
-        color:      hovered ? (scrolled ? 'var(--cream)' : 'var(--ink)') : 'inherit',
+        background: hovered ? (scrolled ? 'var(--ink)' : 'var(--shell)') : 'transparent',
+        color:      hovered ? (scrolled ? 'var(--shell)' : 'var(--ink)') : 'inherit',
       }}
     >
       Let&apos;s talk →

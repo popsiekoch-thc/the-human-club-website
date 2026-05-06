@@ -21,6 +21,20 @@ export const talent = defineType({
         defineField({ name: 'assetId',    title: 'Mux Asset ID',    type: 'string' }),
       ],
     }),
+    defineField({
+      name: 'reelRatio',
+      title: 'Reel Aspect Ratio',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Portrait 4:5 (default)', value: '4 / 5' },
+          { title: 'Square 1:1',             value: '1 / 1' },
+          { title: 'Landscape 16:9',         value: '16 / 9' },
+          { title: 'Vertical 9:16 (Reels)',  value: '9 / 16' },
+        ],
+      },
+      description: 'Override the frame ratio if this creator uploads square or landscape reels.',
+    }),
     defineField({ name: 'order', title: 'Order', type: 'number', description: 'Display order on page' }),
   ],
   orderings: [{ title: 'Order', name: 'orderAsc', by: [{ field: 'order', direction: 'asc' }] }],

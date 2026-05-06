@@ -1,9 +1,9 @@
 export default function Footer() {
   return (
-    <footer style={{ background: 'var(--cream)', padding: '80px 40px 36px', borderTop: '1px solid var(--border)' }}>
+    <footer style={{ background: 'var(--shell)', padding: '80px 40px 36px', borderTop: '1px solid var(--border)' }}>
       <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(56px, 10vw, 156px)', lineHeight: 0.88, letterSpacing: '-0.04em', margin: '0 0 44px' }}>
         Say&nbsp;hello,<br />
-        <em style={{ fontStyle: 'italic', fontWeight: 400, color: 'var(--burgundy)' }}>talk soon.</em>
+        <em style={{ fontStyle: 'italic', fontWeight: 400, color: 'var(--chartreuse)' }}>talk soon.</em>
       </h2>
 
       <div
