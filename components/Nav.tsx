@@ -22,17 +22,17 @@ export default function Nav() {
       id="nav"
       style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
-        background:   scrolled ? 'var(--shell)' : 'transparent',
+        background:   scrolled ? 'var(--page-dark)' : 'transparent',
         borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
-        color:        scrolled ? 'var(--ink)'   : 'var(--shell)',
+        color:        scrolled ? 'var(--shell)'     : 'var(--shell)',
         transition: 'background 320ms ease, border-color 320ms ease, color 320ms ease',
       }}
     >
       <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center', padding: '18px 32px', gap: '40px' }}>
-        {/* Logo */}
+        {/* Logo — always use stone/light version since bg is always dark */}
         <a href="#cover" aria-label="The Human Club — home" style={{ display: 'block', lineHeight: 0 }}>
           <Image
-            src={scrolled ? '/images/logo-lockup-black.png' : '/images/logo-lockup-stone.png'}
+            src="/images/logo-lockup-stone.png"
             alt="The Human Club"
             width={160}
             height={50}
@@ -41,7 +41,7 @@ export default function Nav() {
           />
         </a>
 
-        {/* Nav links — hidden below 900px */}
+        {/* Nav links */}
         <div style={{ display: 'flex', gap: 30, justifyContent: 'center' }} className="hidden tablet:flex">
           {[
             { label: 'Roster',    href: '#roster'  },
@@ -57,13 +57,13 @@ export default function Nav() {
         </div>
 
         {/* CTA */}
-        <NavCTA scrolled={scrolled} />
+        <NavCTA />
       </div>
     </nav>
   )
 }
 
-function NavCTA({ scrolled }: { scrolled: boolean }) {
+function NavCTA() {
   const [hovered, setHovered] = useState(false)
 
   return (
@@ -77,8 +77,8 @@ function NavCTA({ scrolled }: { scrolled: boolean }) {
         fontFamily: 'var(--font-ui)', fontWeight: 700,
         fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase',
         transition: 'background 240ms, color 240ms',
-        background: hovered ? (scrolled ? 'var(--ink)' : 'var(--shell)') : 'transparent',
-        color:      hovered ? (scrolled ? 'var(--shell)' : 'var(--ink)') : 'inherit',
+        background: hovered ? 'var(--shell)' : 'transparent',
+        color:      hovered ? 'var(--page-dark)' : 'inherit',
       }}
     >
       Let&apos;s talk →

@@ -4,26 +4,30 @@
 
 :root {
   /* === PRIMARY PALETTE === */
-  --shell:      #e1e1d5;       /* primary surface — replaces cream */
-  --olive:      #565a10;       /* primary accent (replaces burgundy as main) */
+  --shell:      #e1e1d5;       /* off-white — landing page + text */
+  --olive:      #565a10;       /* kept for back-compat */
   --tobacco:    #6b4d36;       /* tertiary, used sparingly */
 
   /* === TEXT === */
   --ink:        #1b1918;
   --charcoal:   #2d2726;
 
-  /* === SECONDARY ACCENTS === */
-  --burgundy:   #7a1f24;
+  /* === MAIN ACCENTS === */
+  --burgundy:   #6e1423;       /* primary accent — replaces chartreuse everywhere */
   --deepblue:   #2f5d7a;
-  --chartreuse: #c4bc55;
+  --chartreuse: #6e1423;       /* alias → burgundy so any leftover refs auto-update */
   --orange:     #e67545;
 
-  /* === LEGACY (kept for back-compat in components still using them) === */
+  /* === DARK BACKGROUNDS === */
+  --page-dark:  #2b2b2b;       /* Claude-interface grey — used on pages 1-2 & 4-5 */
+  --page-black: #1b1918;       /* near-black for sections that stay fully dark */
+
+  /* === LEGACY (kept for back-compat) === */
   --cream:      #e8dfcf;
   --sky:        #2f5d7a;
   --stone:      #cfccc5;
 
-  --border:        rgba(27, 25, 24, 0.12);
+  --border:        rgba(225,225,213,0.15);
   --border-light:  rgba(232, 223, 207, 0.2);
 
   --font-display: "commuters-sans", "Inter", sans-serif;
@@ -33,8 +37,8 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: var(--shell);
-  color: var(--ink);
+  background: var(--page-dark);
+  color: var(--shell);
   font-family: var(--font-ui);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
@@ -78,9 +82,9 @@ img { display: block; max-width: 100%; }
 .section-head h2 em {
   font-style: italic;
   font-weight: 400;
-  color: var(--chartreuse);
+  color: var(--burgundy);
 }
-.on-dark .section-head h2 em { color: var(--chartreuse); }
+.on-dark .section-head h2 em { color: var(--burgundy); }
 .section-head .aside {
   font-family: var(--font-ui);
   font-size: 12px;
@@ -94,9 +98,9 @@ img { display: block; max-width: 100%; }
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  background: var(--ink);
+  background: transparent;
   color: var(--shell);
-  border: 0;
+  border: 1px solid var(--shell);
   padding: 12px 20px;
   border-radius: 999px;
   font-family: var(--font-ui);
@@ -107,7 +111,7 @@ img { display: block; max-width: 100%; }
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: background 360ms, color 360ms;
+  transition: background 360ms, color 360ms, border-color 360ms;
 }
 .btn .label {
   position: relative;
@@ -126,16 +130,23 @@ img { display: block; max-width: 100%; }
 }
 .btn:hover .label .from,
 .btn:hover .label .to { transform: translateY(-100%); }
-.btn:hover { background: var(--chartreuse); color: var(--ink); }
+.btn:hover { background: var(--shell); color: var(--page-dark); border-color: var(--shell); }
 .btn .arrow { transition: transform 360ms; }
 .btn:hover .arrow { transform: translateX(4px); }
 
+/* On light (landing) context */
+.on-light .btn {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+.on-light .btn:hover { background: var(--ink); color: var(--shell); }
+
 .btn-ghost {
   background: transparent;
-  color: var(--ink);
-  border: 1px solid var(--ink);
+  color: var(--shell);
+  border: 1px solid var(--shell);
 }
-.btn-ghost:hover { background: var(--ink); color: var(--shell); }
+.btn-ghost:hover { background: var(--shell); color: var(--page-dark); }
 
 .on-dark .btn-ghost { color: var(--shell); border-color: var(--shell); }
 .on-dark .btn-ghost:hover { background: var(--shell); color: var(--ink); }
@@ -160,19 +171,15 @@ img { display: block; max-width: 100%; }
 }
 .nav-link:hover::after { transform: scaleX(1); }
 
-/* ---- Podcast episode row (chartreuse ground, ink type) ----
-   Each row carries its own accent via --row-bg / --row-fg, set inline on
-   the React side. Art tile and round play-button share the row colour so
-   each episode reads as a coherent unit; on hover the play-button inverts
-   (bg ↔ fg) for a clean, calm transition. */
+/* ---- Podcast episode row ---- */
 .ep-row {
-  --row-bg: var(--ink);
+  --row-bg: var(--page-black);
   --row-fg: var(--shell);
   transition: padding-left 320ms, background 280ms;
 }
 .ep-row:hover {
   padding-left: 16px;
-  background: rgba(27,25,24,0.05);
+  background: rgba(225,225,213,0.06);
 }
 .ep-row .ep-art {
   background: var(--row-bg);
@@ -190,9 +197,6 @@ img { display: block; max-width: 100%; }
   transform: scale(1.05);
 }
 
-/* Featured episode — keep the chartreuse row, swap the tile + play button
-   to tobacco-brown so the featured episode reads as a single accented row
-   on the otherwise-uniform field. Type colour does not change. */
 .ep-row.featured {
   --row-bg: var(--tobacco);
   --row-fg: var(--shell);
@@ -200,15 +204,13 @@ img { display: block; max-width: 100%; }
 
 /* ---- Radio mix item ---- */
 .mix-item { transition: background 280ms; }
-.mix-item:hover { background: rgba(27,25,24,0.04) !important; }
+.mix-item:hover { background: rgba(225,225,213,0.06) !important; }
 
 /* ---- Artist card ---- */
 .artist-card { transition: transform 320ms; }
 .artist-card:hover { transform: translateY(-4px); }
 
-/* ---- TALENT — responsive 2-column grid: video + info ----
-   Critical: align-items:stretch + min-height:100% so info column always
-   matches video height regardless of bio length or reel aspect ratio. */
+/* ---- TALENT responsive grid ---- */
 .talent {
   display: grid;
   grid-template-columns: minmax(220px, 0.9fr) 1.1fr;
@@ -219,7 +221,7 @@ img { display: block; max-width: 100%; }
 .talent .frame {
   aspect-ratio: var(--reel-ratio, 4 / 5);
   width: 100%;
-  background: var(--ink);
+  background: var(--page-black);
   position: relative;
   overflow: hidden;
   border: 1px solid var(--border);
@@ -259,11 +261,11 @@ img { display: block; max-width: 100%; }
 
 /* ---- Talent link buttons ---- */
 .talent-ig-link { transition: background 240ms, color 240ms, transform 240ms; }
-.talent-ig-link:hover { background: var(--olive) !important; color: var(--shell) !important; transform: translateY(-2px); }
+.talent-ig-link:hover { background: var(--burgundy) !important; color: var(--shell) !important; transform: translateY(-2px); }
 .talent-alt-link { transition: background 240ms, border-color 240ms, transform 240ms; }
 .talent-alt-link:hover {
-  background: var(--tobacco) !important;
-  border-color: var(--tobacco) !important;
+  background: var(--burgundy) !important;
+  border-color: var(--burgundy) !important;
   transform: translateY(-2px);
 }
 

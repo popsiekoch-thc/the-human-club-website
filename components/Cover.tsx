@@ -24,7 +24,6 @@ export default function Cover() {
     const hint   = hintRef.current
     if (!cover || !fog || !cursor || !hint) return
 
-    // Respect prefers-reduced-motion
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduced) {
       fog.style.opacity = '0'
@@ -118,7 +117,7 @@ export default function Cover() {
             Built for humans, run by humans.
           </strong>
           The Human Club is a 360-degree creative agency. We take the brief from start to finish, representing incredible talent within the scene —{' '}
-          <em style={{ color: 'var(--chartreuse)', fontStyle: 'italic', fontWeight: 400 }}>Humans of Influence, artists, musicians and event experience designers.</em>
+          <em style={{ color: 'var(--burgundy)', fontStyle: 'italic', fontWeight: 400 }}>Humans of Influence, artists, musicians and event experience designers.</em>
           <br /><br />
           Welcoming you to our Podcast space and T.H.C Radio — allowing you to have a full creative experience when working with our team.
           <br />
@@ -130,7 +129,7 @@ export default function Cover() {
           <strong style={{ display: 'block', color: 'var(--shell)', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', fontSize: '10px', marginBottom: 4 }}>
             — Working from
           </strong>
-          Berlin · Cape Town<br />Partnering worldwide.
+          Berlin &amp; Cape Town<br />Partnering worldwide.
         </div>
       </div>
 
@@ -145,7 +144,7 @@ export default function Cover() {
         <span style={{ width: 60, height: 1, background: 'currentColor', position: 'relative', overflow: 'hidden', display: 'block' }}>
           <span style={{
             position: 'absolute', left: '-40%', top: 0, bottom: 0, width: '40%',
-            background: 'var(--chartreuse)',
+            background: 'var(--burgundy)',
             animation: 'sweep 2.4s cubic-bezier(0.76,0,0.24,1) infinite',
           }} />
         </span>
@@ -180,7 +179,7 @@ export default function Cover() {
         }}
       />
 
-      {/* Cursor dot — hidden on touch */}
+      {/* Cursor dot */}
       <div
         ref={cursorRef}
         aria-hidden

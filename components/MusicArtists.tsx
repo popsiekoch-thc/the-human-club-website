@@ -8,12 +8,12 @@ export default function MusicArtists() {
   return (
     <section
       id="music"
-      style={{ background: 'var(--shell)', padding: '0 40px 100px', scrollMarginTop: 76 }}
+      style={{ background: 'var(--page-dark)', color: 'var(--shell)', padding: '0 40px 100px', scrollMarginTop: 76 }}
     >
       <div className="section-head" style={{ borderTopColor: 'var(--border)' }}>
         <div className="num">— Page 02 / The Agency</div>
         <h2>Music&nbsp;&amp;&nbsp;<em>Artists.</em></h2>
-        <div className="aside">The music we move with — booking and representation across Berlin and Cape Town.</div>
+        <div className="aside" style={{ color: 'rgba(225,225,213,0.65)' }}>The music we move with — booking and representation across Berlin and Cape Town.</div>
       </div>
 
       <div
@@ -27,7 +27,7 @@ export default function MusicArtists() {
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                aspectRatio: '4/5', background: 'var(--stone)',
+                aspectRatio: '4/5', background: 'var(--page-black)',
                 position: 'relative', overflow: 'hidden',
                 border: '1px solid var(--border)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -35,17 +35,17 @@ export default function MusicArtists() {
               }}
               aria-label={`${a.name} on SoundCloud`}
             >
-              <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 120, color: 'rgba(27,25,24,0.22)', letterSpacing: '-0.04em' }}>
+              <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 120, color: 'rgba(225,225,213,0.18)', letterSpacing: '-0.04em' }}>
                 {a.initial}
               </span>
             </a>
-            <div style={{ fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', opacity: 0.55, marginBottom: 6 }}>
+            <div style={{ fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', opacity: 0.55, marginBottom: 6, color: 'var(--shell)' }}>
               — {a.num} / Artist
             </div>
-            <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 38, lineHeight: 0.96, letterSpacing: '-0.025em', margin: '0 0 10px' }}>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 38, lineHeight: 0.96, letterSpacing: '-0.025em', margin: '0 0 10px', color: 'var(--shell)' }}>
               {a.name}
             </h3>
-            <p style={{ fontFamily: 'var(--font-ui)', fontStyle: 'italic', fontSize: 12, opacity: 0.55, margin: 0, lineHeight: 1.55 }}>
+            <p style={{ fontFamily: 'var(--font-ui)', fontStyle: 'italic', fontSize: 12, opacity: 0.55, margin: 0, lineHeight: 1.55, color: 'var(--shell)' }}>
               Write-up to still be added. —{' '}
               <a href={a.sc} target="_blank" rel="noopener noreferrer" style={{ borderBottom: '1px solid currentColor' }}>SoundCloud ↗</a>
             </p>
