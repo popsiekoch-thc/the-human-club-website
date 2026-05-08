@@ -37,7 +37,7 @@ export const PODBEAN_MAP: Record<string, { episodeNum: string; title: string; po
   '1000756839720': {
     episodeNum: '01',
     title: 'The Human Club X Lisa Thaens',
-    podbeanSrc: 'https://www.podbean.com/player-v2/?i=pb-rm955-1a7a1db&from=pb6admin&share=1&download=1&rtl=0&fonts=Arial&skin=1&font-color=auto&logo_link=episode_page&btn-skin=7',
+    podbeanSrc: 'https://www.podbean.com/player-v2/?i=rm955-1a7a1db&from=pb6admin&share=1&download=1&rtl=0&fonts=Arial&skin=1&font-color=auto&logo_link=episode_page&btn-skin=7',
   },
   // Ep 02 — Adam Munnings
   '1000758809096': {
