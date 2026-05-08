@@ -1,35 +1,21 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 
 export default function Nav() {
-  const [scrolled, setScrolled] = useState(false)
-
-  useEffect(() => {
-    function onScroll() {
-      const cover = document.getElementById('cover')
-      const threshold = (cover?.offsetHeight ?? 700) - 80
-      setScrolled(window.scrollY > threshold)
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    onScroll()
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
   return (
     <nav
       id="nav"
       style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
-        background:   scrolled ? 'var(--page-dark)' : 'transparent',
-        borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
-        color:        scrolled ? 'var(--shell)'     : 'var(--shell)',
-        transition: 'background 320ms ease, border-color 320ms ease, color 320ms ease',
+        background: 'transparent',
+        borderBottom: '1px solid transparent',
+        color: 'var(--shell)',
       }}
     >
       <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center', padding: '18px 32px', gap: '40px' }}>
-        {/* Logo — always use stone/light version since bg is always dark */}
+        {/* Logo — always stone variant since the entire site is on dark grounds */}
         <a href="#cover" aria-label="The Human Club — home" style={{ display: 'block', lineHeight: 0 }}>
           <Image
             src="/images/logo-lockup-stone.png"
@@ -41,7 +27,6 @@ export default function Nav() {
           />
         </a>
 
-        {/* Nav links */}
         <div style={{ display: 'flex', gap: 30, justifyContent: 'center' }} className="hidden tablet:flex">
           {[
             { label: 'Roster',    href: '#roster'  },
@@ -56,7 +41,6 @@ export default function Nav() {
           ))}
         </div>
 
-        {/* CTA */}
         <NavCTA />
       </div>
     </nav>
@@ -78,7 +62,7 @@ function NavCTA() {
         fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase',
         transition: 'background 240ms, color 240ms',
         background: hovered ? 'var(--shell)' : 'transparent',
-        color:      hovered ? 'var(--page-dark)' : 'inherit',
+        color:      hovered ? 'var(--ink)'   : 'inherit',
       }}
     >
       Let&apos;s talk →

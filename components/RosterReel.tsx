@@ -8,41 +8,56 @@ type Props = {
   shortName: string
   handle: string
   fallbackColor: string
-  /** "4/5" (default), "1/1", "16/9" — overrides the frame aspect ratio per talent */
+  /** override the placeholder frame's aspect ratio for square / landscape reels */
   reelRatio?: string
 }
 
 export default function RosterReel({ playbackId, initial, shortName, handle, fallbackColor, reelRatio }: Props) {
-  // CSS custom property must use the dashed name, but TS types CSSProperties strictly
-  const frameStyle = (reelRatio
-    ? ({ '--reel-ratio': reelRatio } as React.CSSProperties)
-    : undefined)
-
+  /* ─────────────────────────────────────────────────────────────────────
+     PAGE 1 LOCK-IN — when a Mux playbackId is provided, render the player
+     in a BARE wrapper:
+       • no background-color
+       • no border
+       • no forced aspect-ratio
+     The video keeps its native Mux dimensions. The .talent .frame.mux
+     selector in globals.css strips every chrome property the placeholder
+     frame would otherwise inherit.
+     ───────────────────────────────────────────────────────────────────── */
   if (playbackId) {
     return (
-      <div className="frame" style={frameStyle}>
+      <div
+        className="frame mux"
+        style={{
+          background: 'transparent',
+          border: 0,
+          aspectRatio: 'auto',
+          overflow: 'visible',
+          padding: 0,
+        }}
+      >
         <MuxPlayer
           streamType="on-demand"
           playbackId={playbackId}
           metadataVideoTitle={`${shortName} — talent reel`}
-          accentColor="#C7E66A"
-          style={{ width: '100%', height: '100%' }}
+          accentColor="#7f8948"
+          style={{
+            width: '100%',
+            height: 'auto',
+            background: 'transparent',
+            display: 'block',
+          }}
         />
-        <span style={{ position: 'absolute', left: 12, top: 12, fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(225,225,213,0.78)', zIndex: 2, pointerEvents: 'none' }}>
-          — Reel
-        </span>
       </div>
     )
   }
 
+  /* No Mux → coloured placeholder frame, 4:5 by default. */
+  const frameStyle = (reelRatio
+    ? ({ '--reel-ratio': reelRatio, background: fallbackColor } as React.CSSProperties)
+    : ({ background: fallbackColor } as React.CSSProperties))
+
   return (
-    <div
-      className="frame"
-      style={{
-        background: fallbackColor,
-        ...(frameStyle ?? {}),
-      } as React.CSSProperties}
-    >
+    <div className="frame" style={frameStyle}>
       <span style={{
         position: 'absolute', inset: 0,
         display: 'flex', alignItems: 'center', justifyContent: 'center',

@@ -4,31 +4,30 @@
 
 :root {
   /* === PRIMARY PALETTE === */
-  --shell:      #e1e1d5;       /* off-white — landing page + text */
-  --olive:      #565a10;       /* kept for back-compat */
-  --tobacco:    #6b4d36;       /* tertiary, used sparingly */
+  --shell:      #e1e1d5;        /* off-white surface + type on dark grounds */
+  --olive:      #565a10;
+  --tobacco:    #6b4d36;
 
   /* === TEXT === */
   --ink:        #1b1918;
   --charcoal:   #2d2726;
 
-  /* === MAIN ACCENTS === */
-  --burgundy:   #6e1423;       /* primary accent — replaces chartreuse everywhere */
+  /* === ACCENTS === */
+  --burgundy:   #7a1f24;        /* primary accent on shell ground */
   --deepblue:   #2f5d7a;
-  --chartreuse: #6e1423;       /* alias → burgundy so any leftover refs auto-update */
+  --chartreuse: #7f8948;        /* olive-green — em on dark grounds, footer "talk soon" */
+  --redgrain:   #6e2a25;
   --orange:     #e67545;
 
-  /* === DARK BACKGROUNDS === */
-  --page-dark:  #2b2b2b;       /* Claude-interface grey — used on pages 1-2 & 4-5 */
-  --page-black: #1b1918;       /* near-black for sections that stay fully dark */
-
-  /* === LEGACY (kept for back-compat) === */
+  /* legacy aliases */
   --cream:      #e8dfcf;
   --sky:        #2f5d7a;
   --stone:      #cfccc5;
+  --page-dark:  #2a2522;        /* brown-stone fallback */
+  --page-black: #1b1918;        /* near-ink fallback */
 
-  --border:        rgba(225,225,213,0.15);
-  --border-light:  rgba(232, 223, 207, 0.2);
+  --border:        rgba(225,225,213,0.18);
+  --border-light:  rgba(27,25,24,0.12);
 
   --font-display: "commuters-sans", "Inter", sans-serif;
   --font-ui: "Mytupi", system-ui, sans-serif;
@@ -37,8 +36,8 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: var(--page-dark);
-  color: var(--shell);
+  background: var(--shell);
+  color: var(--ink);
   font-family: var(--font-ui);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
@@ -84,7 +83,7 @@ img { display: block; max-width: 100%; }
   font-weight: 400;
   color: var(--burgundy);
 }
-.on-dark .section-head h2 em { color: var(--burgundy); }
+.on-dark .section-head h2 em { color: var(--chartreuse); }
 .section-head .aside {
   font-family: var(--font-ui);
   font-size: 12px;
@@ -98,9 +97,9 @@ img { display: block; max-width: 100%; }
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  background: transparent;
+  background: var(--ink);
   color: var(--shell);
-  border: 1px solid var(--shell);
+  border: 0;
   padding: 12px 20px;
   border-radius: 999px;
   font-family: var(--font-ui);
@@ -113,43 +112,36 @@ img { display: block; max-width: 100%; }
   overflow: hidden;
   transition: background 360ms, color 360ms, border-color 360ms;
 }
-.btn .label {
-  position: relative;
-  display: inline-flex;
-  height: 1em;
-  overflow: hidden;
-}
-.btn .label span {
-  display: inline-block;
-  transition: transform 520ms cubic-bezier(0.76, 0, 0.24, 1);
-}
-.btn .label .to {
-  position: absolute;
-  left: 0;
-  top: 100%;
-}
+.btn .label { position: relative; display: inline-flex; height: 1em; overflow: hidden; }
+.btn .label span { display: inline-block; transition: transform 520ms cubic-bezier(0.76, 0, 0.24, 1); }
+.btn .label .to { position: absolute; left: 0; top: 100%; }
 .btn:hover .label .from,
 .btn:hover .label .to { transform: translateY(-100%); }
-.btn:hover { background: var(--shell); color: var(--page-dark); border-color: var(--shell); }
+.btn:hover { background: var(--chartreuse); color: var(--ink); }
 .btn .arrow { transition: transform 360ms; }
 .btn:hover .arrow { transform: translateX(4px); }
 
-/* On light (landing) context */
-.on-light .btn {
-  color: var(--ink);
-  border-color: var(--ink);
-}
-.on-light .btn:hover { background: var(--ink); color: var(--shell); }
+.btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
+.btn-ghost:hover { background: var(--ink); color: var(--shell); }
+.on-dark .btn-ghost { color: var(--shell); border-color: var(--shell); }
+.on-dark .btn-ghost:hover { background: var(--shell); color: var(--ink); }
 
-.btn-ghost {
-  background: transparent;
+.btn-burgundy { background: var(--burgundy); color: var(--shell); }
+.btn-burgundy:hover { background: var(--chartreuse); color: var(--ink); }
+
+/* On podcast (green-grain) ground — burgundy CTA reads as outlined ghost */
+.podcast-section .btn-burgundy,
+.podcast-section .btn {
+  background: rgba(27,25,24,0.5);
   color: var(--shell);
   border: 1px solid var(--shell);
 }
-.btn-ghost:hover { background: var(--shell); color: var(--page-dark); }
-
-.on-dark .btn-ghost { color: var(--shell); border-color: var(--shell); }
-.on-dark .btn-ghost:hover { background: var(--shell); color: var(--ink); }
+.podcast-section .btn-burgundy:hover,
+.podcast-section .btn:hover {
+  background: var(--shell);
+  color: var(--ink);
+  border-color: var(--shell);
+}
 
 /* ---- Scroll cue sweep ---- */
 @keyframes sweep {
@@ -173,13 +165,14 @@ img { display: block; max-width: 100%; }
 
 /* ---- Podcast episode row ---- */
 .ep-row {
-  --row-bg: var(--page-black);
+  --row-bg: rgba(0,0,0,0.5);
   --row-fg: var(--shell);
+  background: rgba(27,25,24,0.5);
   transition: padding-left 320ms, background 280ms;
 }
 .ep-row:hover {
-  padding-left: 16px;
-  background: rgba(225,225,213,0.06);
+  padding-left: 28px !important;
+  background: rgba(0,0,0,0.7);
 }
 .ep-row .ep-art {
   background: var(--row-bg);
@@ -189,14 +182,14 @@ img { display: block; max-width: 100%; }
 .ep-row .ep-play-btn {
   background: var(--row-bg);
   color: var(--row-fg);
+  border: 1px solid rgba(225,225,213,0.3);
   transition: background 280ms, color 280ms, transform 320ms;
 }
 .ep-row:hover .ep-play-btn {
-  background: var(--row-fg);
-  color: var(--row-bg);
+  background: var(--shell);
+  color: #000;
   transform: scale(1.05);
 }
-
 .ep-row.featured {
   --row-bg: var(--tobacco);
   --row-fg: var(--shell);
@@ -210,7 +203,44 @@ img { display: block; max-width: 100%; }
 .artist-card { transition: transform 320ms; }
 .artist-card:hover { transform: translateY(-4px); }
 
-/* ---- TALENT responsive grid ---- */
+/* ---- Music & Artists horizontal scroll (Page 2) ---- */
+.artists-scroll {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 48px) / 3);
+  gap: 24px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 0;
+  padding-bottom: 16px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(225,225,213,0.4) transparent;
+}
+.artists-scroll::-webkit-scrollbar { height: 6px; }
+.artists-scroll::-webkit-scrollbar-track { background: rgba(225,225,213,0.08); }
+.artists-scroll::-webkit-scrollbar-thumb { background: rgba(225,225,213,0.4); }
+.artists-scroll > .artist-card { scroll-snap-align: start; }
+
+.scroll-right-cue {
+  display: flex; align-items: center; gap: 12px;
+  margin-top: 14px;
+  font-family: var(--font-ui); font-weight: 700;
+  font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
+  color: rgba(225,225,213,0.7);
+}
+.scroll-right-cue .l { width: 80px; height: 1px; background: currentColor; position: relative; overflow: hidden; }
+.scroll-right-cue .l::after {
+  content:''; position: absolute; left: -40%; top: 0; bottom: 0; width: 40%;
+  background: var(--chartreuse);
+  animation: sweep 2.4s cubic-bezier(0.76,0,0.24,1) infinite;
+}
+.scroll-right-cue .arrow { font-size: 14px; }
+
+/* ---- TALENT — responsive 2-column grid: video + info ----
+   Page 1 lock-in: when a Mux player is rendered, the wrapper must add
+   NO bg, NO border, NO aspect-ratio constraint. Native Mux sizing only. */
 .talent {
   display: grid;
   grid-template-columns: minmax(220px, 0.9fr) 1.1fr;
@@ -218,23 +248,47 @@ img { display: block; max-width: 100%; }
   align-items: stretch;
   padding: 18px 0;
 }
+
+/* Placeholder frame (no Mux) — colored, 4:5, with hover affordances */
 .talent .frame {
   aspect-ratio: var(--reel-ratio, 4 / 5);
   width: 100%;
-  background: var(--page-black);
+  background: var(--ink);
   position: relative;
   overflow: hidden;
   border: 1px solid var(--border);
 }
+
+/* Mux variant — bare wrapper, native size, NO chrome.
+   This deliberately overrides every property the placeholder frame sets so
+   the Mux player renders at its own intrinsic dimensions with no border,
+   no background, no forced aspect ratio. */
+.talent .frame.mux,
+.talent > .talent-mux {
+  aspect-ratio: auto;
+  width: 100%;
+  background: transparent !important;
+  border: 0 !important;
+  overflow: visible;
+  position: relative;
+}
+.talent .frame.mux mux-player,
+.talent > .talent-mux mux-player {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: transparent !important;
+  --media-object-fit: contain;
+}
+
 .talent .frame > video,
-.talent .frame > img.reel-video,
-.talent .frame > mux-player,
-.talent .frame > [data-mux-player] {
+.talent .frame > img.reel-video {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
   object-position: center;
 }
+
 .talent .info {
   align-self: stretch;
   display: flex;
@@ -259,13 +313,19 @@ img { display: block; max-width: 100%; }
   flex-wrap: wrap;
 }
 
-/* ---- Talent link buttons ---- */
-.talent-ig-link { transition: background 240ms, color 240ms, transform 240ms; }
-.talent-ig-link:hover { background: var(--burgundy) !important; color: var(--shell) !important; transform: translateY(-2px); }
-.talent-alt-link { transition: background 240ms, border-color 240ms, transform 240ms; }
+/* ---- Talent ghost link buttons (shell outline on dark grounds) ---- */
+.talent-ig-link,
+.talent-alt-link {
+  background: transparent !important;
+  color: var(--shell) !important;
+  border: 1px solid var(--shell) !important;
+  transition: background 240ms, color 240ms, transform 240ms;
+}
+.talent-ig-link:hover,
 .talent-alt-link:hover {
-  background: var(--burgundy) !important;
-  border-color: var(--burgundy) !important;
+  background: var(--shell) !important;
+  color: var(--ink) !important;
+  border-color: var(--shell) !important;
   transform: translateY(-2px);
 }
 
@@ -283,12 +343,15 @@ img { display: block; max-width: 100%; }
 }
 .footer-link:hover::after { transform: scaleX(1); }
 
+/* ---- Nav CTA hover — shell fill, ink type ---- */
+.nav-cta { transition: background 240ms, color 240ms; }
+
 @media (max-width: 900px) {
   .section-head { grid-template-columns: 1fr; }
   .wrap { padding: 0 20px; }
   .roster-grid { grid-template-columns: 1fr !important; }
   .talent       { grid-template-columns: 1fr; }
-  .artists-grid { grid-template-columns: 1fr !important; }
+  .artists-scroll { grid-auto-columns: 80% !important; }
   .ep-row       { grid-template-columns: 60px 1fr auto !important; }
   .ep-art, .ep-guest { display: none !important; }
   .player-grid  { grid-template-columns: 1fr !important; }

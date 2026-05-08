@@ -78,7 +78,7 @@ export default function Cover() {
     >
       {/* Background image */}
       <Image
-        src="/images/cover-bg.png"
+        src="/images/logotype-brown-stone-bg.png"
         alt=""
         fill
         style={{ objectFit: 'cover', objectPosition: 'center' }}
@@ -117,7 +117,7 @@ export default function Cover() {
             Built for humans, run by humans.
           </strong>
           The Human Club is a 360-degree creative agency. We take the brief from start to finish, representing incredible talent within the scene —{' '}
-          <em style={{ color: 'var(--burgundy)', fontStyle: 'italic', fontWeight: 400 }}>Humans of Influence, artists, musicians and event experience designers.</em>
+          <em style={{ color: 'var(--chartreuse)', fontStyle: 'italic', fontWeight: 400 }}>Humans of Influence, artists, musicians and event experience designers.</em>
           <br /><br />
           Welcoming you to our Podcast space and T.H.C Radio — allowing you to have a full creative experience when working with our team.
           <br />
@@ -144,7 +144,7 @@ export default function Cover() {
         <span style={{ width: 60, height: 1, background: 'currentColor', position: 'relative', overflow: 'hidden', display: 'block' }}>
           <span style={{
             position: 'absolute', left: '-40%', top: 0, bottom: 0, width: '40%',
-            background: 'var(--burgundy)',
+            background: 'var(--chartreuse)',
             animation: 'sweep 2.4s cubic-bezier(0.76,0,0.24,1) infinite',
           }} />
         </span>
