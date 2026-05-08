@@ -26,6 +26,32 @@ export default function EpisodeRow({ episodeNum, title, appleUrl, audioUrl, feat
   const [progress, setProgress] = useState(0)
   const [hasInteracted, setHasInteracted] = useState(false)
 
+  function publishMediaSession() {
+    if (typeof navigator === 'undefined' || !('mediaSession' in navigator)) return
+    const a = audioRef.current
+    if (!a) return
+    try {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title:  title,
+        artist: 'The Human Club Podcast',
+        album:  `Episode ${episodeNum}`,
+      })
+      navigator.mediaSession.setActionHandler('play',  () => a.play().catch(() => {}))
+      navigator.mediaSession.setActionHandler('pause', () => a.pause())
+      navigator.mediaSession.setActionHandler('seekbackward', (d) => {
+        a.currentTime = Math.max(0, a.currentTime - (d.seekOffset || 15))
+      })
+      navigator.mediaSession.setActionHandler('seekforward', (d) => {
+        a.currentTime = Math.min(a.duration || 0, a.currentTime + (d.seekOffset || 30))
+      })
+      navigator.mediaSession.setActionHandler('seekto', (d) => {
+        if (typeof d.seekTime === 'number') a.currentTime = d.seekTime
+      })
+    } catch {
+      /* older browsers / unsupported actions */
+    }
+  }
+
   function togglePlay(e: React.MouseEvent) {
     e.preventDefault()
     e.stopPropagation()
@@ -37,6 +63,10 @@ export default function EpisodeRow({ episodeNum, title, appleUrl, audioUrl, feat
       document.querySelectorAll<HTMLAudioElement>('audio[data-episode-player]').forEach((other) => {
         if (other !== a) other.pause()
       })
+      // Tell the OS / lockscreen what we're playing so the system media
+      // controls show the title and the audio keeps going when the device
+      // is locked.
+      publishMediaSession()
       a.play().catch(() => { /* autoplay block, etc. */ })
     } else {
       a.pause()
@@ -59,7 +89,19 @@ export default function EpisodeRow({ episodeNum, title, appleUrl, audioUrl, feat
     const onPlay   = () => setPlaying(true)
     const onPause  = () => setPlaying(false)
     const onEnd    = () => { setPlaying(false); setProgress(0) }
-    const onTime   = () => setProgress(a.currentTime)
+    const onTime   = () => {
+      setProgress(a.currentTime)
+      // keep the lockscreen scrubber in sync
+      if (typeof navigator !== 'undefined' && 'mediaSession' in navigator && navigator.mediaSession.metadata) {
+        try {
+          navigator.mediaSession.setPositionState?.({
+            duration:     a.duration || 0,
+            playbackRate: a.playbackRate || 1,
+            position:     a.currentTime,
+          })
+        } catch { /* unsupported */ }
+      }
+    }
     const onMeta   = () => setDuration(a.duration || 0)
     a.addEventListener('play',          onPlay)
     a.addEventListener('pause',         onPause)
