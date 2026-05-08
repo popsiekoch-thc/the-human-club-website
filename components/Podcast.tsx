@@ -4,7 +4,7 @@ import Button from './Button'
 export default async function Podcast() {
   const episodesRaw = await getLatestEpisodes()
 
-  // Sort: ep 4 at top, ep 1 at bottom (descending by episodeNum)
+  // Sort: highest episode number at top, oldest at bottom.
   const episodes = [...episodesRaw].sort((a, b) => {
     return parseInt(b.episodeNum, 10) - parseInt(a.episodeNum, 10)
   })
@@ -27,7 +27,7 @@ export default async function Podcast() {
           Podcast<span style={{ color: 'var(--shell)', fontStyle: 'italic', fontWeight: 400 }}>.</span>
         </h2>
         <div className="aside" style={{ color: 'rgba(225,225,213,0.78)' }}>
-          Conversations with the people making culture.{' '}
+          Conversations with the people making culture.
           <span style={{ display: 'block', marginTop: 8 }}>
             <a href="https://podcasts.apple.com/de/podcast/the-human-club-podcast/id1887355489" target="_blank" rel="noopener noreferrer" style={{ borderBottom: '1px solid currentColor', color: 'var(--shell)' }}>
               Apple Podcasts ↗
@@ -43,56 +43,72 @@ export default async function Podcast() {
 
       <div style={{ display: 'flex', flexDirection: 'column', marginTop: 16 }}>
         {episodes.map((ep) => (
-          <a
+          <article
             key={ep.guid}
-            href={ep.appleUrl}
-            target="_blank"
-            rel="noopener noreferrer"
             className={`ep-row${ep.featured ? ' featured' : ''}`}
             style={{
-              display: 'grid',
-              gridTemplateColumns: '80px 100px 1fr auto auto',
-              gap: 28,
-              alignItems: 'center',
               padding: '20px 16px',
               borderTop: '1px solid rgba(225,225,213,0.22)',
+              background: 'rgba(27,25,24,0.5)',
               color: 'var(--shell)',
-              textDecoration: 'none',
             }}
           >
-            <div className="ep-num" style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 32, lineHeight: 1, letterSpacing: '-0.03em', color: 'var(--shell)' }}>
-              {ep.episodeNum}
-            </div>
+            {/* Meta row — episode number, title, Apple link */}
             <div
-              className="ep-art"
               style={{
-                aspectRatio: '1',
-                display: 'flex',
+                display: 'grid',
+                gridTemplateColumns: '80px 1fr auto',
+                gap: 24,
                 alignItems: 'center',
-                justifyContent: 'center',
+                marginBottom: ep.podbeanSrc ? 14 : 0,
               }}
-              aria-hidden
-            >▶</div>
-            <div>
-              <div className="ep-title" style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 20, lineHeight: 1.15, letterSpacing: '-0.015em', color: 'var(--shell)' }}>
-                {ep.title}
+            >
+              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 32, lineHeight: 1, letterSpacing: '-0.03em', color: 'var(--shell)' }}>
+                {ep.episodeNum}
               </div>
-              <div className="ep-guest" style={{ fontFamily: 'var(--font-ui)', fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(225,225,213,0.65)', marginTop: 4 }}>
-                — Episode {ep.episodeNum}
+              <div>
+                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 20, lineHeight: 1.15, letterSpacing: '-0.015em', color: 'var(--shell)' }}>
+                  {ep.title}
+                </div>
+                <div style={{ fontFamily: 'var(--font-ui)', fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(225,225,213,0.65)', marginTop: 4 }}>
+                  — Episode {ep.episodeNum}
+                </div>
               </div>
+              <a
+                href={ep.appleUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  fontFamily: 'var(--font-ui)',
+                  fontWeight: 700,
+                  fontSize: 11,
+                  letterSpacing: '0.16em',
+                  textTransform: 'uppercase',
+                  color: 'var(--shell)',
+                  borderBottom: '1px solid currentColor',
+                }}
+              >
+                Apple ↗
+              </a>
             </div>
-            <div className="ep-dur" style={{ fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(225,225,213,0.7)' }}>
-              Apple ↗
-            </div>
-            <div
-              className="ep-play-btn"
-              style={{
-                width: 48, height: 48, borderRadius: '50%',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}
-              aria-hidden
-            >▶</div>
-          </a>
+
+            {/* Inline Podbean player — only when a src is mapped for this trackId */}
+            {ep.podbeanSrc && (
+              <iframe
+                src={ep.podbeanSrc}
+                title={ep.title}
+                height={150}
+                width="100%"
+                loading="lazy"
+                scrolling="no"
+                style={{
+                  border: 0,
+                  display: 'block',
+                  background: 'transparent',
+                }}
+              />
+            )}
+          </article>
         ))}
         <div style={{ borderTop: '1px solid rgba(225,225,213,0.22)' }} />
       </div>
