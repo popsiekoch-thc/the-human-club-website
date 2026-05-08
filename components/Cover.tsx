@@ -117,7 +117,7 @@ export default function Cover() {
             Built for humans, run by humans.
           </strong>
           The Human Club is a 360-degree creative agency. We take the brief from start to finish, representing incredible talent within the scene —{' '}
-          <em style={{ color: 'var(--chartreuse)', fontStyle: 'italic', fontWeight: 400 }}>Humans of Influence, artists, musicians and event experience designers.</em>
+          <em style={{ color: 'var(--chartreuse)', fontStyle: 'italic', fontWeight: 400 }}>Humans Of Influence, Artists, Musicians, User Generated Content Creators and Experience Designers.</em>
           <br /><br />
           Welcoming you to our Podcast space and T.H.C Radio — allowing you to have a full creative experience when working with our team.
           <br />

@@ -28,13 +28,16 @@ export default async function Podcast() {
         </h2>
         <div className="aside" style={{ color: 'rgba(225,225,213,0.78)' }}>
           Conversations with the people making culture.{' '}
-          <a href="https://podcasts.apple.com/de/podcast/the-human-club-podcast/id1887355489" target="_blank" rel="noopener noreferrer" style={{ borderBottom: '1px solid currentColor', color: 'var(--shell)' }}>
-            Apple Podcasts ↗
-          </a>
-          &nbsp;
-          <a href="https://www.youtube.com/@TheHumanClub_Worldwide" target="_blank" rel="noopener noreferrer" style={{ borderBottom: '1px solid currentColor', color: 'var(--shell)' }}>
-            YouTube ↗
-          </a>
+          <span style={{ display: 'block', marginTop: 8 }}>
+            <a href="https://podcasts.apple.com/de/podcast/the-human-club-podcast/id1887355489" target="_blank" rel="noopener noreferrer" style={{ borderBottom: '1px solid currentColor', color: 'var(--shell)' }}>
+              Apple Podcasts ↗
+            </a>
+          </span>
+          <span style={{ display: 'block', marginTop: 4 }}>
+            <a href="https://www.youtube.com/@TheHumanClub_Worldwide" target="_blank" rel="noopener noreferrer" style={{ borderBottom: '1px solid currentColor', color: 'var(--shell)' }}>
+              YouTube ↗
+            </a>
+          </span>
         </div>
       </div>
 

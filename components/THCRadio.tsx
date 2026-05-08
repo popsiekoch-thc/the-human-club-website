@@ -23,7 +23,8 @@ export default async function THCRadio() {
         <div className="section-head" style={{ borderTopColor: 'rgba(225,225,213,0.25)' }}>
           <div className="num" style={{ color: 'var(--shell)' }}>— Page 04 / Radio</div>
           <h2 style={{ color: 'var(--shell)' }}>
-            <span style={{ color: 'var(--chartreuse)' }}>THC</span>&nbsp;<em>Radio.</em>
+            <span style={{ color: 'var(--shell)' }}>T.H.C</span>&nbsp;
+            <em style={{ color: 'var(--chartreuse)', fontStyle: 'italic', fontWeight: 400 }}>Radio.</em>
           </h2>
           <div className="aside" style={{ color: 'rgba(225,225,213,0.75)' }}>
             Reposted mixes from the artists on the roster — straight from our SoundCloud.
@@ -83,42 +84,78 @@ export default async function THCRadio() {
           </div>
         </div>
 
-        {/* Mix list */}
-        <div
-          className="mix-list"
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 4, marginTop: 24, borderTop: '1px solid rgba(225,225,213,0.18)' }}
-        >
-          {mixes.map((mix, i) => (
-            <a
-              key={mix.id}
-              href={mix.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mix-item"
-              style={{
-                padding: 22,
-                borderRight: i < mixes.length - 1 ? '1px solid rgba(225,225,213,0.18)' : '0',
-                minHeight: 160,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                color: 'var(--shell)',
-                textDecoration: 'none',
-              }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-ui)', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', opacity: 0.7 }}>
-                <span>— Mix {mix.mixNum}</span>
-                <span>{mix.duration}</span>
+        {/* Mix list — only renders if real mixes are sourced. Otherwise we
+            show a single CTA pointing at the live SoundCloud profile so
+            nothing fake lives on the page. */}
+        {mixes.length > 0 ? (
+          <div
+            className="mix-list"
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 4, marginTop: 24, borderTop: '1px solid rgba(225,225,213,0.18)' }}
+          >
+            {mixes.map((mix, i) => (
+              <a
+                key={mix.id}
+                href={mix.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mix-item"
+                style={{
+                  padding: 22,
+                  borderRight: i < mixes.length - 1 ? '1px solid rgba(225,225,213,0.18)' : '0',
+                  minHeight: 160,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  color: 'var(--shell)',
+                  textDecoration: 'none',
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-ui)', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', opacity: 0.7 }}>
+                  <span>— Mix {mix.mixNum}</span>
+                  <span>{mix.duration}</span>
+                </div>
+                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 24, letterSpacing: '-0.015em', lineHeight: 1.05, marginTop: 'auto', color: 'var(--shell)' }}>
+                  {mix.title}
+                </div>
+                <div style={{ fontFamily: 'var(--font-ui)', fontSize: 12, opacity: 0.78, marginTop: 4, color: 'var(--shell)' }}>
+                  — {mix.artist}
+                </div>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <a
+            href={SC_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mix-item"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 24,
+              padding: '28px 22px',
+              marginTop: 24,
+              borderTop: '1px solid rgba(225,225,213,0.18)',
+              borderBottom: '1px solid rgba(225,225,213,0.18)',
+              color: 'var(--shell)',
+              textDecoration: 'none',
+            }}
+          >
+            <div>
+              <div style={{ fontFamily: 'var(--font-ui)', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', opacity: 0.7 }}>— All mixes</div>
+              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 28, letterSpacing: '-0.015em', lineHeight: 1.05, marginTop: 6 }}>
+                Browse the full library on SoundCloud
               </div>
-              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 24, letterSpacing: '-0.015em', lineHeight: 1.05, marginTop: 'auto', color: 'var(--shell)' }}>
-                {mix.title}
+              <div style={{ fontFamily: 'var(--font-ui)', fontSize: 12, opacity: 0.78, marginTop: 4 }}>
+                — Reposts &amp; live recordings from the artists on the roster
               </div>
-              <div style={{ fontFamily: 'var(--font-ui)', fontSize: 12, opacity: 0.78, marginTop: 4, color: 'var(--shell)' }}>
-                — {mix.artist}
-              </div>
-            </a>
-          ))}
-        </div>
+            </div>
+            <span style={{ fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', borderBottom: '1px solid currentColor' }}>
+              SoundCloud ↗
+            </span>
+          </a>
+        )}
       </div>
     </section>
   )

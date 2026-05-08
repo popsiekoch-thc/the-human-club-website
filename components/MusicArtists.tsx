@@ -23,9 +23,7 @@ export default function MusicArtists() {
         <div className="section-head" style={{ borderTopColor: 'rgba(225,225,213,0.25)' }}>
           <div className="num">— Page 02 / The Agency</div>
           <h2>Musicians&nbsp;&amp;&nbsp;<em>Artists.</em></h2>
-          <div className="aside" style={{ color: 'rgba(225,225,213,0.75)' }}>
-            The music we move with — booking and representation across Berlin and Cape Town.
-          </div>
+          <div className="aside" style={{ color: 'rgba(225,225,213,0.75)' }} />
         </div>
 
         <div style={{ marginTop: 24, paddingTop: 24, borderTop: '1px solid rgba(225,225,213,0.18)' }}>
@@ -66,10 +64,24 @@ export default function MusicArtists() {
               </article>
             ))}
           </div>
-          <div className="scroll-right-cue">
-            <span className="l" />
-            Scroll right to view more
-            <span className="arrow">→</span>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 24, alignItems: 'center', marginTop: 14 }}>
+            <div className="scroll-right-cue" style={{ margin: 0 }}>
+              <span className="l" />
+              Scroll right to view more
+              <span className="arrow">→</span>
+            </div>
+            <p style={{
+              margin: 0,
+              maxWidth: 360,
+              textAlign: 'right',
+              fontFamily: 'var(--font-ui)',
+              fontStyle: 'italic',
+              fontSize: 13,
+              lineHeight: 1.55,
+              color: 'rgba(225,225,213,0.78)',
+            }}>
+              Musicians, Artists &amp; Experience Designers located in Berlin, Cape Town &amp; Worldwide.
+            </p>
           </div>
         </div>
       </div>

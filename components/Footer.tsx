@@ -68,10 +68,12 @@ export default function Footer() {
           </div>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: 50, fontFamily: 'var(--font-ui)', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(225,225,213,0.55)' }}>
-          <div>© 2026 The Human Club</div>
-          <div>Human by nature · Creative by design</div>
-          <div>Berlin (HQ) &amp; Cape Town</div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 24, paddingTop: 50, fontFamily: 'var(--font-ui)', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(225,225,213,0.55)' }}>
+          <div>Berlin, Cape Town &amp; worldwide</div>
+          <div>est. 2025.</div>
+          <div style={{ textAlign: 'right', maxWidth: 480 }}>
+            A Creative Agency Housing: Humans, Content Creation, Podcasts, Radio &amp; Event Experiences.
+          </div>
         </div>
       </div>
     </footer>

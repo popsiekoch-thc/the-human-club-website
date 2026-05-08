@@ -14,8 +14,10 @@ export interface Episode {
 const APPLE_ID  = '1887355489'
 const FEED_URL  = `https://itunes.apple.com/lookup?id=${APPLE_ID}&media=podcast&entity=podcastEpisode&limit=5`
 
-/** Fallback featured trackId — Adam Munnings / Ep 03 — used if Sanity has no entries. */
-const DEFAULT_FEATURED_TRACK_IDS = ['1000758809096']
+/** No default featured episode — every row renders uniformly. Editors can
+ *  still flag a featured episode in Sanity (podcastEpisode.featured), and
+ *  the .featured row treatment will apply if any flagged trackId matches. */
+const DEFAULT_FEATURED_TRACK_IDS: string[] = []
 
 type Override = { trackId: string; featured: boolean; title?: string }
 

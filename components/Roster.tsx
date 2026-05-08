@@ -27,7 +27,7 @@ export default async function Roster() {
         <div className="section-head" style={{ borderTopColor: 'rgba(225,225,213,0.25)' }}>
           <div className="num">— Page 01 / The Agency</div>
           <h2>The&nbsp;<em>Roster.</em></h2>
-          <div className="aside" style={{ color: 'rgba(225,225,213,0.75)' }}>Photographers, directors and creators we represent across Berlin and Cape Town.</div>
+          <div className="aside" style={{ color: 'rgba(225,225,213,0.75)' }}>Photographers, Directors, Creators, Influencers and Content creators; represented worldwide.</div>
         </div>
 
         <div
