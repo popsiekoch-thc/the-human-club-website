@@ -119,7 +119,10 @@ export default function Cover() {
           The Human Club is a 360-degree creative agency. We take the brief from start to finish, representing incredible talent within the scene —{' '}
           <em style={{ color: 'var(--chartreuse)', fontStyle: 'italic', fontWeight: 400 }}>Humans Of Influence, Artists, Musicians, User Generated Content Creators and Experience Designers.</em>
           <br /><br />
-          Welcoming you to our Podcast space and T.H.C Radio — allowing you to have a full creative experience when working with our team.
+          The Human Club also welcomes you to our audio experiences:{' '}
+          <span style={{ color: 'var(--chartreuse)' }}>The Human Club Podcast</span>
+          {' '}and{' '}
+          <span style={{ color: 'var(--chartreuse)' }}>T.H.C Radio</span>.
           <br />
           <strong style={{ display: 'block', fontWeight: 700, fontSize: '11px', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--shell)', marginTop: 14 }}>
             Private Social Media Consultancy.
@@ -148,7 +151,6 @@ export default function Cover() {
             animation: 'sweep 2.4s cubic-bezier(0.76,0,0.24,1) infinite',
           }} />
         </span>
-        Scroll
       </div>
 
       {/* Fog hint */}

@@ -1,10 +1,8 @@
-const ARTISTS = [
-  { initial: 'L', num: '01', name: 'Lemonella',        sc: 'https://soundcloud.com/lemonella' },
-  { initial: 'F', num: '02', name: 'Femdelic',         sc: 'https://soundcloud.com/femdelic'  },
-  { initial: 'A', num: '03', name: 'Aaron Zeederberg', sc: 'https://soundcloud.com/aaronzeedez' },
-]
+import { getArtists } from '../lib/artist'
 
-export default function MusicArtists() {
+export default async function MusicArtists() {
+  const artists = await getArtists()
+
   return (
     <section
       id="music"
@@ -28,39 +26,95 @@ export default function MusicArtists() {
 
         <div style={{ marginTop: 24, paddingTop: 24, borderTop: '1px solid rgba(225,225,213,0.18)' }}>
           <div className="artists-scroll" id="artistsScroll">
-            {ARTISTS.map((a) => (
+            {artists.map((a) => (
               <article key={a.name} className="artist-card" style={{ display: 'flex', flexDirection: 'column' }}>
                 <a
-                  href={a.sc}
+                  href={a.soundcloud}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={`${a.name} on SoundCloud`}
                   style={{
-                    aspectRatio: '4/5',
+                    /* Square crop — Instagram-feed-post sized — fills the
+                       majority of the card and translates cleanly to mobile. */
+                    aspectRatio: '1 / 1',
+                    width: '100%',
                     background: 'rgba(225,225,213,0.08)',
                     position: 'relative',
                     overflow: 'hidden',
                     border: '1px solid rgba(225,225,213,0.18)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    display: 'block',
                     marginBottom: 18,
                   }}
-                  aria-label={`${a.name} on SoundCloud`}
                 >
-                  <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 120, color: 'rgba(225,225,213,0.55)', letterSpacing: '-0.04em' }}>
-                    {a.initial}
-                  </span>
+                  {a.photoUrl ? (
+                    /* Plain <img> rather than <Image> so the Sanity CDN URL
+                       passes through untouched — no domain whitelist
+                       gymnastics on Vercel. */
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={a.photoUrl}
+                      alt={a.name}
+                      loading="lazy"
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'center',
+                        display: 'block',
+                      }}
+                    />
+                  ) : (
+                    <span style={{
+                      position: 'absolute', inset: 0,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontFamily: 'var(--font-display)', fontWeight: 700,
+                      fontSize: 120, color: 'rgba(225,225,213,0.55)',
+                      letterSpacing: '-0.04em',
+                    }}>
+                      {a.initial}
+                    </span>
+                  )}
                 </a>
+
                 <div style={{ fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(225,225,213,0.6)', marginBottom: 6 }}>
                   — {a.num} / Artist
                 </div>
                 <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 38, lineHeight: 0.96, letterSpacing: '-0.025em', margin: '0 0 10px', color: 'var(--shell)' }}>
                   {a.name}
                 </h3>
-                <p style={{ fontFamily: 'var(--font-ui)', fontStyle: 'italic', fontSize: 12, color: 'rgba(225,225,213,0.6)', margin: 0, lineHeight: 1.55 }}>
-                  Write-up to still be added. —{' '}
-                  <a href={a.sc} target="_blank" rel="noopener noreferrer" style={{ borderBottom: '1px solid currentColor' }}>SoundCloud ↗</a>
-                </p>
+
+                {a.bio ? (
+                  <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, lineHeight: 1.55, margin: '0 0 12px', color: 'rgba(225,225,213,0.85)', whiteSpace: 'pre-line' }}>
+                    {a.bio}
+                  </p>
+                ) : (
+                  <p style={{ fontFamily: 'var(--font-ui)', fontStyle: 'italic', fontSize: 12, color: 'rgba(225,225,213,0.6)', margin: '0 0 12px', lineHeight: 1.55 }}>
+                    Write-up to still be added.
+                  </p>
+                )}
+
+                <a
+                  href={a.soundcloud}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    fontFamily: 'var(--font-ui)',
+                    fontWeight: 700,
+                    fontSize: 11,
+                    letterSpacing: '0.2em',
+                    textTransform: 'uppercase',
+                    color: 'var(--shell)',
+                    borderBottom: '1px solid currentColor',
+                    alignSelf: 'flex-start',
+                  }}
+                >
+                  SoundCloud ↗
+                </a>
               </article>
             ))}
           </div>
