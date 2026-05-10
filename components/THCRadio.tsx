@@ -22,7 +22,9 @@ export default function THCRadio() {
             <span style={{ color: 'var(--shell)' }}>T.H.C</span>&nbsp;
             <em style={{ color: 'var(--chartreuse)', fontStyle: 'italic', fontWeight: 400 }}>Radio.</em>
           </h2>
-          <div className="aside" style={{ color: 'rgba(225,225,213,0.75)' }} />
+          <div className="aside" style={{ color: 'rgba(225,225,213,0.75)' }}>
+            Reposted mixes from the artists on the roster — straight from our SoundCloud.
+          </div>
         </div>
 
         <RadioPlayer />
