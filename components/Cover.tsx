@@ -112,14 +112,39 @@ export default function Cover() {
         display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end',
         color: 'var(--shell)', fontFamily: 'var(--font-ui)', fontSize: '12px', lineHeight: 1.55,
       }}>
-        <div style={{ maxWidth: 540, opacity: 0.92, display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div style={{ maxWidth: 540, opacity: 0.92 }}>
+          {/* Eyebrow */}
+          <strong style={{ display: 'block', fontWeight: 700, fontSize: '11px', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--shell)', marginBottom: 14 }}>
+            Built for humans, run by humans.
+          </strong>
+
+          {/* Body paragraph — opening sentence bolded per latest desktop tweak,
+              rest of the prose stays exactly as it was before. */}
           <strong style={{ fontWeight: 700, color: 'var(--shell)' }}>
             The Human Club is a 360-degree creative agency.
-          </strong>
-          <span style={{ color: 'var(--chartreuse)', fontWeight: 700 }}>
+          </strong>{' '}
+          We take the brief from start to finish, representing incredible talent within the scene —{' '}
+          <em style={{ color: 'var(--chartreuse)', fontStyle: 'italic', fontWeight: 400 }}>
+            Humans Of Influence, Artists, Musicians, User Generated Content Creators and Experience Designers.
+          </em>
+
+          <br /><br />
+
+          {/* Original audio-experiences sentence — kept, with the two product
+              names in green as before. */}
+          The Human Club also welcomes you to our audio experiences:{' '}
+          <span style={{ color: 'var(--chartreuse)' }}>The Human Club Podcast</span>
+          {' '}and{' '}
+          <span style={{ color: 'var(--chartreuse)' }}>T.H.C Radio</span>.
+
+          {/* New standalone green line — emphasised callout requested in the
+              desktop tweak pass. */}
+          <span style={{ display: 'block', color: 'var(--chartreuse)', fontWeight: 700, marginTop: 10 }}>
             The Human Club Podcast &amp; T.H.C Radio.
           </span>
-          <em style={{ fontStyle: 'italic', fontWeight: 400, textTransform: 'lowercase', color: 'var(--shell)', opacity: 0.85 }}>
+
+          {/* Offering line — restyled to lowercase italic. */}
+          <em style={{ display: 'block', marginTop: 14, fontStyle: 'italic', fontWeight: 400, textTransform: 'lowercase', color: 'var(--shell)', opacity: 0.85 }}>
             Offering private social media consultancy.
           </em>
         </div>
