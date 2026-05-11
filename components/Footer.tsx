@@ -33,7 +33,7 @@ export default function Footer() {
       <div aria-hidden style={{ position: 'absolute', inset: 0, background: 'rgba(27,25,24,0.55)', pointerEvents: 'none' }} />
 
       <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', maxWidth: 880, margin: '0 auto' }}>
-        <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(56px, 10vw, 156px)', lineHeight: 0.88, letterSpacing: '-0.04em', margin: '0 0 56px', color: 'var(--shell)', paddingTop: 56, borderTop: '1px solid rgba(225,225,213,0.4)' }}>
+        <h2 className="footer-hello" style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(56px, 10vw, 156px)', lineHeight: 0.88, letterSpacing: '-0.04em', margin: '0 0 56px', color: 'var(--shell)', paddingTop: 56, borderTop: '1px solid rgba(225,225,213,0.4)' }}>
           Say&nbsp;hello,<br />
           <em style={{ fontStyle: 'italic', fontWeight: 400, color: 'var(--chartreuse)' }}>talk soon.</em>
         </h2>

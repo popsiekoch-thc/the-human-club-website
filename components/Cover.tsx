@@ -3,11 +3,20 @@
 import { useEffect, useRef, useCallback } from 'react'
 import Image from 'next/image'
 
+/**
+ * Landing cover.
+ *
+ * Desktop: dark stone hero with a foggy-glass cursor reveal, centred
+ * wordmark, and a bottom-bar tagline.
+ *
+ * Mobile: same dark stone + centred wordmark, but fog / cursor /
+ * scroll-cue are all hidden via CSS (.cover-fog etc.). The continuation
+ * of the landing copy lives in <MobileLandingFlow /> below this section.
+ */
 export default function Cover() {
   const fogRef    = useRef<HTMLDivElement>(null)
   const cursorRef = useRef<HTMLDivElement>(null)
   const hintRef   = useRef<HTMLDivElement>(null)
-  const builtRef  = useRef<HTMLDivElement>(null)
   const movesRef  = useRef(0)
   const clearedRef = useRef(false)
 
@@ -27,6 +36,14 @@ export default function Cover() {
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduced) {
+      fog.style.opacity = '0'
+      return
+    }
+
+    // Touch / phone users never get the fog interaction at all — the
+    // viewport-width check matches the 900px mobile breakpoint in CSS.
+    const isMobile = window.matchMedia('(max-width: 900px)').matches
+    if (isMobile) {
       fog.style.opacity = '0'
       return
     }
@@ -61,27 +78,6 @@ export default function Cover() {
       cover.removeEventListener('mouseenter', onEnter)
     }
   }, [setMask])
-
-  /**
-   * Mobile-only scroll trigger — once the user scrolls more than ~12%
-   * down the cover the "BUILT FOR HUMANS, RUN BY HUMANS." overlay fades
-   * in. We listen on scroll instead of using IntersectionObserver
-   * because the overlay starts inside the viewport (it's the whole
-   * landing) — we want the reveal to fire as the user starts moving,
-   * not just on initial intersection.
-   */
-  useEffect(() => {
-    const built = builtRef.current
-    if (!built) return
-    function onScroll() {
-      const trigger = window.innerHeight * 0.12
-      if (window.scrollY > trigger) built!.classList.add('is-revealed')
-      else                          built!.classList.remove('is-revealed')
-    }
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
 
   return (
     <section
@@ -118,7 +114,7 @@ export default function Cover() {
         }}
       />
 
-      {/* Wordmark */}
+      {/* Wordmark — the only element on first load on mobile. */}
       <Image
         src="/images/logotype-stone.png"
         alt="The Human Club"
@@ -128,28 +124,17 @@ export default function Cover() {
         priority
       />
 
-      {/* Mobile-only scroll-trigger overlay — fades in once the user
-          starts scrolling, centred on screen. Hidden on desktop via the
-          cover-mobile-overlay rule in globals.css. */}
-      <div ref={builtRef} className="cover-mobile-overlay" aria-hidden>
-        <span className="built">Built for humans,<br />run by humans.</span>
-      </div>
-
-      {/* Bottom bar — desktop only. Hidden on mobile (replaced by the
-          scroll-triggered overlay above). */}
+      {/* Bottom bar — desktop only. Hidden on mobile via
+          .cover-desktop-tagline (mobile copy moves to MobileLandingFlow). */}
       <div className="cover-desktop-tagline" style={{
         position: 'absolute', left: 32, right: 32, bottom: 28, zIndex: 6,
         display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end',
         color: 'var(--shell)', fontFamily: 'var(--font-ui)', fontSize: '12px', lineHeight: 1.55,
       }}>
         <div style={{ maxWidth: 540, opacity: 0.92 }}>
-          {/* Eyebrow */}
           <strong style={{ display: 'block', fontWeight: 700, fontSize: '11px', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--shell)', marginBottom: 14 }}>
             Built for humans, run by humans.
           </strong>
-
-          {/* Body paragraph — opening sentence bolded per latest desktop tweak,
-              rest of the prose stays exactly as it was before. */}
           <strong style={{ fontWeight: 700, color: 'var(--shell)' }}>
             The Human Club is a 360-degree creative agency.
           </strong>{' '}
@@ -157,17 +142,11 @@ export default function Cover() {
           <em style={{ color: 'var(--chartreuse)', fontStyle: 'italic', fontWeight: 400 }}>
             Humans Of Influence, Artists, Musicians, User Generated Content Creators and Experience Designers.
           </em>
-
           <br /><br />
-
-          {/* Audio-experiences line — single sentence, product names bolded
-              + chartreuse so the two offerings stand out. */}
           The Human Club also welcomes you to our audio experiences:{' '}
           <strong style={{ color: 'var(--chartreuse)', fontWeight: 700 }}>
             The Human Club Podcast &amp; T.H.C Radio.
           </strong>
-
-          {/* Offering line — restyled to lowercase italic. */}
           <em style={{ display: 'block', marginTop: 14, fontStyle: 'italic', fontWeight: 400, textTransform: 'lowercase', color: 'var(--shell)', opacity: 0.85 }}>
             Offering private social media consultancy.
           </em>
@@ -180,8 +159,8 @@ export default function Cover() {
         </div>
       </div>
 
-      {/* Scroll cue */}
-      <div style={{
+      {/* Scroll cue — desktop only */}
+      <div className="cover-scroll-cue" style={{
         position: 'absolute', left: '50%', bottom: 70, transform: 'translateX(-50%)',
         zIndex: 6, fontFamily: 'var(--font-ui)', fontWeight: 700,
         fontSize: '10px', letterSpacing: '0.24em', textTransform: 'uppercase',
@@ -197,9 +176,10 @@ export default function Cover() {
         </span>
       </div>
 
-      {/* Fog hint */}
+      {/* Fog hint — desktop only */}
       <div
         ref={hintRef}
+        className="cover-fog-hint"
         style={{
           position: 'absolute', left: '50%', bottom: 32, transform: 'translateX(-50%)',
           zIndex: 6, fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: '10px',
@@ -210,10 +190,11 @@ export default function Cover() {
         — Move your cursor to clear the fog
       </div>
 
-      {/* Fog overlay */}
+      {/* Fog overlay — desktop only */}
       <div
         ref={fogRef}
         aria-hidden
+        className="cover-fog"
         style={{
           position: 'absolute', inset: 0, zIndex: 5, pointerEvents: 'none',
           backdropFilter: 'blur(28px) saturate(1.1)',
@@ -225,11 +206,11 @@ export default function Cover() {
         }}
       />
 
-      {/* Cursor dot */}
+      {/* Cursor dot — desktop only */}
       <div
         ref={cursorRef}
         aria-hidden
-        className="hidden tablet:block"
+        className="cover-cursor hidden tablet:block"
         style={{
           position: 'absolute', zIndex: 7,
           width: 14, height: 14, borderRadius: '50%',

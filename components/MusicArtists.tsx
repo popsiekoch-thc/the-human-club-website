@@ -20,7 +20,14 @@ export default async function MusicArtists() {
       <div style={{ position: 'relative', zIndex: 1 }}>
         <div className="section-head" style={{ borderTopColor: 'rgba(225,225,213,0.25)' }}>
           <div className="num">— Page 02 / The Agency</div>
-          <h2>Musicians&nbsp;&amp;&nbsp;<em>Artists.</em></h2>
+          <h2>
+            Musicians&nbsp;&amp;
+            {/* Inline-break on desktop, block on mobile so "Artists." drops
+                to a second line and is never clipped. Rule lives in
+                globals.css under .music-amp-break. */}
+            <span className="music-amp-break" />
+            &nbsp;<em>Artists.</em>
+          </h2>
           <div className="aside" style={{ color: 'rgba(225,225,213,0.75)' }} />
         </div>
 

@@ -372,36 +372,58 @@ img { display: block; max-width: 100%; }
 @media (max-width: 900px) {
   /* ---- page chrome ---- */
   .wrap { padding: 0 20px; }
-  .section-head { grid-template-columns: 1fr; gap: 16px; padding-top: 40px; }
-  .section-head h2 { font-size: clamp(38px, 11vw, 64px); }
+  .section-head { grid-template-columns: 1fr; gap: 12px; padding-top: 40px; text-align: center; }
+  .section-head h2 { font-size: clamp(38px, 11vw, 60px); }
+  .section-head .num, .section-head .aside { text-align: center; max-width: none; margin: 0 auto; }
 
-  /* ---- Cover: hide the desktop bottom-bar entirely on mobile, the
-          scroll-triggered overlay takes over. ---- */
+  /* ---- Cover: no fog, no cursor, no scroll-cue on mobile.
+          The landing flow below the cover handles the rest. ---- */
   .cover-desktop-tagline { display: none !important; }
-  .cover-mobile-overlay  { display: flex !important; }
+  .cover-fog,
+  .cover-fog-hint,
+  .cover-cursor,
+  .cover-scroll-cue { display: none !important; }
+  /* Old single overlay is unused now — kept hidden so any stale class
+     usage stays inert. */
+  .cover-mobile-overlay { display: none !important; }
 
-  /* ---- Nav: desktop link row hidden; hamburger + Let's Talk take over.
-          The desktop logo on the left is hidden too — the big centered
-          wordmark is the only brand mark on the landing. ---- */
+  /* The mobile-landing scroll flow only renders below 900px. */
+  .mobile-landing-flow { display: flex !important; }
+
+  /* ---- Nav: desktop link row + logo hidden; hamburger takes over. ---- */
   .nav-desktop-links { display: none !important; }
   .nav-desktop-logo  { display: none !important; }
   .nav-hamburger     { display: inline-flex !important; }
 
-  /* ---- Page 01 (Creatives): Pinterest-style 2-column grid.
-          Videos are vertical 9:16. .talent goes single-column INSIDE each
-          card (video → info stacked vertically). ---- */
+  /* ---- Page 01 (Creatives): horizontal swipe carousel, one card per
+          snap point — matches Page 2's pattern. ---- */
   .roster-grid {
-    grid-template-columns: 1fr 1fr !important;
+    display: grid !important;
+    grid-template-columns: none !important;
+    grid-auto-flow: column !important;
+    grid-auto-columns: 88% !important;
     gap: 16px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(225,225,213,0.4) transparent;
+    padding-bottom: 18px !important;
+    border-top: 1px solid rgba(225,225,213,0.18);
+    margin-top: 18px !important;
+    padding-top: 18px !important;
   }
+  .roster-grid::-webkit-scrollbar { height: 6px; }
+  .roster-grid::-webkit-scrollbar-track { background: rgba(225,225,213,0.08); }
+  .roster-grid::-webkit-scrollbar-thumb { background: rgba(225,225,213,0.4); }
   .talent {
+    scroll-snap-align: start;
     grid-template-columns: 1fr;
-    gap: 12px;
-    padding: 0;
+    gap: 14px;
+    padding: 0 !important;
   }
   .talent .frame { aspect-ratio: 9 / 16; }
-  /* Mux on mobile — fill the 9:16 frame so vertical reels have NO black
-     borders. Container provides the box; Mux player uses cover-fit. */
   .talent .frame.mux,
   .talent > .talent-mux {
     aspect-ratio: 9 / 16 !important;
@@ -415,35 +437,60 @@ img { display: block; max-width: 100%; }
   }
   .talent .info { padding: 6px 0 12px; }
   .talent .info .copy {
-    /* on mobile we use the JS expand toggle instead of the hard-clamp
-       mask; this rule just removes the desktop fade so the toggle can
-       drive display. */
     mask-image: none !important;
     -webkit-mask-image: none !important;
   }
+  /* Mobile bio clamp — show 3–4 lines before the fade-and-tap-to-expand */
+  .talent-bio-clamp { -webkit-line-clamp: 4; }
 
-  /* ---- Page 02 (Musicians & Artists) horizontal scroll: bigger cards
-          and looser snap padding on phones. ---- */
+  /* ---- Page 02 (Musicians & Artists) horizontal scroll cards: bigger
+          cards and looser snap on phones, heading splits on two lines. ---- */
   .artists-scroll { grid-auto-columns: 80% !important; }
+  .music-amp-break { display: block !important; }
 
-  /* ---- Page 03 (Podcast): heading flows on a single line — no <br> ---- */
-  .podcast-headline-break { display: inline !important; }
-  .podcast-headline-break::before { content: ' '; }
+  /* ---- Page 03 (Podcast): heading stays on TWO lines so it fits the
+          screen width without clipping. ---- */
+  .podcast-headline-break { display: block !important; }
+  .podcast-headline-break::before { content: ''; }
 
-  /* episode rows: compact two-column layout, hide the small art tile and
-     the "Episode N" subtitle to save vertical space. */
-  .ep-row       { grid-template-columns: 50px 1fr auto !important; gap: 14px !important; padding: 16px 12px !important; }
+  /* Episode rows: compact three-column layout with a styled box around
+     the episode number — matches the desktop art-tile aesthetic. */
+  .ep-row       { grid-template-columns: 56px 1fr 48px !important; gap: 14px !important; padding: 16px 12px !important; }
   .ep-art, .ep-guest, .ep-dur { display: none !important; }
-  .ep-row .ep-title { font-size: 16px !important; }
-  .ep-row .ep-num   { font-size: 24px !important; }
+  .ep-row .ep-num {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    aspect-ratio: 1;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(225,225,213,0.18);
+    color: var(--shell);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 22px !important;
+    line-height: 1;
+  }
+  .ep-row .ep-title { font-size: 15px !important; }
 
   /* ---- Page 04 (T.H.C Radio) ---- */
+  #radio { padding-bottom: 32px !important; }
   .player-grid     { grid-template-columns: 1fr !important; }
   .mix-list        { grid-template-columns: 1fr !important; }
   .mix-item        { border-right: 0 !important; border-bottom: 1px solid rgba(225,225,213,0.18); min-height: 180px !important; padding: 28px 20px !important; }
   .mix-item:last-child { border-bottom: 0; }
 
-  /* ---- Footer: centred, single-column stack ---- */
+  /* ---- Footer: divider sits exactly at the Page-4 → Footer seam.
+          Footer outer top-padding goes to 0 so the h2's border-top hugs
+          the section boundary; both sections share the brown-stone
+          background, so there is no visible colour change. ---- */
+  footer { padding-top: 0 !important; }
+  .footer-hello {
+    padding-top: 32px !important;
+    margin-bottom: 36px !important;
+    font-size: clamp(48px, 14vw, 84px) !important;
+  }
+
   .footer-cols {
     grid-template-columns: 1fr !important;
     gap: 28px !important;
@@ -460,34 +507,95 @@ img { display: block; max-width: 100%; }
   .footer-legal > div { text-align: center !important; max-width: none !important; }
 }
 
-/* ---- BUILT FOR HUMANS scroll-trigger animation (mobile-only overlay) ---- */
-.cover-mobile-overlay {
+/* ---- Mobile landing flow — sits between Cover and Page 01 on phones.
+        Hidden on desktop. Each .mlf-block fades up into view via
+        IntersectionObserver in MobileLandingFlow.tsx. ---- */
+.mobile-landing-flow {
   display: none; /* enabled inside the mobile media query */
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  position: relative;
+  padding: 80px 24px 96px;
+  color: var(--shell);
+  background: #2a2522 url('/images/logotype-brown-stone-bg.png') center/cover no-repeat;
+  z-index: 1;
+}
+.mobile-landing-flow::before {
+  content: '';
   position: absolute;
   inset: 0;
-  z-index: 4;
-  align-items: center;
-  justify-content: center;
+  background: rgba(27,25,24,0.55);
   pointer-events: none;
-  padding: 0 28px;
 }
-.cover-mobile-overlay .built {
+.mobile-landing-flow > * { position: relative; z-index: 1; }
+
+.mlf-block {
+  width: 100%;
+  max-width: 540px;
+  margin: 0 auto;
+  padding: 56px 0;
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 720ms cubic-bezier(0.22,0.61,0.36,1),
+              transform 720ms cubic-bezier(0.22,0.61,0.36,1);
+}
+.mlf-block.is-revealed { opacity: 1; transform: translateY(0); }
+
+.mlf-block.mlf-headline {
+  padding-top: 12px;
+}
+.mlf-block .mlf-headline-text {
   font-family: var(--font-display);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-size: clamp(28px, 9vw, 54px);
+  letter-spacing: 0.02em;
+  font-size: clamp(34px, 11vw, 56px);
   line-height: 1.05;
   color: var(--shell);
-  text-align: center;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 700ms cubic-bezier(0.22,0.61,0.36,1),
-              transform 700ms cubic-bezier(0.22,0.61,0.36,1);
+  margin: 0;
 }
-.cover-mobile-overlay.is-revealed .built {
-  opacity: 1;
-  transform: translateY(0);
+
+.mlf-block .mlf-body {
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(225,225,213,0.92);
+  margin: 0;
+}
+.mlf-block .mlf-body em {
+  color: var(--chartreuse);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.mlf-block .mlf-lead {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(225,225,213,0.85);
+  margin: 0 0 10px;
+}
+.mlf-block .mlf-green {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--chartreuse);
+  font-size: clamp(22px, 6.5vw, 34px);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+
+.mlf-block .mlf-offering {
+  font-family: var(--font-ui);
+  font-style: italic;
+  font-weight: 400;
+  text-transform: lowercase;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  color: rgba(225,225,213,0.78);
+  margin: 0;
 }
 
 /* ---- Hamburger button + slide-in drawer ---- */
