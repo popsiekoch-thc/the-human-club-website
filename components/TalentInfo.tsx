@@ -14,10 +14,14 @@ type Props = {
 /**
  * Below-the-video block in each Creatives card.
  *
- * Bio uses the .talent-bio-clamp class which line-clamps to 6 lines on
- * desktop and 2 lines on mobile (rules live in globals.css). Tapping the
- * copy area toggles the clamp — desktop users can click too, mobile is
- * the primary target.
+ * Desktop: bio is fully visible at all times, no clamp, no fade,
+ * no "Tap to read more" affordance.
+ * Mobile (≤900px): bio clamped to 4 lines with a soft fade at the
+ * bottom; the .talent-tap-more chip + button click toggle the clamp.
+ *
+ * The expand/collapse state is wired up regardless of viewport — clicks
+ * just have no visible effect on desktop, which keeps the markup simple
+ * and avoids any viewport-detection at render time.
  */
 export default function TalentInfo({ name, role, bio, ig, link, linkLabel }: Props) {
   const [expanded, setExpanded] = useState(false)
@@ -42,45 +46,26 @@ export default function TalentInfo({ name, role, bio, ig, link, linkLabel }: Pro
           display: 'block',
         }}
       >
-        <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(22px, 2.4vw, 30px)', lineHeight: 1.05, letterSpacing: '-0.02em', margin: '0 0 8px', color: 'var(--shell)' }}>
+        <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(22px, 2.4vw, 30px)', lineHeight: 1.05, letterSpacing: '-0.02em', margin: '0 0 8px', color: 'var(--shell)', textAlign: 'left' }}>
           {name}
         </h3>
-        <div style={{ fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(225,225,213,0.7)', marginBottom: 10 }}>
+        <div style={{ fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(225,225,213,0.7)', marginBottom: 10, textAlign: 'left' }}>
           {role}
         </div>
 
         <div style={{ position: 'relative' }}>
-          <p className={`talent-bio-clamp${expanded ? ' is-expanded' : ''}`}
-             style={{ fontFamily: 'var(--font-ui)', fontSize: 13, lineHeight: 1.55, margin: 0, color: 'rgba(225,225,213,0.88)' }}>
+          <p
+            className={`talent-bio-clamp${expanded ? ' is-expanded' : ''}`}
+            style={{ fontFamily: 'var(--font-ui)', fontSize: 13, lineHeight: 1.55, margin: 0, color: 'rgba(225,225,213,0.88)', textAlign: 'left' }}
+          >
             {bio}
           </p>
-          {!expanded && (
-            <span
-              aria-hidden
-              style={{
-                position: 'absolute',
-                left: 0, right: 0, bottom: 0,
-                height: 22,
-                background: 'linear-gradient(180deg, rgba(27,25,24,0) 0%, rgba(27,25,24,0.85) 100%)',
-                pointerEvents: 'none',
-              }}
-            />
-          )}
+          {/* Bottom fade overlay — visible only on mobile when clamped. */}
+          <span className="talent-bio-fade" aria-hidden />
         </div>
 
-        <span
-          style={{
-            display: 'inline-block',
-            marginTop: 10,
-            fontFamily: 'var(--font-ui)',
-            fontWeight: 700,
-            fontSize: 9,
-            letterSpacing: '0.2em',
-            textTransform: 'uppercase',
-            color: 'rgba(225,225,213,0.7)',
-            borderBottom: '1px solid currentColor',
-          }}
-        >
+        {/* "Tap to read more" — visible only on mobile. */}
+        <span className="talent-tap-more">
           {expanded ? '— Tap to collapse' : '— Tap to read more'}
         </span>
       </button>

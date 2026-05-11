@@ -79,6 +79,32 @@ export default function Cover() {
     }
   }, [setMask])
 
+  /**
+   * Mobile-only scroll-trigger for the three-line tagline overlay
+   * (.cover-mobile-overlay → .cover-mobile-line). Each line reveals at
+   * its own scroll threshold so the copy fades in sequentially as the
+   * user starts scrolling away from the cover. Listener runs on every
+   * viewport (it's cheap) but the overlay itself is hidden on desktop
+   * via CSS, so revealing classes there has no visible effect.
+   */
+  useEffect(() => {
+    const lines = Array.from(document.querySelectorAll<HTMLElement>('.cover-mobile-line'))
+    if (!lines.length) return
+    function onScroll() {
+      const vh = window.innerHeight
+      const y  = window.scrollY
+      lines.forEach((line, i) => {
+        // line 0 reveals at 4% of vh, 1 at 12%, 2 at 20%
+        const threshold = vh * (0.04 + i * 0.08)
+        if (y > threshold) line.classList.add('is-revealed')
+        else               line.classList.remove('is-revealed')
+      })
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   return (
     <section
       id="cover"
@@ -124,8 +150,18 @@ export default function Cover() {
         priority
       />
 
+      {/* Mobile-only three-line scroll-trigger overlay. Each .cover-mobile-line
+          fades in at a staggered scrollY threshold (Cover.tsx useEffect).
+          Sits within the cover's lower portion so the wordmark stays
+          centred above it on first load. */}
+      <div className="cover-mobile-overlay" aria-hidden>
+        <span className="cover-mobile-line">Built for humans.</span>
+        <span className="cover-mobile-line">Run by humans.</span>
+        <span className="cover-mobile-line">Created for humans.</span>
+      </div>
+
       {/* Bottom bar — desktop only. Hidden on mobile via
-          .cover-desktop-tagline (mobile copy moves to MobileLandingFlow). */}
+          .cover-desktop-tagline. */}
       <div className="cover-desktop-tagline" style={{
         position: 'absolute', left: 32, right: 32, bottom: 28, zIndex: 6,
         display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end',

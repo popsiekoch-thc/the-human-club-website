@@ -313,25 +313,13 @@ img { display: block; max-width: 100%; }
   flex-wrap: wrap;
 }
 
-/* ---- Talent bio clamp (used by TalentInfo client component).
-        Desktop shows 6 lines, mobile shows 2 lines, expanded removes
-        the clamp entirely. ---- */
-.talent-bio-clamp {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 6;
-  overflow: hidden;
-}
-.talent-bio-clamp.is-expanded {
-  -webkit-line-clamp: unset;
-  display: block;
-  overflow: visible;
-}
-@media (max-width: 900px) {
-  .talent-bio-clamp {
-    -webkit-line-clamp: 2;
-  }
-}
+/* ---- Talent bio (used by TalentInfo client component).
+        Desktop: fully visible, no clamp, no fade, no "Tap to read more".
+        Mobile: 4-line clamp + bottom fade + visible tap-to-expand chip.
+        ---- */
+.talent-bio-clamp { display: block; }
+.talent-bio-fade,
+.talent-tap-more  { display: none; }
 
 /* ---- Talent ghost link buttons (shell outline on dark grounds) ---- */
 .talent-ig-link,
@@ -383,12 +371,8 @@ img { display: block; max-width: 100%; }
   .cover-fog-hint,
   .cover-cursor,
   .cover-scroll-cue { display: none !important; }
-  /* Old single overlay is unused now — kept hidden so any stale class
-     usage stays inert. */
-  .cover-mobile-overlay { display: none !important; }
-
-  /* The mobile-landing scroll flow only renders below 900px. */
-  .mobile-landing-flow { display: flex !important; }
+  /* Three-line scroll-trigger overlay sits inside the cover on mobile. */
+  .cover-mobile-overlay { display: flex !important; }
 
   /* ---- Nav: desktop link row + logo hidden; hamburger takes over. ---- */
   .nav-desktop-links { display: none !important; }
@@ -440,13 +424,48 @@ img { display: block; max-width: 100%; }
     mask-image: none !important;
     -webkit-mask-image: none !important;
   }
-  /* Mobile bio clamp — show 3–4 lines before the fade-and-tap-to-expand */
-  .talent-bio-clamp { -webkit-line-clamp: 4; }
+  /* Mobile bio clamp — show 4 lines, soft fade, "Tap to read more" chip. */
+  .talent-bio-clamp {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+  }
+  .talent-bio-clamp.is-expanded {
+    -webkit-line-clamp: unset;
+    display: block;
+    overflow: visible;
+  }
+  .talent-bio-fade {
+    display: block;
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 22px;
+    background: linear-gradient(180deg, rgba(27,25,24,0) 0%, rgba(27,25,24,0.85) 100%);
+    pointer-events: none;
+  }
+  .talent-bio-clamp.is-expanded + .talent-bio-fade { display: none; }
+  .talent-tap-more {
+    display: inline-block;
+    margin-top: 10px;
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(225,225,213,0.7);
+    border-bottom: 1px solid currentColor;
+  }
 
   /* ---- Page 02 (Musicians & Artists) horizontal scroll cards: bigger
           cards and looser snap on phones, heading splits on two lines. ---- */
   .artists-scroll { grid-auto-columns: 80% !important; }
   .music-amp-break { display: block !important; }
+  /* Vertically + horizontally centred between the two dividing rules. */
+  .section-head-music {
+    padding: 64px 0 64px !important;
+    justify-items: center;
+  }
 
   /* ---- Page 03 (Podcast): heading stays on TWO lines so it fits the
           screen width without clipping. ---- */
@@ -507,95 +526,38 @@ img { display: block; max-width: 100%; }
   .footer-legal > div { text-align: center !important; max-width: none !important; }
 }
 
-/* ---- Mobile landing flow — sits between Cover and Page 01 on phones.
-        Hidden on desktop. Each .mlf-block fades up into view via
-        IntersectionObserver in MobileLandingFlow.tsx. ---- */
-.mobile-landing-flow {
+/* ---- Mobile-only scroll-trigger overlay INSIDE the cover.
+        Three centered lines stacked in the lower portion of the cover;
+        each line fades in at a staggered scroll threshold (handled by
+        scrollY listener in Cover.tsx). Hidden on desktop. ---- */
+.cover-mobile-overlay {
   display: none; /* enabled inside the mobile media query */
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 12vh;
+  z-index: 4;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
-  text-align: center;
-  position: relative;
-  padding: 80px 24px 96px;
-  color: var(--shell);
-  background: #2a2522 url('/images/logotype-brown-stone-bg.png') center/cover no-repeat;
-  z-index: 1;
-}
-.mobile-landing-flow::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(27,25,24,0.55);
+  gap: 2px;
+  padding: 0 24px;
   pointer-events: none;
 }
-.mobile-landing-flow > * { position: relative; z-index: 1; }
-
-.mlf-block {
-  width: 100%;
-  max-width: 540px;
-  margin: 0 auto;
-  padding: 56px 0;
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 720ms cubic-bezier(0.22,0.61,0.36,1),
-              transform 720ms cubic-bezier(0.22,0.61,0.36,1);
-}
-.mlf-block.is-revealed { opacity: 1; transform: translateY(0); }
-
-.mlf-block.mlf-headline {
-  padding-top: 12px;
-}
-.mlf-block .mlf-headline-text {
-  font-family: var(--font-display);
+.cover-mobile-line {
+  font-family: var(--font-ui);
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  font-size: clamp(34px, 11vw, 56px);
-  line-height: 1.05;
+  font-size: clamp(16px, 4.4vw, 20px);
+  line-height: 1.35;
+  letter-spacing: 0.005em;
   color: var(--shell);
-  margin: 0;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 600ms cubic-bezier(0.22,0.61,0.36,1),
+              transform 600ms cubic-bezier(0.22,0.61,0.36,1);
 }
-
-.mlf-block .mlf-body {
-  font-family: var(--font-ui);
-  font-size: 15px;
-  line-height: 1.6;
-  color: rgba(225,225,213,0.92);
-  margin: 0;
-}
-.mlf-block .mlf-body em {
-  color: var(--chartreuse);
-  font-style: italic;
-  font-weight: 400;
-}
-
-.mlf-block .mlf-lead {
-  font-family: var(--font-ui);
-  font-size: 14px;
-  line-height: 1.6;
-  color: rgba(225,225,213,0.85);
-  margin: 0 0 10px;
-}
-.mlf-block .mlf-green {
-  font-family: var(--font-display);
-  font-weight: 700;
-  color: var(--chartreuse);
-  font-size: clamp(22px, 6.5vw, 34px);
-  line-height: 1.1;
-  letter-spacing: -0.015em;
-  margin: 0;
-}
-
-.mlf-block .mlf-offering {
-  font-family: var(--font-ui);
-  font-style: italic;
-  font-weight: 400;
-  text-transform: lowercase;
-  font-size: 14px;
-  letter-spacing: 0.01em;
-  color: rgba(225,225,213,0.78);
-  margin: 0;
+.cover-mobile-line.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ---- Hamburger button + slide-in drawer ---- */
