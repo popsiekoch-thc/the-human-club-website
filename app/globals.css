@@ -259,10 +259,8 @@ img { display: block; max-width: 100%; }
   border: 1px solid var(--border);
 }
 
-/* Mux variant — bare wrapper, native size, NO chrome.
-   This deliberately overrides every property the placeholder frame sets so
-   the Mux player renders at its own intrinsic dimensions with no border,
-   no background, no forced aspect ratio. */
+/* Mux variant DESKTOP — bare wrapper, native size, no chrome.
+   Mobile overrides live in the @media (max-width: 900px) block. */
 .talent .frame.mux,
 .talent > .talent-mux {
   aspect-ratio: auto;
@@ -380,12 +378,13 @@ img { display: block; max-width: 100%; }
   .nav-hamburger     { display: inline-flex !important; }
 
   /* ---- Page 01 (Creatives): horizontal swipe carousel, one card per
-          snap point — matches Page 2's pattern. ---- */
+          snap point. Cards peek the next card slightly so the swipe
+          affordance is obvious. ---- */
   .roster-grid {
     display: grid !important;
     grid-template-columns: none !important;
     grid-auto-flow: column !important;
-    grid-auto-columns: 88% !important;
+    grid-auto-columns: 90% !important;
     gap: 16px !important;
     overflow-x: auto !important;
     overflow-y: hidden !important;
@@ -401,25 +400,57 @@ img { display: block; max-width: 100%; }
   .roster-grid::-webkit-scrollbar { height: 6px; }
   .roster-grid::-webkit-scrollbar-track { background: rgba(225,225,213,0.08); }
   .roster-grid::-webkit-scrollbar-thumb { background: rgba(225,225,213,0.4); }
+
+  /* Talent card: video on top → name → role → bio → links. No gap
+     between the video frame and the info block — the 9:16 video is the
+     visual anchor and everything flows tight beneath it. */
   .talent {
     scroll-snap-align: start;
     grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 0 !important;
     padding: 0 !important;
   }
+
+  /* Placeholder frame (no Mux yet) keeps the simple aspect-ratio:
+     enough for the dummy art tile + reel tag to render. */
   .talent .frame { aspect-ratio: 9 / 16; }
+
+  /* ---- Mux frame on mobile — strict 9:16 via the padding-top hack.
+          Width 100%, padding-top 177.78% (16/9), height 0. Inside, the
+          mux-player is positioned absolute to fill, with object-fit
+          cover so vertical / square / landscape source videos all crop
+          cleanly to portrait with NO black borders. ---- */
   .talent .frame.mux,
   .talent > .talent-mux {
-    aspect-ratio: 9 / 16 !important;
+    position: relative !important;
+    width: 100% !important;
+    padding-top: 177.78% !important;
+    aspect-ratio: auto !important;
+    height: 0 !important;
     overflow: hidden !important;
+    background: var(--ink) !important;
   }
   .talent .frame.mux mux-player,
   .talent > .talent-mux mux-player {
-    width: 100%;
-    height: 100%;
-    --media-object-fit: cover;
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    --media-object-fit: cover !important;
+    --media-object-position: center !important;
   }
-  .talent .info { padding: 6px 0 12px; }
+
+  /* Info block: tight against the video, consistent horizontal padding,
+     left-aligned. min-height:100% from desktop is reset so it doesn't
+     reserve unused space. */
+  .talent .info {
+    min-height: 0 !important;
+    padding: 18px 24px 22px !important;
+    text-align: left;
+  }
   .talent .info .copy {
     mask-image: none !important;
     -webkit-mask-image: none !important;

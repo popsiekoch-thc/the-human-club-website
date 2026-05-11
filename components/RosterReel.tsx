@@ -24,28 +24,22 @@ export default function RosterReel({ playbackId, initial, shortName, handle, fal
      frame would otherwise inherit.
      ───────────────────────────────────────────────────────────────────── */
   if (playbackId) {
+    /* Wrapper styling lives entirely in CSS (globals.css):
+         desktop  → .talent .frame.mux keeps aspect-ratio: auto so the
+                    Mux player renders at its native size (Page-1 lock-in).
+         mobile   → .talent .frame.mux uses the padding-top 177.78% trick
+                    to enforce a strict 9:16 frame, with the Mux player
+                    absolutely positioned to fill via cover-fit.
+       No inline aspect-ratio / height / overflow here — those rules
+       beat the media query and were the root cause of the landscape
+       gap on mobile. */
     return (
-      <div
-        className="frame mux"
-        style={{
-          background: 'transparent',
-          border: 0,
-          aspectRatio: 'auto',
-          overflow: 'visible',
-          padding: 0,
-        }}
-      >
+      <div className="frame mux">
         <MuxPlayer
           streamType="on-demand"
           playbackId={playbackId}
           metadataVideoTitle={`${shortName} — talent reel`}
           accentColor="#7f8948"
-          style={{
-            width: '100%',
-            height: 'auto',
-            background: 'transparent',
-            display: 'block',
-          }}
         />
       </div>
     )
