@@ -130,18 +130,12 @@ export default function Cover() {
 
           <br /><br />
 
-          {/* Original audio-experiences sentence — kept, with the two product
-              names in green as before. */}
+          {/* Audio-experiences line — single sentence, product names bolded
+              + chartreuse so the two offerings stand out. */}
           The Human Club also welcomes you to our audio experiences:{' '}
-          <span style={{ color: 'var(--chartreuse)' }}>The Human Club Podcast</span>
-          {' '}and{' '}
-          <span style={{ color: 'var(--chartreuse)' }}>T.H.C Radio</span>.
-
-          {/* New standalone green line — emphasised callout requested in the
-              desktop tweak pass. */}
-          <span style={{ display: 'block', color: 'var(--chartreuse)', fontWeight: 700, marginTop: 10 }}>
+          <strong style={{ color: 'var(--chartreuse)', fontWeight: 700 }}>
             The Human Club Podcast &amp; T.H.C Radio.
-          </span>
+          </strong>
 
           {/* Offering line — restyled to lowercase italic. */}
           <em style={{ display: 'block', marginTop: 14, fontStyle: 'italic', fontWeight: 400, textTransform: 'lowercase', color: 'var(--shell)', opacity: 0.85 }}>
