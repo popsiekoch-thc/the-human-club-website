@@ -28,14 +28,14 @@ const FEED_URL  = `https://itunes.apple.com/lookup?id=${APPLE_ID}&media=podcast&
  * uses iTunes' episodeUrl directly, so no Podbean iframe needed.
  */
 export const EPISODE_OVERRIDES: Record<string, { episodeNum: string; title: string }> = {
-  // Ep 01 — Lisa Thaens
-  '1000756839720': { episodeNum: '01', title: 'The Human Club X Lisa Thaens' },
+  // Ep 01 — Stevie (newest at the top)
+  '1000762255675': { episodeNum: '01', title: 'The Human Club X Stevie' },
   // Ep 02 — Adam Munnings
   '1000758809096': { episodeNum: '02', title: 'The Human Club X Adam Munnings' },
   // Ep 03 — Phoenix
   '1000758015710': { episodeNum: '03', title: 'The Human Club X Phoenix' },
-  // Ep 04 — Stevie
-  '1000762255675': { episodeNum: '04', title: 'The Human Club X Stevie' },
+  // Ep 04 — Lisa Thaens (oldest at the bottom)
+  '1000756839720': { episodeNum: '04', title: 'The Human Club X Lisa Thaens' },
 }
 
 /** No default featured episode — every row renders uniformly. */

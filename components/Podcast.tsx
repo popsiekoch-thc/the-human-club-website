@@ -7,9 +7,9 @@ const YT_URL = 'https://www.youtube.com/@TheHumanClub_Podcast'
 export default async function Podcast() {
   const episodesRaw = await getLatestEpisodes()
 
-  // Sort: highest episode number at top, oldest at bottom.
+  // Sort ascending: Ep 01 (Stevie) at top → Ep 04 (Lisa Thaens) at bottom.
   const episodes = [...episodesRaw].sort((a, b) => {
-    return parseInt(b.episodeNum, 10) - parseInt(a.episodeNum, 10)
+    return parseInt(a.episodeNum, 10) - parseInt(b.episodeNum, 10)
   })
 
   return (
@@ -26,21 +26,14 @@ export default async function Podcast() {
       <div className="section-head" style={{ borderTopColor: 'rgba(225,225,213,0.25)' }}>
         <div className="num" style={{ color: 'var(--shell)' }}>— Page 03 / Podcast</div>
         <h2 style={{ color: 'var(--shell)' }}>
-          The&nbsp;Human&nbsp;Club<br />
+          {/* The break is a block-level span so it forces a line on desktop
+              but collapses to an inline space on mobile (rule lives in
+              globals.css under .podcast-headline-break). */}
+          The&nbsp;Human&nbsp;Club<span className="podcast-headline-break" style={{ display: 'block' }} />
           Podcast<span style={{ color: 'var(--shell)', fontStyle: 'italic', fontWeight: 400 }}>.</span>
         </h2>
         <div className="aside" style={{ color: 'rgba(225,225,213,0.78)' }}>
           Conversations with the people making culture.
-          <span style={{ display: 'block', marginTop: 8 }}>
-            <a href="https://podcasts.apple.com/de/podcast/the-human-club-podcast/id1887355489" target="_blank" rel="noopener noreferrer" style={{ borderBottom: '1px solid currentColor', color: 'var(--shell)' }}>
-              Apple Podcasts ↗
-            </a>
-          </span>
-          <span style={{ display: 'block', marginTop: 4 }}>
-            <a href={YT_URL} target="_blank" rel="noopener noreferrer" style={{ borderBottom: '1px solid currentColor', color: 'var(--shell)' }}>
-              YouTube ↗
-            </a>
-          </span>
         </div>
       </div>
 

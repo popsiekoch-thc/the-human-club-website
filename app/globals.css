@@ -313,6 +313,26 @@ img { display: block; max-width: 100%; }
   flex-wrap: wrap;
 }
 
+/* ---- Talent bio clamp (used by TalentInfo client component).
+        Desktop shows 6 lines, mobile shows 2 lines, expanded removes
+        the clamp entirely. ---- */
+.talent-bio-clamp {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  overflow: hidden;
+}
+.talent-bio-clamp.is-expanded {
+  -webkit-line-clamp: unset;
+  display: block;
+  overflow: visible;
+}
+@media (max-width: 900px) {
+  .talent-bio-clamp {
+    -webkit-line-clamp: 2;
+  }
+}
+
 /* ---- Talent ghost link buttons (shell outline on dark grounds) ---- */
 .talent-ig-link,
 .talent-alt-link {
@@ -346,15 +366,194 @@ img { display: block; max-width: 100%; }
 /* ---- Nav CTA hover — shell fill, ink type ---- */
 .nav-cta { transition: background 240ms, color 240ms; }
 
+/* ============================================================
+ * MOBILE VIEW — overrides applied below the 900px tablet break.
+ * ============================================================ */
 @media (max-width: 900px) {
-  .section-head { grid-template-columns: 1fr; }
+  /* ---- page chrome ---- */
   .wrap { padding: 0 20px; }
-  .roster-grid { grid-template-columns: 1fr !important; }
-  .talent       { grid-template-columns: 1fr; }
+  .section-head { grid-template-columns: 1fr; gap: 16px; padding-top: 40px; }
+  .section-head h2 { font-size: clamp(38px, 11vw, 64px); }
+
+  /* ---- Cover: hide the desktop bottom-bar entirely on mobile, the
+          scroll-triggered overlay takes over. ---- */
+  .cover-desktop-tagline { display: none !important; }
+  .cover-mobile-overlay  { display: flex !important; }
+
+  /* ---- Nav: desktop link row hidden; hamburger + Let's Talk take over.
+          The desktop logo on the left is hidden too — the big centered
+          wordmark is the only brand mark on the landing. ---- */
+  .nav-desktop-links { display: none !important; }
+  .nav-desktop-logo  { display: none !important; }
+  .nav-hamburger     { display: inline-flex !important; }
+
+  /* ---- Page 01 (Creatives): Pinterest-style 2-column grid.
+          Videos are vertical 9:16. .talent goes single-column INSIDE each
+          card (video → info stacked vertically). ---- */
+  .roster-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 16px !important;
+  }
+  .talent {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 0;
+  }
+  .talent .frame { aspect-ratio: 9 / 16; }
+  /* Mux on mobile — fill the 9:16 frame so vertical reels have NO black
+     borders. Container provides the box; Mux player uses cover-fit. */
+  .talent .frame.mux,
+  .talent > .talent-mux {
+    aspect-ratio: 9 / 16 !important;
+    overflow: hidden !important;
+  }
+  .talent .frame.mux mux-player,
+  .talent > .talent-mux mux-player {
+    width: 100%;
+    height: 100%;
+    --media-object-fit: cover;
+  }
+  .talent .info { padding: 6px 0 12px; }
+  .talent .info .copy {
+    /* on mobile we use the JS expand toggle instead of the hard-clamp
+       mask; this rule just removes the desktop fade so the toggle can
+       drive display. */
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+  }
+
+  /* ---- Page 02 (Musicians & Artists) horizontal scroll: bigger cards
+          and looser snap padding on phones. ---- */
   .artists-scroll { grid-auto-columns: 80% !important; }
-  .ep-row       { grid-template-columns: 60px 1fr auto !important; }
-  .ep-art, .ep-guest { display: none !important; }
-  .player-grid  { grid-template-columns: 1fr !important; }
-  .mix-list     { grid-template-columns: 1fr !important; }
-  .footer-cols  { grid-template-columns: 1fr 1fr !important; }
+
+  /* ---- Page 03 (Podcast): heading flows on a single line — no <br> ---- */
+  .podcast-headline-break { display: inline !important; }
+  .podcast-headline-break::before { content: ' '; }
+
+  /* episode rows: compact two-column layout, hide the small art tile and
+     the "Episode N" subtitle to save vertical space. */
+  .ep-row       { grid-template-columns: 50px 1fr auto !important; gap: 14px !important; padding: 16px 12px !important; }
+  .ep-art, .ep-guest, .ep-dur { display: none !important; }
+  .ep-row .ep-title { font-size: 16px !important; }
+  .ep-row .ep-num   { font-size: 24px !important; }
+
+  /* ---- Page 04 (T.H.C Radio) ---- */
+  .player-grid     { grid-template-columns: 1fr !important; }
+  .mix-list        { grid-template-columns: 1fr !important; }
+  .mix-item        { border-right: 0 !important; border-bottom: 1px solid rgba(225,225,213,0.18); min-height: 180px !important; padding: 28px 20px !important; }
+  .mix-item:last-child { border-bottom: 0; }
+
+  /* ---- Footer: centred, single-column stack ---- */
+  .footer-cols {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+    text-align: center;
+  }
+  .footer-cols ul { text-align: center; }
+  .footer-cols h4 { text-align: center; }
+  .footer-legal {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center;
+    gap: 8px !important;
+  }
+  .footer-legal > div { text-align: center !important; max-width: none !important; }
 }
+
+/* ---- BUILT FOR HUMANS scroll-trigger animation (mobile-only overlay) ---- */
+.cover-mobile-overlay {
+  display: none; /* enabled inside the mobile media query */
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  padding: 0 28px;
+}
+.cover-mobile-overlay .built {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: clamp(28px, 9vw, 54px);
+  line-height: 1.05;
+  color: var(--shell);
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 700ms cubic-bezier(0.22,0.61,0.36,1),
+              transform 700ms cubic-bezier(0.22,0.61,0.36,1);
+}
+.cover-mobile-overlay.is-revealed .built {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---- Hamburger button + slide-in drawer ---- */
+.nav-hamburger {
+  display: none; /* enabled in mobile media query */
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  padding: 8px 12px;
+  color: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-hamburger .bars {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 28px;
+}
+.nav-hamburger .bars span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: currentColor;
+  transition: transform 280ms, opacity 200ms;
+}
+.nav-hamburger[aria-expanded="true"] .bars span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-hamburger[aria-expanded="true"] .bars span:nth-child(2) { opacity: 0; }
+.nav-hamburger[aria-expanded="true"] .bars span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+.nav-drawer {
+  position: fixed;
+  inset: 0;
+  background: rgba(27,25,24,0.96);
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 32px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 320ms ease;
+}
+.nav-drawer.open { opacity: 1; pointer-events: auto; }
+.nav-drawer a {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(36px, 12vw, 64px);
+  letter-spacing: -0.025em;
+  line-height: 1;
+  color: var(--shell);
+  text-decoration: none;
+}
+.nav-drawer a:hover { color: var(--chartreuse); }
+.nav-drawer .drawer-foot {
+  margin-top: 32px;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(225,225,213,0.6);
+}
+

@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import MobileMenu from './MobileMenu'
 
 export default function Nav() {
   /**
    * Once the user has scrolled past the landing cover, we drop a
-   * 50%-opacity grey backdrop behind the nav so it stops clashing with the
-   * section content underneath. Threshold = (cover height − 80px) so the
-   * transition triggers just before the nav crosses the cover boundary.
+   * 50%-opacity grey backdrop behind the nav so it stops clashing with
+   * the section content underneath.
    */
   const [scrolled, setScrolled] = useState(false)
 
@@ -37,8 +37,8 @@ export default function Nav() {
       }}
     >
       <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center', padding: '18px 32px', gap: '40px' }}>
-        {/* Logo — always stone variant since every section sits on a dark ground */}
-        <a href="#cover" aria-label="The Human Club — home" style={{ display: 'block', lineHeight: 0 }}>
+        {/* Desktop logo — hidden on mobile via .nav-desktop-logo */}
+        <a href="#cover" aria-label="The Human Club — home" className="nav-desktop-logo" style={{ display: 'block', lineHeight: 0 }}>
           <Image
             src="/images/logo-lockup-stone.png"
             alt="The Human Club"
@@ -49,20 +49,26 @@ export default function Nav() {
           />
         </a>
 
-        <div style={{ display: 'flex', gap: 30, justifyContent: 'center' }} className="hidden tablet:flex">
-          {[
-            { label: 'Creatives', href: '#creatives' },
-            { label: 'Music',     href: '#music'     },
-            { label: 'Podcast',   href: '#podcast'   },
-            { label: 'THC Radio', href: '#radio'     },
-          ].map(({ label, href }) => (
-            <a key={href} href={href} className="nav-link"
-               style={{ fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: 12, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'inherit', padding: '6px 0' }}>
-              {label}
-            </a>
-          ))}
+        {/* Centre column — desktop has section links, mobile has the
+            hamburger menu trigger. Both share this single grid cell. */}
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <div className="nav-desktop-links" style={{ display: 'flex', gap: 30 }}>
+            {[
+              { label: 'Creatives', href: '#creatives' },
+              { label: 'Music',     href: '#music'     },
+              { label: 'Podcast',   href: '#podcast'   },
+              { label: 'THC Radio', href: '#radio'     },
+            ].map(({ label, href }) => (
+              <a key={href} href={href} className="nav-link"
+                 style={{ fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: 12, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'inherit', padding: '6px 0' }}>
+                {label}
+              </a>
+            ))}
+          </div>
+          <MobileMenu />
         </div>
 
+        {/* Let's Talk stays in the top-right on every viewport */}
         <NavCTA />
       </div>
     </nav>

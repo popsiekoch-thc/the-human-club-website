@@ -7,6 +7,7 @@ export default function Cover() {
   const fogRef    = useRef<HTMLDivElement>(null)
   const cursorRef = useRef<HTMLDivElement>(null)
   const hintRef   = useRef<HTMLDivElement>(null)
+  const builtRef  = useRef<HTMLDivElement>(null)
   const movesRef  = useRef(0)
   const clearedRef = useRef(false)
 
@@ -61,6 +62,27 @@ export default function Cover() {
     }
   }, [setMask])
 
+  /**
+   * Mobile-only scroll trigger — once the user scrolls more than ~12%
+   * down the cover the "BUILT FOR HUMANS, RUN BY HUMANS." overlay fades
+   * in. We listen on scroll instead of using IntersectionObserver
+   * because the overlay starts inside the viewport (it's the whole
+   * landing) — we want the reveal to fire as the user starts moving,
+   * not just on initial intersection.
+   */
+  useEffect(() => {
+    const built = builtRef.current
+    if (!built) return
+    function onScroll() {
+      const trigger = window.innerHeight * 0.12
+      if (window.scrollY > trigger) built!.classList.add('is-revealed')
+      else                          built!.classList.remove('is-revealed')
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   return (
     <section
       id="cover"
@@ -106,8 +128,16 @@ export default function Cover() {
         priority
       />
 
-      {/* Bottom bar */}
-      <div style={{
+      {/* Mobile-only scroll-trigger overlay — fades in once the user
+          starts scrolling, centred on screen. Hidden on desktop via the
+          cover-mobile-overlay rule in globals.css. */}
+      <div ref={builtRef} className="cover-mobile-overlay" aria-hidden>
+        <span className="built">Built for humans,<br />run by humans.</span>
+      </div>
+
+      {/* Bottom bar — desktop only. Hidden on mobile (replaced by the
+          scroll-triggered overlay above). */}
+      <div className="cover-desktop-tagline" style={{
         position: 'absolute', left: 32, right: 32, bottom: 28, zIndex: 6,
         display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end',
         color: 'var(--shell)', fontFamily: 'var(--font-ui)', fontSize: '12px', lineHeight: 1.55,

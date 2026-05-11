@@ -1,5 +1,6 @@
 import { getTalents } from '../lib/talent'
 import RosterReel from './RosterReel'
+import TalentInfo from './TalentInfo'
 
 const FRAME_COLORS = [
   'var(--ink)', 'var(--burgundy)', 'var(--tobacco)', 'var(--burgundy)', 'var(--ink)', 'var(--tobacco)',
@@ -48,39 +49,14 @@ export default async function Roster() {
                 reelRatio={t.reelRatio}
               />
 
-              <div className="info">
-                <div className="copy">
-                  <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 30, lineHeight: 1, letterSpacing: '-0.02em', margin: '0 0 10px', color: 'var(--shell)' }}>
-                    {t.name}
-                  </h3>
-                  <div style={{ fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(225,225,213,0.7)', marginBottom: 12 }}>
-                    {t.role}
-                  </div>
-                  <p style={{ fontFamily: 'var(--font-ui)', fontSize: 13, lineHeight: 1.55, margin: '0 0 14px', maxWidth: 480, color: 'rgba(225,225,213,0.88)' }}>
-                    {t.bio}
-                  </p>
-                </div>
-                <div className="links">
-                  <a
-                    href={t.ig}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="talent-ig-link"
-                    style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 14px', borderRadius: 999, fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase' }}
-                  >
-                    Instagram →
-                  </a>
-                  <a
-                    href={t.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="talent-alt-link"
-                    style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 14px', borderRadius: 999, fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase' }}
-                  >
-                    {t.linkLabel} →
-                  </a>
-                </div>
-              </div>
+              <TalentInfo
+                name={t.name}
+                role={t.role}
+                bio={t.bio}
+                ig={t.ig}
+                link={t.link}
+                linkLabel={t.linkLabel}
+              />
             </article>
           ))}
         </div>
