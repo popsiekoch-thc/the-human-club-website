@@ -5,7 +5,7 @@ export default function Footer() {
         position: 'relative',
         background: '#2a2522 url("/images/logotype-brown-stone-bg.png") center/cover no-repeat',
         color: 'var(--shell)',
-        padding: '80px 40px 36px',
+        padding: '0 40px 36px',
       }}
     >
       <div aria-hidden style={{ position: 'absolute', inset: 0, background: 'rgba(27,25,24,0.55)', pointerEvents: 'none' }} />
