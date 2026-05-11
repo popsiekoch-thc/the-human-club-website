@@ -112,21 +112,16 @@ export default function Cover() {
         display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end',
         color: 'var(--shell)', fontFamily: 'var(--font-ui)', fontSize: '12px', lineHeight: 1.55,
       }}>
-        <div style={{ maxWidth: 540, opacity: 0.92 }}>
-          <strong style={{ display: 'block', fontWeight: 700, fontSize: '11px', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--shell)', marginBottom: 14 }}>
-            Built for humans, run by humans.
+        <div style={{ maxWidth: 540, opacity: 0.92, display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <strong style={{ fontWeight: 700, color: 'var(--shell)' }}>
+            The Human Club is a 360-degree creative agency.
           </strong>
-          The Human Club is a 360-degree creative agency. We take the brief from start to finish, representing incredible talent within the scene —{' '}
-          <em style={{ color: 'var(--chartreuse)', fontStyle: 'italic', fontWeight: 400 }}>Humans Of Influence, Artists, Musicians, User Generated Content Creators and Experience Designers.</em>
-          <br /><br />
-          The Human Club also welcomes you to our audio experiences:{' '}
-          <span style={{ color: 'var(--chartreuse)' }}>The Human Club Podcast</span>
-          {' '}and{' '}
-          <span style={{ color: 'var(--chartreuse)' }}>T.H.C Radio</span>.
-          <br />
-          <strong style={{ display: 'block', fontWeight: 700, fontSize: '11px', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--shell)', marginTop: 14 }}>
-            Private Social Media Consultancy.
-          </strong>
+          <span style={{ color: 'var(--chartreuse)', fontWeight: 700 }}>
+            The Human Club Podcast &amp; T.H.C Radio.
+          </span>
+          <em style={{ fontStyle: 'italic', fontWeight: 400, textTransform: 'lowercase', color: 'var(--shell)', opacity: 0.85 }}>
+            Offering private social media consultancy.
+          </em>
         </div>
         <div style={{ textAlign: 'right', opacity: 0.72, maxWidth: 320 }}>
           <strong style={{ display: 'block', color: 'var(--shell)', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', fontSize: '10px', marginBottom: 4 }}>

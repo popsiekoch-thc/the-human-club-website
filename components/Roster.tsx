@@ -10,7 +10,7 @@ export default async function Roster() {
 
   return (
     <section
-      id="roster"
+      id="creatives"
       className="on-dark"
       style={{
         position: 'relative',
@@ -26,7 +26,7 @@ export default async function Roster() {
       <div style={{ position: 'relative', zIndex: 1 }}>
         <div className="section-head" style={{ borderTopColor: 'rgba(225,225,213,0.25)' }}>
           <div className="num">— Page 01 / The Agency</div>
-          <h2>The&nbsp;<em>Roster.</em></h2>
+          <h2>The&nbsp;<em>Creatives.</em></h2>
           <div className="aside" style={{ color: 'rgba(225,225,213,0.75)' }}>Photographers, Directors, Creators, Influencers and Content creators; represented worldwide.</div>
         </div>
 

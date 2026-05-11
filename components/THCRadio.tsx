@@ -23,7 +23,7 @@ export default function THCRadio() {
             <em style={{ color: 'var(--chartreuse)', fontStyle: 'italic', fontWeight: 400 }}>Radio.</em>
           </h2>
           <div className="aside" style={{ color: 'rgba(225,225,213,0.75)' }}>
-            Reposted mixes from the artists on the roster — straight from our SoundCloud.
+            Reposted mixes from the artists we represent — straight from our SoundCloud.
           </div>
         </div>
 

@@ -35,7 +35,7 @@ export default function Footer() {
               — Sections
             </h4>
             <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
-              {[['#roster', 'Roster'], ['#music', 'Music & Artists'], ['#podcast', 'Podcast'], ['#radio', 'THC Radio']].map(([href, label]) => (
+              {[['#creatives', 'Creatives'], ['#music', 'Music & Artists'], ['#podcast', 'Podcast'], ['#radio', 'THC Radio']].map(([href, label]) => (
                 <li key={href}><a href={href} className="footer-link" style={{ fontFamily: 'var(--font-ui)', fontSize: 14, lineHeight: 1.6, color: 'var(--shell)' }}>{label}</a></li>
               ))}
             </ul>
