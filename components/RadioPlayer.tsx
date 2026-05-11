@@ -122,14 +122,17 @@ export default function RadioPlayer() {
         </a>
       </div>
 
-      {/* Mix selector — clicking a card loads it into the iframe above */}
+      {/* Mix selector — clicking a card loads it into the iframe above.
+          Cards are sized larger than the default mix-item so they read as
+          first-class clickable picks beneath the iframe, not as a tight
+          row of links. */}
       <div
         className="mix-list"
         style={{
           display: 'grid',
           gridTemplateColumns: `repeat(${MIXES.length}, 1fr)`,
           gap: 4,
-          marginTop: 24,
+          marginTop: 32,
           borderTop: '1px solid rgba(225,225,213,0.18)',
         }}
       >
@@ -145,12 +148,13 @@ export default function RadioPlayer() {
               }}
               className={`mix-item${isActive ? ' active' : ''}`}
               style={{
-                padding: 22,
+                padding: '36px 32px',
                 borderRight: i < MIXES.length - 1 ? '1px solid rgba(225,225,213,0.18)' : '0',
-                minHeight: 160,
+                minHeight: 260,
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
+                gap: 16,
                 color: 'var(--shell)',
                 textAlign: 'left',
                 background: isActive ? 'rgba(0,0,0,0.55)' : 'transparent',
@@ -162,14 +166,14 @@ export default function RadioPlayer() {
               }}
               aria-pressed={isActive}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-ui)', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', opacity: 0.75 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-ui)', fontSize: 12, letterSpacing: '0.22em', textTransform: 'uppercase', opacity: 0.78 }}>
                 <span>— Mix {(i + 1).toString().padStart(2, '0')}</span>
                 <span>{isActive ? 'Now playing' : 'Play ▶'}</span>
               </div>
-              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 22, letterSpacing: '-0.015em', lineHeight: 1.1, marginTop: 'auto', color: 'var(--shell)' }}>
+              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 30, letterSpacing: '-0.02em', lineHeight: 1.1, marginTop: 'auto', color: 'var(--shell)' }}>
                 {m.title}
               </div>
-              <div style={{ fontFamily: 'var(--font-ui)', fontSize: 12, opacity: 0.78, marginTop: 4, color: 'var(--shell)' }}>
+              <div style={{ fontFamily: 'var(--font-ui)', fontSize: 14, opacity: 0.82, marginTop: 6, color: 'var(--shell)' }}>
                 — {m.host}
               </div>
             </button>

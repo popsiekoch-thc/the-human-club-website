@@ -9,7 +9,7 @@ export default function THCRadio() {
         position: 'relative',
         background: '#2a2522 url("/images/logotype-brown-stone-bg.png") center/cover no-repeat',
         color: 'var(--shell)',
-        padding: '0 40px 32px',
+        padding: '0 40px 100px',
         scrollMarginTop: 76,
       }}
     >
