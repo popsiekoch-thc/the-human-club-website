@@ -172,7 +172,7 @@ export default function Cover() {
             Built for humans, run by humans.
           </strong>
           <strong style={{ fontWeight: 700, color: 'var(--shell)' }}>
-            The Human Club is a Creative collective. Housing Multi-discipline creatives:
+            The Human Club is a Creative collective. Housing Multi-disciplinary creatives:
           </strong>{' '}
           <em style={{ color: 'var(--chartreuse)', fontStyle: 'italic', fontWeight: 400 }}>
             Sound Designers, Videographers, Photographers, User Generated Content Creators, Musicians and Experience designers.

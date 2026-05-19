@@ -523,6 +523,11 @@ img { display: block; max-width: 100%; }
   }
   .ep-row .ep-title { font-size: 15px !important; }
 
+  /* ---- Page 01 → Page 02 spacing: trim the Creatives section's
+          bottom padding so the gap before "Musicians & Artists" feels
+          consistent with the other section transitions on mobile. ---- */
+  #creatives { padding-bottom: 40px !important; }
+
   /* ---- Page 04 (T.H.C Radio) ---- */
   #radio { padding-bottom: 32px !important; }
   .player-grid     { grid-template-columns: 1fr !important; }
