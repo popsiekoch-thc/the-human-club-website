@@ -18,7 +18,7 @@ export default async function MusicArtists() {
       <div aria-hidden style={{ position: 'absolute', inset: 0, background: 'rgba(27,25,24,0.55)', pointerEvents: 'none' }} />
 
       <div style={{ position: 'relative', zIndex: 1 }}>
-        <div className="section-head section-head-music" style={{ borderTopColor: 'rgba(225,225,213,0.25)' }}>
+        <div className="section-head" style={{ borderTopColor: 'rgba(225,225,213,0.25)' }}>
           <div className="num">— Page 02 / The Agency</div>
           <h2>
             Musicians&nbsp;&amp;
