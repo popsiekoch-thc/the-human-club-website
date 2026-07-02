@@ -140,19 +140,29 @@ export default function Cover() {
         }}
       />
 
-      {/* Centred stack — wordmark + eyebrow line beneath it. */}
-      <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 22 }}>
-        {/* Wordmark — the only element on first load on mobile. */}
+      {/* Centred stack — wordmark → eyebrow → double-gap → tagline. */}
+      <div className="cover-center-stack" style={{
+        position: 'relative',
+        zIndex: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 22,
+        padding: '0 32px',
+        maxWidth: 1200,
+        width: '100%',
+      }}>
+        {/* Wordmark */}
         <Image
           src="/images/logotype-stone.png"
           alt="The Human Club"
           width={920}
           height={300}
-          style={{ maxWidth: '920px', width: '70%' }}
+          style={{ maxWidth: '780px', width: '62%' }}
           priority
         />
-        {/* Eyebrow line under the wordmark — same uppercase Mytupi
-            styling as the bottom-left tagline eyebrow. */}
+
+        {/* Eyebrow line under the wordmark */}
         <span style={{
           fontFamily: 'var(--font-ui)',
           fontWeight: 700,
@@ -165,6 +175,52 @@ export default function Cover() {
         }}>
           A Creative Collective Agency
         </span>
+
+        {/* Tagline block — centred, sits under the eyebrow with a double
+            gap. Hidden on mobile (same class as before, .cover-desktop-tagline
+            is display:none < 900px). */}
+        <div
+          className="cover-desktop-tagline"
+          style={{
+            marginTop: 32,            /* + parent gap 22 = ~54px "double" gap */
+            maxWidth: 640,
+            opacity: 0.92,
+            color: 'var(--shell)',
+            fontFamily: 'var(--font-ui)',
+            fontSize: '12px',
+            lineHeight: 1.55,
+            textAlign: 'center',
+          }}
+        >
+          {/* Heading */}
+          <strong style={{ display: 'block', fontWeight: 700, fontSize: '11px', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--shell)', marginBottom: 14 }}>
+            House multi-disciplinary creatives.
+          </strong>
+
+          {/* Discipline list — bold, chartreuse, non-italic. */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 2, color: 'var(--chartreuse)', fontWeight: 700, fontStyle: 'normal', alignItems: 'center', margin: '0 0 20px' }}>
+            <span>Content Creators</span>
+            <span>User Generated Content Creators</span>
+            <span>Photographers</span>
+            <span>Videographers</span>
+            <span>Sound Designers</span>
+            <span>Event Performers</span>
+            <span>Experience Designers</span>
+            <span>Musicians</span>
+            <span>DJ&apos;s</span>
+          </div>
+
+          {/* Audio-experiences line */}
+          The Human Club also welcomes you to our audio experiences:{' '}
+          <strong style={{ color: 'var(--chartreuse)', fontWeight: 700 }}>
+            The Human Club Podcast &amp; T.H.C Radio.
+          </strong>
+
+          {/* Offering line */}
+          <em style={{ display: 'block', marginTop: 14, fontStyle: 'italic', fontWeight: 400, textTransform: 'lowercase', color: 'var(--shell)', opacity: 0.85 }}>
+            Offering private social media consultancy for influencers.
+          </em>
+        </div>
       </div>
 
       {/* Mobile-only three-line scroll-trigger overlay. Each .cover-mobile-line
@@ -177,51 +233,24 @@ export default function Cover() {
         <span className="cover-mobile-line">Created for humans.</span>
       </div>
 
-      {/* Bottom bar — desktop only. Hidden on mobile via
-          .cover-desktop-tagline. */}
-      <div className="cover-desktop-tagline" style={{
-        position: 'absolute', left: 32, right: 32, bottom: 28, zIndex: 6,
-        display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end',
-        color: 'var(--shell)', fontFamily: 'var(--font-ui)', fontSize: '12px', lineHeight: 1.55,
-      }}>
-        <div style={{ maxWidth: 540, opacity: 0.92 }}>
-          {/* Heading — replaces the old "Built for humans, run by humans."
-              eyebrow. Same uppercase Mytupi styling. */}
-          <strong style={{ display: 'block', fontWeight: 700, fontSize: '11px', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--shell)', marginBottom: 14 }}>
-            House multi-disciplinary creatives.
-          </strong>
-
-          {/* Discipline list — bold, chartreuse, non-italic. Each item
-              on its own line. */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 2, color: 'var(--chartreuse)', fontWeight: 700, fontStyle: 'normal', margin: '0 0 20px' }}>
-            <span>Content Creators</span>
-            <span>User Generated Content Creators</span>
-            <span>Photographers</span>
-            <span>Videographers</span>
-            <span>Sound Designers</span>
-            <span>Event Performers</span>
-            <span>Experience Designers</span>
-            <span>Musicians</span>
-            <span>DJ&apos;s</span>
-          </div>
-
-          {/* Audio-experiences line — copy unchanged. */}
-          The Human Club also welcomes you to our audio experiences:{' '}
-          <strong style={{ color: 'var(--chartreuse)', fontWeight: 700 }}>
-            The Human Club Podcast &amp; T.H.C Radio.
-          </strong>
-
-          {/* Offering line — lowercase italic. */}
-          <em style={{ display: 'block', marginTop: 14, fontStyle: 'italic', fontWeight: 400, textTransform: 'lowercase', color: 'var(--shell)', opacity: 0.85 }}>
-            Offering private social media consultancy for influencers.
-          </em>
-        </div>
-        <div style={{ textAlign: 'right', opacity: 0.72, maxWidth: 320 }}>
-          <strong style={{ display: 'block', color: 'var(--shell)', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', fontSize: '10px', marginBottom: 4 }}>
-            — Working from
-          </strong>
-          Berlin &amp; Cape Town<br />Partnering worldwide.
-        </div>
+      {/* Bottom-right "Working from" corner — desktop only. The rest of
+          the previous bottom-bar tagline moved into the centre stack
+          above. Class .cover-desktop-tagline is dropped from here (that
+          class now lives on the new centre tagline block) and the
+          working-from is tagged with its own mobile-hide class. */}
+      <div
+        className="cover-desktop-workingfrom"
+        style={{
+          position: 'absolute', right: 32, bottom: 28, zIndex: 6,
+          textAlign: 'right', opacity: 0.72, maxWidth: 320,
+          color: 'var(--shell)', fontFamily: 'var(--font-ui)',
+          fontSize: '12px', lineHeight: 1.55,
+        }}
+      >
+        <strong style={{ display: 'block', color: 'var(--shell)', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', fontSize: '10px', marginBottom: 4 }}>
+          — Working from
+        </strong>
+        Berlin &amp; Cape Town<br />Partnering worldwide.
       </div>
 
       {/* Scroll cue — desktop only */}

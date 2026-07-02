@@ -364,7 +364,8 @@ img { display: block; max-width: 100%; }
 
   /* ---- Cover: no fog, no cursor, no scroll-cue on mobile.
           The landing flow below the cover handles the rest. ---- */
-  .cover-desktop-tagline { display: none !important; }
+  .cover-desktop-tagline,
+  .cover-desktop-workingfrom { display: none !important; }
   .cover-fog,
   .cover-fog-hint,
   .cover-cursor,
