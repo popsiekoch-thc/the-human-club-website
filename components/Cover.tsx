@@ -140,15 +140,32 @@ export default function Cover() {
         }}
       />
 
-      {/* Wordmark — the only element on first load on mobile. */}
-      <Image
-        src="/images/logotype-stone.png"
-        alt="The Human Club"
-        width={920}
-        height={300}
-        style={{ maxWidth: '920px', width: '70%', position: 'relative', zIndex: 2 }}
-        priority
-      />
+      {/* Centred stack — wordmark + eyebrow line beneath it. */}
+      <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 22 }}>
+        {/* Wordmark — the only element on first load on mobile. */}
+        <Image
+          src="/images/logotype-stone.png"
+          alt="The Human Club"
+          width={920}
+          height={300}
+          style={{ maxWidth: '920px', width: '70%' }}
+          priority
+        />
+        {/* Eyebrow line under the wordmark — same uppercase Mytupi
+            styling as the bottom-left tagline eyebrow. */}
+        <span style={{
+          fontFamily: 'var(--font-ui)',
+          fontWeight: 700,
+          fontSize: '12px',
+          letterSpacing: '0.28em',
+          textTransform: 'uppercase',
+          color: 'var(--shell)',
+          opacity: 0.92,
+          textAlign: 'center',
+        }}>
+          A Creative Collective Agency
+        </span>
+      </div>
 
       {/* Mobile-only three-line scroll-trigger overlay. Each .cover-mobile-line
           fades in at a staggered scrollY threshold (Cover.tsx useEffect).
@@ -168,20 +185,33 @@ export default function Cover() {
         color: 'var(--shell)', fontFamily: 'var(--font-ui)', fontSize: '12px', lineHeight: 1.55,
       }}>
         <div style={{ maxWidth: 540, opacity: 0.92 }}>
+          {/* Heading — replaces the old "Built for humans, run by humans."
+              eyebrow. Same uppercase Mytupi styling. */}
           <strong style={{ display: 'block', fontWeight: 700, fontSize: '11px', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--shell)', marginBottom: 14 }}>
-            Built for humans, run by humans.
+            House multi-disciplinary creatives.
           </strong>
-          <strong style={{ fontWeight: 700, color: 'var(--shell)' }}>
-            The Human Club is a Creative collective. Housing Multi-disciplinary creatives:
-          </strong>{' '}
-          <em style={{ color: 'var(--chartreuse)', fontStyle: 'italic', fontWeight: 400 }}>
-            Sound Designers, Videographers, Photographers, User Generated Content Creators, Musicians and Experience designers.
-          </em>
-          <br /><br />
+
+          {/* Discipline list — bold, chartreuse, non-italic. Each item
+              on its own line. */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 2, color: 'var(--chartreuse)', fontWeight: 700, fontStyle: 'normal', margin: '0 0 20px' }}>
+            <span>Content Creators</span>
+            <span>User Generated Content Creators</span>
+            <span>Photographers</span>
+            <span>Videographers</span>
+            <span>Sound Designers</span>
+            <span>Event Performers</span>
+            <span>Experience Designers</span>
+            <span>Musicians</span>
+            <span>DJ&apos;s</span>
+          </div>
+
+          {/* Audio-experiences line — copy unchanged. */}
           The Human Club also welcomes you to our audio experiences:{' '}
           <strong style={{ color: 'var(--chartreuse)', fontWeight: 700 }}>
             The Human Club Podcast &amp; T.H.C Radio.
           </strong>
+
+          {/* Offering line — lowercase italic. */}
           <em style={{ display: 'block', marginTop: 14, fontStyle: 'italic', fontWeight: 400, textTransform: 'lowercase', color: 'var(--shell)', opacity: 0.85 }}>
             Offering private social media consultancy for influencers.
           </em>
