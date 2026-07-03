@@ -110,17 +110,13 @@ export default function Cover() {
       id="cover"
       style={{
         position: 'relative',
-        height: '100vh',
-        minHeight: '720px',
+        minHeight: '100vh',
         background: '#2a2522',
         overflow: 'hidden',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
         cursor: 'none',
       }}
     >
-      {/* Background image */}
+      {/* Background image — spans the whole cover, however tall it grows */}
       <Image
         src="/images/logotype-brown-stone-bg.png"
         alt=""
@@ -130,7 +126,7 @@ export default function Cover() {
         aria-hidden
       />
 
-      {/* Dark overlay */}
+      {/* Dark overlay — spans the whole cover too */}
       <div
         aria-hidden
         style={{
@@ -140,17 +136,24 @@ export default function Cover() {
         }}
       />
 
-      {/* Centred stack — wordmark → eyebrow → double-gap → tagline. */}
-      <div className="cover-center-stack" style={{
+      {/* FIRST VIEWPORT — 100vh block with the wordmark + eyebrow
+          centred vertically. The tagline lives OUTSIDE this block so
+          the wordmark actually sits in the middle of the initial view
+          again, no matter how tall the tagline gets. */}
+      <div className="cover-hero" style={{
         position: 'relative',
         zIndex: 2,
+        height: '100vh',
+        minHeight: '720px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        justifyContent: 'center',
         gap: 22,
         padding: '0 32px',
-        maxWidth: 1200,
         width: '100%',
+        maxWidth: 1200,
+        margin: '0 auto',
       }}>
         {/* Wordmark */}
         <Image
@@ -158,7 +161,7 @@ export default function Cover() {
           alt="The Human Club"
           width={920}
           height={300}
-          style={{ maxWidth: '780px', width: '62%' }}
+          style={{ maxWidth: '820px', width: '65%' }}
           priority
         />
 
@@ -175,52 +178,55 @@ export default function Cover() {
         }}>
           A Creative Collective Agency
         </span>
+      </div>
 
-        {/* Tagline block — centred, sits under the eyebrow with a double
-            gap. Hidden on mobile (same class as before, .cover-desktop-tagline
-            is display:none < 900px). */}
-        <div
-          className="cover-desktop-tagline"
-          style={{
-            marginTop: 32,            /* + parent gap 22 = ~54px "double" gap */
-            maxWidth: 640,
-            opacity: 0.92,
-            color: 'var(--shell)',
-            fontFamily: 'var(--font-ui)',
-            fontSize: '12px',
-            lineHeight: 1.55,
-            textAlign: 'center',
-          }}
-        >
-          {/* Heading */}
-          <strong style={{ display: 'block', fontWeight: 700, fontSize: '11px', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--shell)', marginBottom: 14 }}>
-            House multi-disciplinary creatives.
-          </strong>
+      {/* TAGLINE BLOCK — sits below the first viewport, flowing
+          naturally and extending the cover past 100vh. Hidden on
+          mobile via .cover-desktop-tagline (display:none < 900px). */}
+      <div
+        className="cover-desktop-tagline"
+        style={{
+          position: 'relative',
+          zIndex: 2,
+          margin: '0 auto',
+          padding: '48px 32px 140px',   /* bottom padding leaves room for the "Working from" corner */
+          maxWidth: 640,
+          opacity: 0.92,
+          color: 'var(--shell)',
+          fontFamily: 'var(--font-ui)',
+          fontSize: '12px',
+          lineHeight: 1.55,
+          textAlign: 'center',
+        }}
+      >
+        {/* Heading */}
+        <strong style={{ display: 'block', fontWeight: 700, fontSize: '11px', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--shell)', marginBottom: 14 }}>
+          House multi-disciplinary creatives.
+        </strong>
 
-          {/* Discipline list — bold, chartreuse, non-italic. */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 2, color: 'var(--chartreuse)', fontWeight: 700, fontStyle: 'normal', alignItems: 'center', margin: '0 0 20px' }}>
-            <span>Content Creators</span>
-            <span>User Generated Content Creators</span>
-            <span>Photographers</span>
-            <span>Videographers</span>
-            <span>Sound Designers</span>
-            <span>Event Performers</span>
-            <span>Experience Designers</span>
-            <span>Musicians</span>
-            <span>DJ&apos;s</span>
-          </div>
-
-          {/* Audio-experiences line */}
-          The Human Club also welcomes you to our audio experiences:{' '}
-          <strong style={{ color: 'var(--chartreuse)', fontWeight: 700 }}>
-            The Human Club Podcast &amp; T.H.C Radio.
-          </strong>
-
-          {/* Offering line */}
-          <em style={{ display: 'block', marginTop: 14, fontStyle: 'italic', fontWeight: 400, textTransform: 'lowercase', color: 'var(--shell)', opacity: 0.85 }}>
-            Offering private social media consultancy for influencers.
-          </em>
+        {/* Discipline list — bold, chartreuse, non-italic. */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 2, color: 'var(--chartreuse)', fontWeight: 700, fontStyle: 'normal', alignItems: 'center', margin: '0 0 20px' }}>
+          <span>Content Creators</span>
+          <span>User Generated Content Creators</span>
+          <span>Photographers</span>
+          <span>Videographers</span>
+          <span>Sound Designers</span>
+          <span>Event Performers</span>
+          <span>Experience Designers</span>
+          <span>Musicians</span>
+          <span>DJ&apos;s</span>
         </div>
+
+        {/* Audio-experiences line */}
+        The Human Club also welcomes you to our audio experiences:{' '}
+        <strong style={{ color: 'var(--chartreuse)', fontWeight: 700 }}>
+          The Human Club Podcast &amp; T.H.C Radio.
+        </strong>
+
+        {/* Offering line */}
+        <em style={{ display: 'block', marginTop: 14, fontStyle: 'italic', fontWeight: 400, textTransform: 'lowercase', color: 'var(--shell)', opacity: 0.85 }}>
+          Offering private social media consultancy for influencers.
+        </em>
       </div>
 
       {/* Mobile-only three-line scroll-trigger overlay. Each .cover-mobile-line
@@ -253,9 +259,11 @@ export default function Cover() {
         Berlin &amp; Cape Town<br />Partnering worldwide.
       </div>
 
-      {/* Scroll cue — desktop only */}
+      {/* Scroll cue — anchored to the FIRST viewport bottom, not the
+          full cover bottom. Uses top: calc(100vh - N) so it doesn't
+          drift when the cover extends past 100vh with the tagline. */}
       <div className="cover-scroll-cue" style={{
-        position: 'absolute', left: '50%', bottom: 70, transform: 'translateX(-50%)',
+        position: 'absolute', left: '50%', top: 'calc(100vh - 70px)', transform: 'translateX(-50%)',
         zIndex: 6, fontFamily: 'var(--font-ui)', fontWeight: 700,
         fontSize: '10px', letterSpacing: '0.24em', textTransform: 'uppercase',
         color: 'rgba(232,223,207,0.7)',
@@ -270,12 +278,12 @@ export default function Cover() {
         </span>
       </div>
 
-      {/* Fog hint — desktop only */}
+      {/* Fog hint — anchored to the first viewport, same reason. */}
       <div
         ref={hintRef}
         className="cover-fog-hint"
         style={{
-          position: 'absolute', left: '50%', bottom: 32, transform: 'translateX(-50%)',
+          position: 'absolute', left: '50%', top: 'calc(100vh - 32px)', transform: 'translate(-50%, -100%)',
           zIndex: 6, fontFamily: 'var(--font-ui)', fontWeight: 700, fontSize: '10px',
           letterSpacing: '0.22em', textTransform: 'uppercase',
           color: 'rgba(232,223,207,0.55)', transition: 'opacity 600ms',
@@ -284,13 +292,16 @@ export default function Cover() {
         — Move your cursor to clear the fog
       </div>
 
-      {/* Fog overlay — desktop only */}
+      {/* Fog overlay — clipped to the first viewport only so the
+          tagline below is always readable without needing to clear
+          the fog. */}
       <div
         ref={fogRef}
         aria-hidden
         className="cover-fog"
         style={{
-          position: 'absolute', inset: 0, zIndex: 5, pointerEvents: 'none',
+          position: 'absolute', top: 0, left: 0, right: 0, height: '100vh', minHeight: '720px',
+          zIndex: 5, pointerEvents: 'none',
           backdropFilter: 'blur(28px) saturate(1.1)',
           WebkitBackdropFilter: 'blur(28px) saturate(1.1)',
           background: 'rgba(232,223,207,0.22)',
