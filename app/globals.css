@@ -149,6 +149,12 @@ img { display: block; max-width: 100%; }
   100% { left: 100%; }
 }
 
+/* ---- Small dot scroll indicator (cover) — soft pulse ---- */
+@keyframes cover-dot-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(1);    }
+  50%      { opacity: 0.85; transform: scale(1.25); }
+}
+
 /* ---- Nav link underline ---- */
 .nav-link { position: relative; }
 .nav-link::after {
