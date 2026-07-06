@@ -368,18 +368,21 @@ img { display: block; max-width: 100%; }
   .section-head h2 { font-size: clamp(38px, 11vw, 60px); }
   .section-head .num, .section-head .aside { text-align: center; max-width: none; margin: 0 auto; }
 
-  /* ---- Cover: no fog, no cursor, no scroll-cue on mobile.
-          The landing flow below the cover handles the rest. ---- */
-  .cover-desktop-tagline,
+  /* ---- Cover: no fog, no cursor, no scroll-cue, no "Working from"
+          corner on mobile. The tagline block IS visible on mobile but
+          starts at opacity:0 — the JS reveal state (contentRevealed)
+          drops it in on the first scroll, mirroring the desktop UX. ---- */
   .cover-desktop-workingfrom { display: none !important; }
   .cover-fog,
   .cover-fog-hint,
   .cover-cursor,
   .cover-scroll-cue { display: none !important; }
-  /* Three-line scroll-trigger overlay sits inside the cover on mobile. */
-  .cover-mobile-overlay   { display: flex  !important; }
-  /* Body-text section that flows under the cover on mobile. */
-  .mobile-landing-tagline { display: block !important; }
+
+  /* Tagline reads a hair larger on phones for legibility */
+  .cover-desktop-tagline {
+    font-size: 13px !important;
+    padding: 0 4px;
+  }
 
   /* ---- Nav: desktop link row + logo hidden; hamburger takes over. ---- */
   .nav-desktop-links { display: none !important; }
@@ -566,99 +569,6 @@ img { display: block; max-width: 100%; }
     gap: 8px !important;
   }
   .footer-legal > div { text-align: center !important; max-width: none !important; }
-}
-
-/* ---- Mobile-only scroll-trigger overlay INSIDE the cover.
-        Three centered lines stacked in the lower portion of the cover;
-        each line fades in at a staggered scroll threshold (handled by
-        scrollY listener in Cover.tsx). Hidden on desktop. ---- */
-.cover-mobile-overlay {
-  display: none; /* enabled inside the mobile media query */
-  position: absolute;
-  left: 0; right: 0;
-  /* Sits in the lower-third of the cover (was bottom:12vh which felt
-     too close to the bottom edge once it faded in) — the lines now
-     appear higher on the page during scroll. */
-  bottom: 28vh;
-  z-index: 4;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  padding: 0 24px;
-  pointer-events: none;
-}
-.cover-mobile-line {
-  font-family: var(--font-ui);
-  font-weight: 700;
-  font-size: clamp(16px, 4.4vw, 20px);
-  line-height: 1.35;
-  letter-spacing: 0.005em;
-  color: var(--shell);
-  text-align: center;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 600ms cubic-bezier(0.22,0.61,0.36,1),
-              transform 600ms cubic-bezier(0.22,0.61,0.36,1);
-}
-.cover-mobile-line.is-revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ---- Mobile-only landing tagline section — sits between Cover and
-        Page 01. Hidden on desktop. Picks up the brown-stone background
-        + dark overlay so it reads as a continuation of the cover. ---- */
-.mobile-landing-tagline {
-  display: none; /* enabled inside mobile media query */
-  position: relative;
-  padding: 56px 28px 72px;
-  background: #2a2522 url('/images/logotype-brown-stone-bg.png') center/cover no-repeat;
-  color: var(--shell);
-  z-index: 1;
-}
-.mobile-landing-tagline::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(27,25,24,0.55);
-  pointer-events: none;
-}
-.mobile-landing-tagline > * { position: relative; z-index: 1; }
-
-.mobile-landing-tagline .mlt-block {
-  width: 100%;
-  max-width: 540px;
-  margin: 0 auto;
-  padding: 18px 0;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 700ms cubic-bezier(0.22,0.61,0.36,1),
-              transform 700ms cubic-bezier(0.22,0.61,0.36,1);
-}
-.mobile-landing-tagline .mlt-block.is-revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
-.mobile-landing-tagline .mlt-block p {
-  margin: 0;
-  font-family: var(--font-ui);
-  font-size: 14px;
-  line-height: 1.6;
-  color: rgba(225,225,213,0.92);
-  text-align: center;
-}
-.mobile-landing-tagline .mlt-block strong {
-  font-weight: 700;
-  color: var(--shell);
-}
-.mobile-landing-tagline .mlt-block em {
-  font-style: italic;
-  font-weight: 400;
-  color: var(--chartreuse);
-}
-.mobile-landing-tagline .mlt-green {
-  color: var(--chartreuse);
-  font-weight: 700;
 }
 
 /* ---- Hamburger button + slide-in drawer ---- */

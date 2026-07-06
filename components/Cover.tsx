@@ -87,10 +87,21 @@ export default function Cover() {
     const reduced  = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const isMobile = window.matchMedia('(max-width: 900px)').matches
 
-    if (reduced || isMobile) {
+    if (reduced) {
+      // Users who prefer reduced motion see the full composition on
+      // load, no staging.
       fog.style.opacity = '0'
       setFogCleared(true)
       setContentRevealed(true)
+      return
+    }
+
+    if (isMobile) {
+      // Mobile skips the fog + cursor interaction entirely. Stage 2
+      // (wordmark + eyebrow visible) fires straight away; Stage 3
+      // waits for the next scroll — matching the desktop reveal UX.
+      fog.style.opacity = '0'
+      setFogCleared(true)
       return
     }
 
@@ -149,26 +160,6 @@ export default function Cover() {
       window.removeEventListener('scroll',    trigger)
     }
   }, [fogCleared, contentRevealed])
-
-  /* -----------------------------------------------------------------
-     Mobile 3-line overlay scroll trigger (unchanged)
-  ----------------------------------------------------------------- */
-  useEffect(() => {
-    const lines = Array.from(document.querySelectorAll<HTMLElement>('.cover-mobile-line'))
-    if (!lines.length) return
-    function onScroll() {
-      const vh = window.innerHeight
-      const y  = window.scrollY
-      lines.forEach((line, i) => {
-        const threshold = vh * (0.04 + i * 0.08)
-        if (y > threshold) line.classList.add('is-revealed')
-        else               line.classList.remove('is-revealed')
-      })
-    }
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
 
   const revealTransition = 'opacity 700ms cubic-bezier(0.22,0.61,0.36,1), transform 700ms cubic-bezier(0.22,0.61,0.36,1)'
 
@@ -307,13 +298,6 @@ export default function Cover() {
             />
           </div>
         </div>
-      </div>
-
-      {/* Mobile 3-line overlay — unchanged */}
-      <div className="cover-mobile-overlay" aria-hidden>
-        <span className="cover-mobile-line">Built for humans.</span>
-        <span className="cover-mobile-line">Run by humans.</span>
-        <span className="cover-mobile-line">Created for humans.</span>
       </div>
 
       {/* Working from — anchored to bottom-right of the FIRST viewport.
