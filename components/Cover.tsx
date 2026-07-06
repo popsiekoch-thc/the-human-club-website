@@ -8,34 +8,40 @@ import Image from 'next/image'
  *
  *   STAGE 1  Fog. Existing haze + "move your cursor to clear the fog"
  *            hint. Untouched.
- *   STAGE 2  Fog cleared. Only the wordmark is visible (centred in the
- *            first viewport) + the nav + the "Working from" corner. The
- *            eyebrow / heading / list / audio / offering / dot are all
- *            opacity:0.
- *   STAGE 3  The NEXT mousemove or scroll after fogCleared fades the
- *            rest of the content in (opacity + slight upward translate,
- *            ~700ms ease). Reveal is one-way — content stays visible.
+ *   STAGE 2  Fog cleared → wordmark + "A Creative Collective Agency"
+ *            eyebrow visible together (as one centred lockup), plus
+ *            the nav and the "Working from" corner. Everything below
+ *            (heading, list, audio, offering, dot) still opacity:0.
+ *   STAGE 3  The NEXT mousemove or scroll after Stage 2 fades the
+ *            remaining tagline block in (opacity + slight upward
+ *            translate, ~700ms ease-out).
  *
- * Mobile / touch / prefers-reduced-motion  →  skip staging entirely:
- *   • fog is set to opacity 0 immediately
- *   • fogCleared and contentRevealed are set true on mount so touch
- *     users are not stuck on a blank hero.
+ * Mobile / touch / prefers-reduced-motion: fog is set to opacity 0
+ * on mount and both fogCleared + contentRevealed flip true so users
+ * are never stuck on a blank hero.
  *
- * Layout after reveal:
- *   [wordmark]        ← centred in first viewport (100vh), doesn't shrink
- *   [eyebrow]         ← directly under, part of centred lockup
- *   [content peek]    ← starts just above the fold via negative margin
- *   [content flows below, user scrolls to read the rest]
+ * Layout notes
+ * ------------
+ * Everything sits in a single flex column with a consistent 22px gap
+ * between rows: wordmark → eyebrow → tagline block (heading). This
+ * gives the eyebrow → heading the same spacing as the wordmark →
+ * eyebrow, per the design request.
+ *
+ * The wordmark is centred at exact 50vh via `padding-top: calc(50vh
+ * − wordmarkHalfPx)`, where `wordmarkHalfPx` is measured on mount
+ * (via ref.offsetHeight / 2) and updated on resize.
  */
 export default function Cover() {
-  const fogRef    = useRef<HTMLDivElement>(null)
-  const cursorRef = useRef<HTMLDivElement>(null)
-  const hintRef   = useRef<HTMLDivElement>(null)
-  const movesRef  = useRef(0)
-  const clearedRef = useRef(false)
+  const fogRef      = useRef<HTMLDivElement>(null)
+  const cursorRef   = useRef<HTMLDivElement>(null)
+  const hintRef     = useRef<HTMLDivElement>(null)
+  const wordmarkRef = useRef<HTMLDivElement>(null)
+  const movesRef    = useRef(0)
+  const clearedRef  = useRef(false)
 
   const [fogCleared,      setFogCleared]      = useState(false)
   const [contentRevealed, setContentRevealed] = useState(false)
+  const [wordmarkHalf,    setWordmarkHalf]    = useState(118) // reasonable desktop default
 
   const setMask = useCallback((x: number, y: number, r: number) => {
     if (!fogRef.current) return
@@ -45,9 +51,31 @@ export default function Cover() {
   }, [])
 
   /* -----------------------------------------------------------------
-     STAGE 1 — fog interaction (desktop only).
-     Skips to fully-cleared on mobile / reduced-motion so those users
-     are never stuck.
+     Wordmark measurement — used by padding-top calc to keep the
+     wordmark at exact 50vh centre no matter the viewport width.
+  ----------------------------------------------------------------- */
+  useEffect(() => {
+    function measure() {
+      if (!wordmarkRef.current) return
+      const h = wordmarkRef.current.offsetHeight
+      if (h > 0) {
+        setWordmarkHalf((prev) => (Math.abs(h / 2 - prev) > 1 ? h / 2 : prev))
+      }
+    }
+    measure()
+    const t1 = window.setTimeout(measure, 80)   // catches image load
+    const t2 = window.setTimeout(measure, 300)  // fallback for slower fetch
+    window.addEventListener('resize', measure)
+    return () => {
+      window.clearTimeout(t1)
+      window.clearTimeout(t2)
+      window.removeEventListener('resize', measure)
+    }
+  }, [])
+
+  /* -----------------------------------------------------------------
+     STAGE 1 — fog interaction (desktop only). Skips to fully-cleared
+     on mobile / reduced-motion.
   ----------------------------------------------------------------- */
   useEffect(() => {
     const cover  = document.getElementById('cover')
@@ -99,9 +127,9 @@ export default function Cover() {
   }, [setMask])
 
   /* -----------------------------------------------------------------
-     STAGE 3 — after fog is cleared, the NEXT mousemove or scroll
-     triggers the content reveal. A short delay guards against the
-     mouse gesture that cleared the fog immediately firing the reveal.
+     STAGE 3 — after fogCleared, the NEXT mousemove / scroll fades in
+     the tagline block. 450ms guard so the gesture that cleared the
+     fog doesn't immediately fire it.
   ----------------------------------------------------------------- */
   useEffect(() => {
     if (!fogCleared || contentRevealed) return
@@ -123,7 +151,7 @@ export default function Cover() {
   }, [fogCleared, contentRevealed])
 
   /* -----------------------------------------------------------------
-     Mobile-only 3-line overlay scroll trigger — unchanged from before.
+     Mobile 3-line overlay scroll trigger (unchanged)
   ----------------------------------------------------------------- */
   useEffect(() => {
     const lines = Array.from(document.querySelectorAll<HTMLElement>('.cover-mobile-line'))
@@ -142,7 +170,6 @@ export default function Cover() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  /* Shared reveal transition */
   const revealTransition = 'opacity 700ms cubic-bezier(0.22,0.61,0.36,1), transform 700ms cubic-bezier(0.22,0.61,0.36,1)'
 
   return (
@@ -152,11 +179,12 @@ export default function Cover() {
         position: 'relative',
         minHeight: '100vh',
         background: '#2a2522',
-        overflow: 'visible',   /* nothing clipped — page must scroll cleanly */
+        overflow: 'visible',
         cursor: 'none',
       }}
     >
-      {/* Background image — spans the whole (potentially-taller-than-100vh) cover */}
+      {/* Background image + dark overlay — span the whole (potentially
+          taller-than-100vh) cover. */}
       <Image
         src="/images/logotype-brown-stone-bg.png"
         alt=""
@@ -165,8 +193,6 @@ export default function Cover() {
         priority
         aria-hidden
       />
-
-      {/* Dark overlay — spans whole cover too */}
       <div
         aria-hidden
         style={{
@@ -176,32 +202,36 @@ export default function Cover() {
         }}
       />
 
-      {/* ---------- HERO (first viewport) ----------
-          Wordmark + eyebrow flex-centred in a 100vh block. The eyebrow
-          starts opacity:0 so at Stage 2 only the wordmark is visible;
-          it still occupies layout space so the wordmark's vertical
-          position doesn't shift when the eyebrow reveals. */}
+      {/* Single centred flex column — wordmark → eyebrow → tagline.
+          All three rows share a 22px gap so the vertical rhythm reads
+          the same from top to bottom. */}
       <div style={{
         position: 'relative',
         zIndex: 2,
-        height: '100vh',
-        minHeight: '720px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
         gap: 22,
-        padding: '0 32px',
+        maxWidth: 1200,
+        width: '100%',
+        margin: '0 auto',
+        padding: `calc(50vh - ${wordmarkHalf}px) 32px 160px`,
+        boxSizing: 'border-box',
+        minHeight: '100vh',
       }}>
-        <Image
-          src="/images/logotype-stone.png"
-          alt="The Human Club"
-          width={920}
-          height={300}
-          style={{ maxWidth: '720px', width: '58%' }}
-          priority
-        />
+        {/* Wordmark — measurement target */}
+        <div ref={wordmarkRef} style={{ maxWidth: '720px', width: '58%', lineHeight: 0 }}>
+          <Image
+            src="/images/logotype-stone.png"
+            alt="The Human Club"
+            width={920}
+            height={300}
+            style={{ width: '100%', height: 'auto', display: 'block' }}
+            priority
+          />
+        </div>
 
+        {/* Eyebrow — Stage 2 (fogCleared) */}
         <span
           className="cover-eyebrow"
           style={{
@@ -212,79 +242,70 @@ export default function Cover() {
             textTransform: 'uppercase',
             color: 'var(--shell)',
             textAlign: 'center',
-            opacity:   contentRevealed ? 0.92 : 0,
-            transform: contentRevealed ? 'translateY(0)' : 'translateY(8px)',
+            opacity:   fogCleared ? 0.92 : 0,
+            transform: fogCleared ? 'translateY(0)' : 'translateY(8px)',
             transition: revealTransition,
           }}
         >
           A Creative Collective Agency
         </span>
-      </div>
 
-      {/* ---------- CONTENT BLOCK ----------
-          Flows in the normal document flow below the hero. Negative
-          margin-top pulls the top edge up into the last ~110px of the
-          first viewport so a "peek" of the heading is visible before
-          the user scrolls. On Stage 2 the whole block is opacity:0 so
-          nothing is drawn — it still takes layout space so the section
-          measures correctly. */}
-      <div
-        className="cover-desktop-tagline"
-        style={{
-          position: 'relative',
-          zIndex: 2,
-          margin: '-110px auto 0',
-          padding: '0 32px 160px',
-          maxWidth: 640,
-          color: 'var(--shell)',
-          fontFamily: 'var(--font-ui)',
-          fontSize: '12px',
-          lineHeight: 1.55,
-          textAlign: 'center',
-          opacity:   contentRevealed ? 0.92 : 0,
-          transform: contentRevealed ? 'translateY(0)' : 'translateY(24px)',
-          transition: revealTransition,
-        }}
-      >
-        <strong style={{ display: 'block', fontWeight: 700, fontSize: '11px', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--shell)' }}>
-          House multi-disciplinary creatives.
-        </strong>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 9, color: 'var(--chartreuse)', fontWeight: 700, fontStyle: 'normal', alignItems: 'center', marginTop: 28 }}>
-          <span>Content Creators</span>
-          <span>User Generated Content Creators</span>
-          <span>Photographers</span>
-          <span>Videographers</span>
-          <span>Sound Designers</span>
-          <span>Event Performers</span>
-          <span>Experience Designers</span>
-          <span>Musicians</span>
-          <span>DJ&apos;s</span>
-        </div>
-
-        <div style={{ marginTop: 36 }}>
-          The Human Club also welcomes you to our audio experiences:{' '}
-          <strong style={{ color: 'var(--chartreuse)', fontWeight: 700 }}>
-            The Human Club Podcast &amp; T.H.C Radio.
+        {/* Tagline block — Stage 3 (contentRevealed). Sits at the same
+            22px gap under the eyebrow as the eyebrow sits under the
+            wordmark. */}
+        <div
+          className="cover-desktop-tagline"
+          style={{
+            maxWidth: 640,
+            color: 'var(--shell)',
+            fontFamily: 'var(--font-ui)',
+            fontSize: '12px',
+            lineHeight: 1.55,
+            textAlign: 'center',
+            opacity:   contentRevealed ? 0.92 : 0,
+            transform: contentRevealed ? 'translateY(0)' : 'translateY(20px)',
+            transition: revealTransition,
+          }}
+        >
+          <strong style={{ display: 'block', fontWeight: 700, fontSize: '11px', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--shell)' }}>
+            Housing multidisciplinary creatives.
           </strong>
-        </div>
 
-        <em style={{ display: 'block', marginTop: 20, fontStyle: 'italic', fontWeight: 400, textTransform: 'lowercase', color: 'var(--shell)', opacity: 0.85 }}>
-          Offering private social media consultancy for influencers.
-        </em>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 9, color: 'var(--chartreuse)', fontWeight: 700, fontStyle: 'normal', alignItems: 'center', marginTop: 28 }}>
+            <span>Content Creators</span>
+            <span>User Generated Content Creators</span>
+            <span>Photographers</span>
+            <span>Videographers</span>
+            <span>Sound Designers</span>
+            <span>Event Performers</span>
+            <span>Experience Designers</span>
+            <span>Musicians</span>
+            <span>DJ&apos;s</span>
+          </div>
 
-        {/* Small dot / scroll indicator */}
-        <div style={{ marginTop: 28, display: 'flex', justifyContent: 'center' }}>
-          <span
-            aria-hidden
-            style={{
-              width: 8,
-              height: 8,
-              borderRadius: '50%',
-              background: 'var(--chartreuse)',
-              animation: 'cover-dot-pulse 2.4s cubic-bezier(0.22,0.61,0.36,1) infinite',
-            }}
-          />
+          <div style={{ marginTop: 36 }}>
+            The Human Club also welcomes you to our audio experiences:{' '}
+            <strong style={{ color: 'var(--chartreuse)', fontWeight: 700 }}>
+              The Human Club Podcast &amp; T.H.C Radio.
+            </strong>
+          </div>
+
+          <em style={{ display: 'block', marginTop: 20, fontStyle: 'italic', fontWeight: 400, textTransform: 'lowercase', color: 'var(--shell)', opacity: 0.85 }}>
+            Offering private social media consultancy for influencers.
+          </em>
+
+          <div style={{ marginTop: 28, display: 'flex', justifyContent: 'center' }}>
+            <span
+              aria-hidden
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: '50%',
+                background: 'var(--chartreuse)',
+                animation: 'cover-dot-pulse 2.4s cubic-bezier(0.22,0.61,0.36,1) infinite',
+              }}
+            />
+          </div>
         </div>
       </div>
 
@@ -295,9 +316,8 @@ export default function Cover() {
         <span className="cover-mobile-line">Created for humans.</span>
       </div>
 
-      {/* Working from — anchored to bottom-right of the FIRST viewport
-          (not the full cover, since cover grows past 100vh). Fades in
-          with Stage 2 (fogCleared). */}
+      {/* Working from — anchored to bottom-right of the FIRST viewport.
+          Fades in with Stage 2 (fogCleared). */}
       <div
         className="cover-desktop-workingfrom"
         style={{
@@ -322,7 +342,7 @@ export default function Cover() {
         Berlin &amp; Cape Town<br />Partnering worldwide.
       </div>
 
-      {/* Fog hint — anchored to first-viewport bottom, desktop only */}
+      {/* Fog hint — anchored to first-viewport bottom */}
       <div
         ref={hintRef}
         className="cover-fog-hint"
@@ -340,8 +360,7 @@ export default function Cover() {
         — Move your cursor to clear the fog
       </div>
 
-      {/* Fog overlay — constrained to the first viewport (top 100vh)
-          so the tagline block below is never blocked. */}
+      {/* Fog overlay — constrained to first viewport */}
       <div
         ref={fogRef}
         aria-hidden
@@ -361,7 +380,7 @@ export default function Cover() {
         }}
       />
 
-      {/* Cursor dot — desktop only */}
+      {/* Cursor dot */}
       <div
         ref={cursorRef}
         aria-hidden
