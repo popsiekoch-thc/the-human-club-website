@@ -33,7 +33,15 @@
   --font-ui: "Mytupi", system-ui, sans-serif;
 }
 
+/* ---- Root reset ----
+   The <html> and <body> must fill the full browser width edge-to-edge
+   on every screen. No max-width, no auto side margins, ever — the
+   section backgrounds (brown-stone, chartreuse-grain, near-black, etc.)
+   rely on this to touch the viewport edges. Interior content is capped
+   inside .wrap or the individual section content wrappers. */
 html, body {
+  width: 100%;
+  max-width: none;
   margin: 0;
   padding: 0;
   background: var(--shell);
@@ -41,6 +49,15 @@ html, body {
   font-family: var(--font-ui);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+}
+
+/* Section elements must fill 100% of the body width and are the
+   colour-carriers. Individual sections set their own bg via inline
+   style; this rule just enforces the geometry. */
+section, footer {
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
 }
 
 a { color: inherit; text-decoration: none; }
@@ -671,10 +688,11 @@ img { display: block; max-width: 100%; }
 }
 
 /* ---- Wide monitors (≥ 1600px)
-        The .wrap already caps at 1440. Force the page body to stay
-        centred so ultra-wide displays don't stretch content awkwardly. */
-@media (min-width: 1600px) {
-  body { max-width: 1920px; margin-left: auto; margin-right: auto; }
-}
+        The .wrap already caps interior CONTENT at 1440px, but the
+        outer <section> backgrounds MUST stretch edge-to-edge. Do NOT
+        cap the body / html width or ultra-wide monitors will show
+        cream bars on either side. This block intentionally left with
+        no rules — kept as an anchor so anyone editing the file knows
+        not to add a max-width to body here. */
 
 
