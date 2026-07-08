@@ -17,7 +17,7 @@ export default async function Roster() {
         position: 'relative',
         background: '#2a2522 url("/images/logotype-brown-stone-bg.png") center/cover no-repeat',
         color: 'var(--shell)',
-        padding: '0 40px 100px',
+        padding: '0 clamp(20px, 5vw, 40px) 100px',
         scrollMarginTop: 76,
       }}
     >

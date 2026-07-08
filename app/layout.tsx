@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
 import './globals.css'
 
@@ -22,6 +22,19 @@ export const metadata: Metadata = {
     locale: 'en_US',
     type: 'website',
   },
+}
+
+/**
+ * Emits <meta name="viewport" content="width=device-width, initial-scale=1">
+ * (Next 15+ App Router requires the dedicated `viewport` export — it
+ * cannot live on the `metadata` object.)
+ */
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  minimumScale: 1,
+  maximumScale: 5,
+  themeColor: '#2a2522',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

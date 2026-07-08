@@ -50,7 +50,7 @@ img { display: block; max-width: 100%; }
 .wrap {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 0 clamp(20px, 5vw, 40px);
 }
 
 /* ---- Section head ---- */
@@ -637,4 +637,44 @@ img { display: block; max-width: 100%; }
   text-transform: uppercase;
   color: rgba(225,225,213,0.6);
 }
+
+/* ============================================================
+ * BREAKPOINTS beyond the 900px mobile line.
+ * ============================================================ */
+
+/* ---- Small desktop / tablet-landscape (901 – 1180px)
+        The 3-column section-head grid (260 / 1fr / auto) stops feeling
+        balanced below ~1180px — the 260px eyebrow + 240px aside eat the
+        heading column. Collapse to a single centred column instead. */
+@media (min-width: 901px) and (max-width: 1180px) {
+  .section-head {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    text-align: left;
+  }
+  .section-head h2 { font-size: clamp(44px, 6.6vw, 84px); }
+}
+
+/* ---- Small phones (≤ 400px)
+        Tighter chrome so nothing feels crammed against the edges. */
+@media (max-width: 400px) {
+  .wrap                          { padding: 0 16px; }
+  .section-head                  { padding-top: 32px; gap: 10px; }
+  .section-head h2               { font-size: clamp(32px, 10vw, 48px); }
+  .roster-grid                   { grid-auto-columns: 92% !important; }
+  .artists-scroll                { grid-auto-columns: 88% !important; }
+  .ep-row                        { grid-template-columns: 48px 1fr 44px !important; gap: 10px !important; padding: 14px 8px !important; }
+  .ep-row .ep-num                { width: 48px; font-size: 20px !important; }
+  .ep-row .ep-title              { font-size: 14px !important; }
+  .mix-item                      { padding: 22px 16px !important; min-height: 150px !important; }
+  .cover-desktop-tagline         { font-size: 12.5px !important; }
+}
+
+/* ---- Wide monitors (≥ 1600px)
+        The .wrap already caps at 1440. Force the page body to stay
+        centred so ultra-wide displays don't stretch content awkwardly. */
+@media (min-width: 1600px) {
+  body { max-width: 1920px; margin-left: auto; margin-right: auto; }
+}
+
 
