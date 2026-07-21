@@ -1,6 +1,11 @@
 import RadioPlayer from './RadioPlayer'
+import { getLatestMixes } from '@/lib/radio'
 
-export default function THCRadio() {
+export default async function THCRadio() {
+  // Server-fetch the SoundCloud RSS feed (revalidated every 5 min in
+  // lib/radio.ts). Newest mixes come out of this call first.
+  const mixes = await getLatestMixes(3)
+
   return (
     <section
       id="radio"
@@ -27,7 +32,7 @@ export default function THCRadio() {
           </div>
         </div>
 
-        <RadioPlayer />
+        <RadioPlayer mixes={mixes} />
       </div>
     </section>
   )

@@ -113,10 +113,12 @@ export default function Cover() {
       cursor!.style.top  = y + 'px'
       if (!clearedRef.current) {
         movesRef.current++
-        const r = Math.min(160 + movesRef.current * 12, 1200)
+        // Faster reveal per event so the mask reaches ~viewport size in
+        // roughly 15 events (≈ 3–4 mouse swipes).
+        const r = Math.min(200 + movesRef.current * 60, 1400)
         setMask(x, y, r)
-        if (movesRef.current >= 4)  hint!.style.opacity = '0'
-        if (movesRef.current > 60) {
+        if (movesRef.current >= 2)  hint!.style.opacity = '0'
+        if (movesRef.current > 15) {
           fog!.style.opacity = '0'
           clearedRef.current = true
           setFogCleared(true)

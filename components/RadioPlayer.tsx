@@ -1,65 +1,64 @@
 'use client'
 
 import { useState } from 'react'
+import type { Mix } from '@/lib/radio'
 
-type Mix = {
-  /** SoundCloud track id (the digits after `/tracks/soundcloud:tracks:`) */
-  id:    string
-  /** SoundCloud accent colour (hex without the leading `#`) */
-  color: string
-  title: string
-  host:  string
-  /** human-friendly link for users that prefer the SC site */
-  scUrl: string
-}
-
-const MIXES: Mix[] = [
-  {
-    id:    '2310193364',
-    color: '673818',
-    title: 'T.H.C Radio: Launch Event / Alle Anders',
-    host:  'T.H.C Radio',
-    scUrl: 'https://soundcloud.com/thehumanclubradio',
-  },
-  {
-    id:    '2253969920',
-    color: '673818',
-    title: 'Plae — Dub Dayz @ Bodega',
-    host:  'Aaron Zeederberg',
-    scUrl: 'https://soundcloud.com/thehumanclubradio',
-  },
-  {
-    id:    '2282268668',
-    color: '848464',
-    title: 'Popsie & Sav @ The Soma Boma ✦ Pandora Nexus 2026',
-    host:  'Popsie & Sav',
-    scUrl: 'https://soundcloud.com/pandorafestival',
-  },
-]
+const SC_HANDLE_URL = 'https://soundcloud.com/thehumanclubradio'
 
 const SC_PARAMS =
   '&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true'
 
+/** Build the SoundCloud embed URL. The URN `soundcloud:tracks:<id>` is
+ *  double-URL-encoded so the player decodes it once back into the URN
+ *  before hitting its API. */
 function buildSrc(mix: Mix, autoplay: boolean): string {
-  // SoundCloud's embed format: the URN `soundcloud:tracks:<id>` is double-
-  // URL-encoded so the player decodes it once back into the URN before
-  // hitting its API.
   const trackUrl = `https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A${mix.id}`
   return `https://w.soundcloud.com/player/?url=${trackUrl}&color=%23${mix.color}&auto_play=${autoplay ? 'true' : 'false'}${SC_PARAMS}`
 }
 
-export default function RadioPlayer() {
+type Props = {
+  /** Mixes are server-fetched from the SoundCloud RSS feed and passed
+   *  in from THCRadio.tsx. Newest first. */
+  mixes: Mix[]
+}
+
+export default function RadioPlayer({ mixes }: Props) {
   const [selected, setSelected] = useState(0)
   const [hasInteracted, setHasInteracted] = useState(false)
 
-  const current = MIXES[selected]
+  // Safety: if SoundCloud is temporarily empty or errored, show a CTA
+  // instead of crashing.
+  if (mixes.length === 0) {
+    return (
+      <div style={{ marginTop: 24, padding: '32px 22px', border: '1px solid rgba(225,225,213,0.18)', color: 'var(--shell)', textAlign: 'center' }}>
+        <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 24, letterSpacing: '-0.015em' }}>
+          Browse the full library on SoundCloud
+        </div>
+        <a
+          href={SC_HANDLE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: 'inline-block',
+            marginTop: 14,
+            fontFamily: 'var(--font-ui)', fontWeight: 700,
+            fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase',
+            borderBottom: '1px solid currentColor', color: 'var(--shell)',
+          }}
+        >
+          SoundCloud ↗
+        </a>
+      </div>
+    )
+  }
+
+  const current = mixes[selected] ?? mixes[0]
 
   return (
     <div>
-      {/* Now-playing iframe — keyed on the mix id so it remounts cleanly on
-          every track switch. After the first user click, autoplay=true is
-          allowed by browser autoplay policy because the page now has a
-          user-gesture in its history. */}
+      {/* Now-playing iframe — keyed on the mix id so it remounts cleanly
+          on every track switch. After the first user click, autoplay is
+          allowed by browser policy (the page has a user-gesture). */}
       <div
         style={{
           marginTop: 24,
@@ -122,21 +121,18 @@ export default function RadioPlayer() {
         </a>
       </div>
 
-      {/* Mix selector — clicking a card loads it into the iframe above.
-          Cards are sized larger than the default mix-item so they read as
-          first-class clickable picks beneath the iframe, not as a tight
-          row of links. */}
+      {/* Mix selector — clicking a card loads it into the iframe above. */}
       <div
         className="mix-list"
         style={{
           display: 'grid',
-          gridTemplateColumns: `repeat(${MIXES.length}, 1fr)`,
+          gridTemplateColumns: `repeat(${mixes.length}, 1fr)`,
           gap: 4,
           marginTop: 32,
           borderTop: '1px solid rgba(225,225,213,0.18)',
         }}
       >
-        {MIXES.map((m, i) => {
+        {mixes.map((m, i) => {
           const isActive = i === selected
           return (
             <button
@@ -149,7 +145,7 @@ export default function RadioPlayer() {
               className={`mix-item${isActive ? ' active' : ''}`}
               style={{
                 padding: '36px 32px',
-                borderRight: i < MIXES.length - 1 ? '1px solid rgba(225,225,213,0.18)' : '0',
+                borderRight: i < mixes.length - 1 ? '1px solid rgba(225,225,213,0.18)' : '0',
                 minHeight: 260,
                 display: 'flex',
                 flexDirection: 'column',
@@ -167,7 +163,7 @@ export default function RadioPlayer() {
               aria-pressed={isActive}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-ui)', fontSize: 12, letterSpacing: '0.22em', textTransform: 'uppercase', opacity: 0.78 }}>
-                <span>— Mix {(i + 1).toString().padStart(2, '0')}</span>
+                <span>— Mix {m.mixNum}</span>
                 <span>{isActive ? 'Now playing' : 'Play ▶'}</span>
               </div>
               <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 30, letterSpacing: '-0.02em', lineHeight: 1.1, marginTop: 'auto', color: 'var(--shell)' }}>
