@@ -41,9 +41,9 @@ const ACCENT_COLORS = ['673818', '848464', '673818']
 /** Never-empty fallback: if SoundCloud is unreachable, we still render
  *  the three mixes that were live at the time of writing. */
 const FALLBACK_MIXES: Mix[] = [
-  { id: '2364238664', title: 'THC Radio invites Popsie & alle anders', host: 'Popsie & alle anders', scUrl: 'https://soundcloud.com/thehumanclubradio/thc-radio-invites-popsie-alle', color: '673818', mixNum: '03' },
-  { id: '2358778865', title: 'T.H.C invites speh.ki. ft zeedez',       host: 'speh.ki. ft zeedez',    scUrl: 'https://soundcloud.com/thehumanclubradio/t-h-c-invites-speh-ki-ft',    color: '848464', mixNum: '02' },
-  { id: '2310193364', title: 'T.H.C invites alle anders',              host: 'alle anders',           scUrl: 'https://soundcloud.com/thehumanclubradio/t-h-c-radio-launch-event-alle', color: '673818', mixNum: '01' },
+  { id: '2390147391', title: 'EVENT SERIES 1 ::: T.H.C RADIO X PLAE @ IKII — LILO',           host: 'LILO feat. Anonymous Open Mic Guests',           scUrl: 'https://soundcloud.com/thehumanclubradio', color: '673818', mixNum: '06' },
+  { id: '2388554745', title: 'EVENT SERIES 1 ::: T.H.C RADIO X PLAE @ IKII — POPSIE KOCH',    host: 'Popsie Koch feat. Anonymous Open Mic Guests',    scUrl: 'https://soundcloud.com/thehumanclubradio', color: '848464', mixNum: '05' },
+  { id: '2387423895', title: 'EVENT SERIES 1 ::: T.H.C RADIO X PLAE @ IKII — AARON ZEEDERBERG', host: 'Aaron Zeederberg feat. Anonymous Open Mic Guests', scUrl: 'https://soundcloud.com/thehumanclubradio', color: '673818', mixNum: '04' },
 ]
 
 /* -------- public entry point --------------------------------------- */
@@ -88,18 +88,31 @@ function parseRss(xml: string, limit: number): Mix[] {
     const id      = idMatch?.[1] ?? ''
     if (!id) continue
 
-    // "T.H.C invites speh.ki. ft zeedez / Radio #002"
-    //                                  ↑ mix number
+    // Mix number:
+    //   • "… / Radio #NNN"                                   → NNN
+    //   • fallback: position in the feed (newest first = 01) → i+1
+    // Padded to two digits.
     const numMatch = rawTitle.match(/#\s*0*(\d+)/)
     const mixNum   = (numMatch?.[1] ?? String(i + 1)).padStart(2, '0')
 
-    // "T.H.C invites <host> / Radio #NNN"
-    const hostMatch = rawTitle.match(/invites?\s+([\s\S]+?)(?:\s*\/\s*Radio|$)/i)
-    const host      = hostMatch ? decodeEntities(hostMatch[1].trim()) : 'T.H.C Radio'
+    // Host / guest parsing — best-effort across a couple of common
+    // title shapes on the profile:
+    //   "T.H.C invites <host> / Radio #NNN"                     → <host>
+    //   "EVENT SERIES 1 ::: T.H.C RADIO X <venue> — <host>"     → <host>
+    //   "… feat. <guests>"                                       → keep guests too
+    let host = 'T.H.C Radio'
+    const invitesMatch = rawTitle.match(/invites?\s+([\s\S]+?)(?:\s*\/\s*Radio|$)/i)
+    const dashMatch    = rawTitle.match(/—\s*([^—/]+?)(?:\s*\/|$)/)
+    if (invitesMatch)   host = decodeEntities(invitesMatch[1].trim())
+    else if (dashMatch) host = decodeEntities(dashMatch[1].trim())
 
-    // Clean display title: strip trailing "/ Radio #NNN" if present.
+    // Clean display title — strip common trailing scaffolding so the
+    // card headline stays punchy.
     const displayTitle = decodeEntities(
-      rawTitle.replace(/\s*\/\s*Radio\s*#\s*\d+\s*$/i, '').trim(),
+      rawTitle
+        .replace(/\s*\/\s*Radio\s*#\s*\d+\s*$/i, '') // "/ Radio #NNN"
+        .replace(/\s*feat\.?\s+ANONYMOUS\s+OPEN\s+MIC\s+GUESTS\s*$/i, '') // long featuring line
+        .trim(),
     )
 
     items.push({
