@@ -12,6 +12,22 @@ const nextConfig: NextConfig = {
       { hostname: 'is5-ssl.mzstatic.com' },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'thehumanclub.world' }],
+        destination: 'https://www.thehumanclub.agency/:path*',
+        permanent: true,
+      },
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.thehumanclub.world' }],
+        destination: 'https://www.thehumanclub.agency/:path*',
+        permanent: true,
+      },
+    ]
+  },
 }
 
 export default nextConfig

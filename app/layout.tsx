@@ -12,9 +12,13 @@ const mytupi = localFont({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.thehumanclub.agency'),
   title: 'The Human Club — Human by nature. Creative by design.',
   description:
     'A creative social-media agency representing UGC creators, influencers, podcasters and live-experience curators. Based in Berlin & Cape Town.',
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     title: 'The Human Club',
     description: 'Human by nature. Creative by design.',
