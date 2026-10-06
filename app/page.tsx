@@ -4,6 +4,7 @@ import Roster       from '@/components/Roster'
 import MusicArtists from '@/components/MusicArtists'
 import Podcast      from '@/components/Podcast'
 import THCRadio     from '@/components/THCRadio'
+import YouTubeShows from '@/components/YouTubeShows'
 import Footer       from '@/components/Footer'
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
       <MusicArtists />
       <Podcast />
       <THCRadio />
+      <YouTubeShows />
       <Footer />
     </>
   )
