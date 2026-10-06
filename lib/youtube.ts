@@ -45,6 +45,14 @@ const FALLBACK_VIDEOS: YouTubeVideo[] = [
     publishedAt: '2026-10-04T09:00:22+00:00',
     showNum: '02',
   },
+  {
+    id: '7cWFOMJ3mz8',
+    title: 'LA BARCA Boat Invites T.H.C Radio Episode #1',
+    watchUrl: 'https://www.youtube.com/watch?v=7cWFOMJ3mz8',
+    thumbnail: 'https://i2.ytimg.com/vi/7cWFOMJ3mz8/hqdefault.jpg',
+    publishedAt: '2026-09-29T16:22:00+00:00',
+    showNum: '01',
+  },
 ]
 
 /* -------- public entry point --------------------------------------- */
