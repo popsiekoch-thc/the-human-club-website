@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import type { YouTubeVideo } from '@/lib/youtube'
 
-const CHANNEL_URL  = 'https://www.youtube.com/@TheHumanClub_Podcast'
+const CHANNEL_URL = 'https://www.youtube.com/@TheHumanClub_Podcast'
 
 /** Build the YouTube embed URL. Autoplay only after the user has
  *  interacted (click on a card) so first paint doesn't blast audio. */
@@ -17,9 +17,16 @@ function buildEmbed(video: YouTubeVideo, autoplay: boolean): string {
   return `https://www.youtube.com/embed/${video.id}?${params.toString()}`
 }
 
+/** "4 October 2026" format for the small line under the title. */
+function fmtDate(iso: string): string {
+  if (!iso) return ''
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return ''
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+}
+
 type Props = {
-  /** Server-fetched from the YouTube playlist RSS feed and passed in
-   *  from YouTubeShows.tsx. Newest first. */
+  /** Server-fetched from the YouTube playlist RSS feed. Newest first. */
   videos: YouTubeVideo[]
 }
 
@@ -56,9 +63,9 @@ export default function YouTubePlayer({ videos }: Props) {
 
   return (
     <div>
-      {/* Now-playing iframe — 16:9 ratio via padding-top so it stays
-          crisp on any viewport. Keyed on video id so React remounts
-          cleanly on card switch (that's what forces the new autoplay). */}
+      {/* Now-playing iframe — 16:9 via padding-top. Keyed on video id so
+          React remounts cleanly on card switch (that's what forces the
+          new autoplay). */}
       <div
         style={{
           marginTop: 24,
@@ -66,7 +73,7 @@ export default function YouTubePlayer({ videos }: Props) {
           background: 'rgba(0,0,0,0.5)',
           position: 'relative',
           width: '100%',
-          paddingTop: '56.25%', // 16:9
+          paddingTop: '56.25%',
         }}
       >
         <iframe
@@ -125,17 +132,26 @@ export default function YouTubePlayer({ videos }: Props) {
         </a>
       </div>
 
-      {/* Video selector — identical to the radio mix-list grid so the
-          two sections visually rhyme. Clicking a card loads the video
-          into the iframe above. */}
+      {/* Video selector — horizontally scrollable row of fixed-width
+          cards. No thumbnails (they were stretching + looking distorted
+          at wide card widths). Mirrors the Music & Artists carousel
+          pattern so the two scrollable rows feel the same. */}
       <div
-        className="mix-list"
+        className="shows-scroll"
         style={{
           display: 'grid',
-          gridTemplateColumns: `repeat(${videos.length}, 1fr)`,
-          gap: 4,
+          gridAutoFlow: 'column',
+          gridAutoColumns: 'clamp(260px, 32%, 340px)',
+          gap: 0,
           marginTop: 32,
           borderTop: '1px solid rgba(225,225,213,0.18)',
+          overflowX: 'auto',
+          overflowY: 'hidden',
+          scrollSnapType: 'x mandatory',
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'thin',
+          scrollbarColor: 'rgba(225,225,213,0.4) transparent',
+          paddingBottom: 14,
         }}
       >
         {videos.map((v, i) => {
@@ -152,7 +168,7 @@ export default function YouTubePlayer({ videos }: Props) {
               style={{
                 padding: '28px 24px',
                 borderRight: i < videos.length - 1 ? '1px solid rgba(225,225,213,0.18)' : '0',
-                minHeight: 240,
+                minHeight: 200,
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
@@ -164,31 +180,35 @@ export default function YouTubePlayer({ videos }: Props) {
                 borderBottom: isActive ? '2px solid var(--chartreuse)' : '2px solid transparent',
                 cursor: 'pointer',
                 fontFamily: 'inherit',
+                scrollSnapAlign: 'start',
                 width: '100%',
               }}
               aria-pressed={isActive}
             >
-              {/* Thumbnail */}
-              <div style={{
-                width: '100%',
-                aspectRatio: '16 / 9',
-                background: `#000 center/cover no-repeat url("${v.thumbnail}")`,
-                border: '1px solid rgba(225,225,213,0.14)',
-              }} />
-
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-ui)', fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', opacity: 0.78 }}>
-                  <span>— Show {v.showNum}</span>
-                  <span>{isActive ? 'Now playing' : 'Watch ▶'}</span>
-                </div>
-                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 22, letterSpacing: '-0.015em', lineHeight: 1.15, marginTop: 10, color: 'var(--shell)' }}>
-                  {v.title}
-                </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-ui)', fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', opacity: 0.78 }}>
+                <span>— Show {v.showNum}</span>
+                <span>{isActive ? 'Now playing' : 'Watch ▶'}</span>
+              </div>
+              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 22, letterSpacing: '-0.015em', lineHeight: 1.15, marginTop: 'auto', color: 'var(--shell)' }}>
+                {v.title}
+              </div>
+              <div style={{ fontFamily: 'var(--font-ui)', fontSize: 12, opacity: 0.72, color: 'var(--shell)' }}>
+                — {fmtDate(v.publishedAt)}
               </div>
             </button>
           )
         })}
       </div>
+
+      {/* Scroll cue — mirrors the Music & Artists "Scroll right" affordance
+          so wider card lists hint that there's more off-screen. */}
+      {videos.length > 1 && (
+        <div className="scroll-right-cue" style={{ marginTop: 12 }}>
+          <span className="l" />
+          Scroll to view more
+          <span className="arrow">→</span>
+        </div>
+      )}
     </div>
   )
 }

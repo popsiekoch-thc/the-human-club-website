@@ -49,7 +49,7 @@ const FALLBACK_VIDEOS: YouTubeVideo[] = [
 
 /* -------- public entry point --------------------------------------- */
 
-export async function getLatestYouTubeShows(limit = 3): Promise<YouTubeVideo[]> {
+export async function getLatestYouTubeShows(limit = 12): Promise<YouTubeVideo[]> {
   try {
     const res = await fetch(RSS_URL, {
       // Match the radio feed cadence: 5-minute server-side revalidation
