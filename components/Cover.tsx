@@ -266,15 +266,16 @@ export default function Cover() {
           </strong>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 9, color: 'var(--chartreuse)', fontWeight: 700, fontStyle: 'normal', alignItems: 'center', marginTop: 28 }}>
-            <span>Content Creators</span>
-            <span>User Generated Content Creators</span>
+            <span>Creative Production</span>
             <span>Photographers</span>
             <span>Videographers</span>
             <span>Sound Designers</span>
-            <span>Event Performers</span>
+            <span>Content Creators</span>
+            <span>UGC Creators</span>
             <span>Experience Designers</span>
-            <span>Musicians</span>
+            <span>Live Musicians</span>
             <span>DJ&apos;s</span>
+            <span>Drag Performers</span>
           </div>
 
           <div style={{ marginTop: 36 }}>
