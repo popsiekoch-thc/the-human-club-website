@@ -6,15 +6,21 @@ import type { YouTubeVideo } from '@/lib/youtube'
 const CHANNEL_URL = 'https://www.youtube.com/@TheHumanClub_T.H.C_WorldWide'
 
 /** Build the YouTube embed URL. Autoplay only after the user has
- *  interacted (click on a card) so first paint doesn't blast audio. */
+ *  interacted (click on a card) so first paint doesn't blast audio.
+ *  `vq=hd1080` hints the player to pick HD by default when the
+ *  viewer's connection allows (YouTube still owns the final call —
+ *  users can downshift via the settings cog). Also pulls `hd=1` and
+ *  the youtube-nocookie domain for a cleaner privacy posture. */
 function buildEmbed(video: YouTubeVideo, autoplay: boolean): string {
   const params = new URLSearchParams({
     rel: '0',
     modestbranding: '1',
     playsinline: '1',
+    vq: 'hd1080',  // request 1080p by default
+    hd: '1',
     ...(autoplay ? { autoplay: '1' } : {}),
   })
-  return `https://www.youtube.com/embed/${video.id}?${params.toString()}`
+  return `https://www.youtube-nocookie.com/embed/${video.id}?${params.toString()}`
 }
 
 /** "4 October 2026" format for the small line under the title. */
