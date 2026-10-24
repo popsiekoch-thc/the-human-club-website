@@ -48,7 +48,7 @@ const FALLBACK_MIXES: Mix[] = [
 
 /* -------- public entry point --------------------------------------- */
 
-export async function getLatestMixes(limit = 3): Promise<Mix[]> {
+export async function getLatestMixes(limit = 12): Promise<Mix[]> {
   try {
     const res = await fetch(RSS_URL, {
       // Revalidate on the server every 5 minutes. New SoundCloud uploads

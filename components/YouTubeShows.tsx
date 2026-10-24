@@ -11,7 +11,9 @@ import { getLatestYouTubeShows } from '@/lib/youtube'
  * same section-head grid, shell type.
  */
 export default async function YouTubeShows() {
-  const videos = await getLatestYouTubeShows(3)
+  // Pull up to 12 videos so every playlist upload is visible in the
+  // horizontal scroller (UI handles any count ≥1 gracefully).
+  const videos = await getLatestYouTubeShows(12)
 
   return (
     <section

@@ -121,15 +121,25 @@ export default function RadioPlayer({ mixes }: Props) {
         </a>
       </div>
 
-      {/* Mix selector — clicking a card loads it into the iframe above. */}
+      {/* Mix selector — horizontal scroll row of fixed-width cards.
+          Mirrors the YouTube T.H.C Shows scroller so the two sections
+          feel like siblings. */}
       <div
         className="mix-list"
         style={{
           display: 'grid',
-          gridTemplateColumns: `repeat(${mixes.length}, 1fr)`,
-          gap: 4,
+          gridAutoFlow: 'column',
+          gridAutoColumns: 'clamp(260px, 32%, 340px)',
+          gap: 0,
           marginTop: 32,
           borderTop: '1px solid rgba(225,225,213,0.18)',
+          overflowX: 'auto',
+          overflowY: 'hidden',
+          scrollSnapType: 'x mandatory',
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'thin',
+          scrollbarColor: 'rgba(225,225,213,0.4) transparent',
+          paddingBottom: 14,
         }}
       >
         {mixes.map((m, i) => {
@@ -144,13 +154,13 @@ export default function RadioPlayer({ mixes }: Props) {
               }}
               className={`mix-item${isActive ? ' active' : ''}`}
               style={{
-                padding: '36px 32px',
+                padding: '28px 24px',
                 borderRight: i < mixes.length - 1 ? '1px solid rgba(225,225,213,0.18)' : '0',
-                minHeight: 260,
+                minHeight: 220,
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                gap: 16,
+                gap: 14,
                 color: 'var(--shell)',
                 textAlign: 'left',
                 background: isActive ? 'rgba(0,0,0,0.55)' : 'transparent',
@@ -158,24 +168,34 @@ export default function RadioPlayer({ mixes }: Props) {
                 borderBottom: isActive ? '2px solid var(--chartreuse)' : '2px solid transparent',
                 cursor: 'pointer',
                 fontFamily: 'inherit',
+                scrollSnapAlign: 'start',
                 width: '100%',
               }}
               aria-pressed={isActive}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-ui)', fontSize: 12, letterSpacing: '0.22em', textTransform: 'uppercase', opacity: 0.78 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-ui)', fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', opacity: 0.78 }}>
                 <span>— Mix {m.mixNum}</span>
                 <span>{isActive ? 'Now playing' : 'Play ▶'}</span>
               </div>
-              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 30, letterSpacing: '-0.02em', lineHeight: 1.1, marginTop: 'auto', color: 'var(--shell)' }}>
+              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 22, letterSpacing: '-0.015em', lineHeight: 1.15, marginTop: 'auto', color: 'var(--shell)' }}>
                 {m.title}
               </div>
-              <div style={{ fontFamily: 'var(--font-ui)', fontSize: 14, opacity: 0.82, marginTop: 6, color: 'var(--shell)' }}>
+              <div style={{ fontFamily: 'var(--font-ui)', fontSize: 13, opacity: 0.78, color: 'var(--shell)' }}>
                 — {m.host}
               </div>
             </button>
           )
         })}
       </div>
+
+      {/* Scroll cue when there's more than one mix. */}
+      {mixes.length > 1 && (
+        <div className="scroll-right-cue" style={{ marginTop: 12 }}>
+          <span className="l" />
+          Scroll to view more
+          <span className="arrow">→</span>
+        </div>
+      )}
     </div>
   )
 }

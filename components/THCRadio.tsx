@@ -4,7 +4,9 @@ import { getLatestMixes } from '@/lib/radio'
 export default async function THCRadio() {
   // Server-fetch the SoundCloud RSS feed (revalidated every 5 min in
   // lib/radio.ts). Newest mixes come out of this call first.
-  const mixes = await getLatestMixes(3)
+  // Pull up to 12 mixes so every recent upload is visible in the
+  // horizontal scroller (the UI handles any count ≥1 gracefully).
+  const mixes = await getLatestMixes(12)
 
   return (
     <section
