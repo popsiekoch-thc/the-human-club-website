@@ -62,7 +62,7 @@ export default function Footer() {
             <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
               {[
                 ['https://www.instagram.com/thehumanc.lub_/',                                'Instagram'],
-                ['https://www.youtube.com/@TheHumanClub_Podcast',                            'YouTube'],
+                ['https://www.youtube.com/@TheHumanClub_T.H.C_WorldWide',                            'YouTube'],
                 ['https://podcasts.apple.com/de/podcast/the-human-club-podcast/id1887355489', 'Apple Podcasts'],
                 ['https://soundcloud.com/thehumanclubradio',                                  'SoundCloud'],
               ].map(([href, label]) => (

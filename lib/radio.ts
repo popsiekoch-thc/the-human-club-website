@@ -41,9 +41,9 @@ const ACCENT_COLORS = ['673818', '848464', '673818']
 /** Never-empty fallback: if SoundCloud is unreachable, we still render
  *  the three mixes that were live at the time of writing. */
 const FALLBACK_MIXES: Mix[] = [
-  { id: '2411831631', title: 'T.H.C Radio & LA BARCA invites alle anders',   host: 'alle anders',       scUrl: 'https://soundcloud.com/thehumanclubradio', color: '673818', mixNum: '08' },
-  { id: '2408081946', title: 'T.H.C Radio & LA BARCA invites Popsie & speh.ki', host: 'Popsie & speh.ki', scUrl: 'https://soundcloud.com/thehumanclubradio', color: '848464', mixNum: '07' },
-  { id: '2390147391', title: 'EVENT SERIES 1 ::: T.H.C RADIO X PLAE @ IKII — LILO', host: 'LILO feat. Anonymous Open Mic Guests', scUrl: 'https://soundcloud.com/thehumanclubradio', color: '673818', mixNum: '06' },
+  { id: '2417876043', title: 'T.H.C Radio & La Barca Boat invites Aaron Zeederberg & Amith', host: 'Aaron Zeederberg & Amith', scUrl: 'https://soundcloud.com/thehumanclubradio', color: '673818', mixNum: '04' },
+  { id: '2408080641', title: 'T.H.C Radio & La Barca Boat invited Lemonella',               host: 'Lemonella',                scUrl: 'https://soundcloud.com/thehumanclubradio', color: '848464', mixNum: '03' },
+  { id: '2411831631', title: 'T.H.C Radio & LA BARCA invites alle anders',                  host: 'alle anders',              scUrl: 'https://soundcloud.com/thehumanclubradio', color: '673818', mixNum: '02' },
 ]
 
 /* -------- public entry point --------------------------------------- */

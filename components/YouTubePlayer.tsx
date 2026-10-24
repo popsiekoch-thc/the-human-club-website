@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import type { YouTubeVideo } from '@/lib/youtube'
 
-const CHANNEL_URL = 'https://www.youtube.com/@TheHumanClub_Podcast'
+const CHANNEL_URL = 'https://www.youtube.com/@TheHumanClub_T.H.C_WorldWide'
 
 /** Build the YouTube embed URL. Autoplay only after the user has
  *  interacted (click on a card) so first paint doesn't blast audio. */

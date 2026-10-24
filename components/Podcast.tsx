@@ -2,7 +2,7 @@ import { getLatestEpisodes } from '@/lib/podcast'
 import Button from './Button'
 import EpisodeRow from './EpisodeRow'
 
-const YT_URL = 'https://www.youtube.com/@TheHumanClub_Podcast'
+const YT_URL = 'https://www.youtube.com/@TheHumanClub_T.H.C_WorldWide'
 
 export default async function Podcast() {
   const episodesRaw = await getLatestEpisodes()

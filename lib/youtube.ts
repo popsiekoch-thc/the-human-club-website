@@ -32,14 +32,30 @@ export interface YouTubeVideo {
 const PLAYLIST_ID = 'PLI9uodLFtg0A'
 const RSS_URL     = `https://www.youtube.com/feeds/videos.xml?playlist_id=${PLAYLIST_ID}`
 const PLAYLIST_URL = `https://www.youtube.com/playlist?list=${PLAYLIST_ID}`
-const CHANNEL_URL  = 'https://www.youtube.com/@TheHumanClub_Podcast'
+const CHANNEL_URL  = 'https://www.youtube.com/@TheHumanClub_T.H.C_WorldWide'
 
 /** Fallback used if YouTube RSS is unreachable. Keep two in sync with
  *  the current playlist head so the page never renders empty. */
 const FALLBACK_VIDEOS: YouTubeVideo[] = [
   {
+    id: 'PtFHP50m57I',
+    title: 'LA BARCA Boat Invites T.H.C Radio Episode #4: Aaron Zeederberg & Amith',
+    watchUrl: 'https://www.youtube.com/watch?v=PtFHP50m57I',
+    thumbnail: 'https://i2.ytimg.com/vi/PtFHP50m57I/hqdefault.jpg',
+    publishedAt: '2026-10-15T16:30:28+00:00',
+    showNum: '04',
+  },
+  {
+    id: 'KH-kpRpN-QU',
+    title: 'LA BARCA Boat Invites T.H.C Radio Episode #3: LEMONELLA',
+    watchUrl: 'https://www.youtube.com/watch?v=KH-kpRpN-QU',
+    thumbnail: 'https://i2.ytimg.com/vi/KH-kpRpN-QU/hqdefault.jpg',
+    publishedAt: '2026-10-07T16:30:39+00:00',
+    showNum: '03',
+  },
+  {
     id: 'e41JgyBPQio',
-    title: 'LA BARCA Boat Invites T.H.C Radio Episode #2',
+    title: 'LA BARCA Boat Invites T.H.C Radio Episode #2: alle anders',
     watchUrl: 'https://www.youtube.com/watch?v=e41JgyBPQio',
     thumbnail: 'https://i2.ytimg.com/vi/e41JgyBPQio/hqdefault.jpg',
     publishedAt: '2026-10-04T09:00:22+00:00',
@@ -47,10 +63,10 @@ const FALLBACK_VIDEOS: YouTubeVideo[] = [
   },
   {
     id: '7cWFOMJ3mz8',
-    title: 'LA BARCA Boat Invites T.H.C Radio Episode #1',
+    title: 'LA BARCA Boat Invites T.H.C Radio Episode #1: Popsie & speh.ki',
     watchUrl: 'https://www.youtube.com/watch?v=7cWFOMJ3mz8',
     thumbnail: 'https://i2.ytimg.com/vi/7cWFOMJ3mz8/hqdefault.jpg',
-    publishedAt: '2026-09-29T16:22:00+00:00',
+    publishedAt: '2026-09-29T22:00:17+00:00',
     showNum: '01',
   },
 ]
